@@ -1,8 +1,7 @@
 package cs.purdue.edu.spatialrdd.impl
 
 import cs.purdue.edu.spatialindex.rtree._
-import cs.purdue.edu.spatialrdd.SpatialRDDPartition
-import cs.purdue.edu.spatialrdd.PointSerializer
+import cs.purdue.edu.spatialrdd._
 
 import org.apache.spark.Logging
 
@@ -20,16 +19,23 @@ import scala.reflect.ClassTag
 class RtreePartition[K, V]
 (protected val tree: RTree[V])
 (override implicit val kTag: ClassTag[K],
- override implicit val vTag: ClassTag[V],
- implicit val kSer: PointSerializer[K,V])
+ override implicit val vTag: ClassTag[V]
+ )
   extends SpatialRDDPartition[K,V] with Logging
 {
 
   override def size: Long = tree.size.asInstanceOf[Long]
 
-  override def apply(k: K): V = tree.searchPoint(kSer.toPoint(k)).asInstanceOf[V]
+  override def apply(k: K): Option[V] = {
+  tree.searchPoint(Util.toPoint(k)) match
+  {
+      case null=>None
+      case x:Entry[V]=>Some(x.value)
+  }
 
-  def isDefined(k: K): Boolean = tree.searchPoint(kSer.toPoint(k)) != null
+  }
+
+  def isDefined(k: K): Boolean = tree.searchPoint(Util.toPoint(k)) != null
 
   override def iterator: Iterator[(K, V)] ={
 
@@ -53,22 +59,15 @@ class RtreePartition[K, V]
    */
   override def multiget(ks: Iterator[K]): Iterator[(K, V)]=
   {
-
-    ks.flatMap { k => Option(this(k)).map(v => (k, v)) }
-
+    ks.flatMap { k => this(k).map(v => (k, v)) }
   }
 
 
-  override def delete(ks: Iterator[K]): SpatialRDDPartition[K, V]=
+  override def delete(ks: Iterator[Entry[V]]): SpatialRDDPartition[K, V]=
   {
     var newMap = this.tree
 
-    val km=ks.map {
-      case(k) =>
-        kSer.toEntry(k)
-    }.toIterable
-
-    newMap=newMap.removeAll(km)
+    newMap=newMap.removeAll(ks.toIterable)
 
     this.withMap(newMap)
   }
@@ -86,13 +85,13 @@ class RtreePartition[K, V]
 
     for (ku <- kvs)
     {
-      val oldpoint=kSer.toPoint(ku._1)
+      val oldpoint=Util.toPoint(ku._1)
 
       val oldV = newMap.searchPoint(oldpoint)
 
-      val newV = if (oldV == null) z(ku._1, ku._2) else f(ku._1, oldV.asInstanceOf[V], ku._2)
+      val newV = if (oldV == null) z(ku._1, ku._2) else f(ku._1, oldV.value, ku._2)
 
-      val newEntry=kSer.toEntry(ku._1, newV)
+      val newEntry=Util.toEntry(ku._1, newV)
 
       newMap=newMap.insert(oldpoint, newV)
 
@@ -101,14 +100,17 @@ class RtreePartition[K, V]
     this.withMap(newMap)
   }
 
-  /**
-   *remove tuples do not meet the predicate condition
-   */
-  def filter(pred: (K, V) => Boolean): SpatialRDDPartition[K, V]=
-  {
-    var newMap = this.tree
 
-    this.withMap(newMap)
+
+  def rangesearch[U](box:U, z:Entry[V]=>Boolean):Iterator[(K, V)]=
+  {
+    val newMap = this.tree
+
+    val ret=newMap.search(box.asInstanceOf[Box],z)
+
+    //ret=
+    ret.map(element=>(element.geom.asInstanceOf[K], element.value)).toIterator
+
   }
 
   /*def createUsingIndex[V2: ClassTag](elems: Iterator[(K, V2)])(implicit kSer: PointSerializer[K,V]): SpatialRDDPartition[K, V2]=
@@ -128,19 +130,15 @@ class RtreePartition[K, V]
 private[spatialrdd] object RtreePartition {
 
   def apply[K: ClassTag, V: ClassTag]
-  (iter: Iterator[(K, V)])(implicit kSer: PointSerializer[K,V]) =
+  (iter: Iterator[(K, V)]) =
     apply[K, V, V](iter, (id, a) => a, (id, a, b) => b)
-
 
   def apply[K: ClassTag, U: ClassTag, V: ClassTag]
   (iter: Iterator[(K, V)], z: (K, U) => V, f: (K, V, U) => V)
-  (implicit kSer: PointSerializer[K,V]):
-  SpatialRDDPartition[K, V] =
+  : SpatialRDDPartition[K, V] =
   {
-    val map = RTree(iter.map{ case(k, v) => kSer.toEntry(k,v)})
-
+    val map = RTree(iter.map{ case(k, v) => Util.toEntry(k,v)})
     new RtreePartition(map)
-
   }
 
 }

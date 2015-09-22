@@ -153,6 +153,11 @@ case class Point(x: Float, y: Float) extends Geom {
     !(isNaN(x) || isInfinite(x) || isNaN(y) || isInfinite(y))
 
   override def wraps(geom: Geom): Boolean = false
+
+  override def toString():String={
+
+    "("+x+","+y+")"
+  }
 }
 
 case class Box(x: Float, y: Float, x2: Float, y2: Float) extends Geom {

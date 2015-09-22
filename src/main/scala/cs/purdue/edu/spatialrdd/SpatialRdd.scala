@@ -1,5 +1,6 @@
 package cs.purdue.edu.spatialrdd
 
+import cs.purdue.edu.spatialrdd.impl.{RtreePartition, Grid2DPartitioner}
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{TaskContext, Partition, OneToOneDependency}
 import org.apache.spark.rdd.RDD
@@ -83,6 +84,31 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
   }
 
+  /** Gets the value corresponding to the specified key, if any. */
+  def get(k: K): Option[V] = multiget(Array(k)).get(k)
+
+  /** Gets the values corresponding to the specified keys, if any. */
+  def multiget(ks: Array[K]): Map[K, V] = {
+
+    val ksByPartition = ks.groupBy(k => partitioner.get.getPartition(k))
+    val partitions = ksByPartition.keys.toSeq
+
+    // TODO: avoid sending all keys to all partitions by creating and zipping an RDD of keys
+
+    val results: Array[Array[(K, V)]] = context.runJob(partitionsRDD,
+      (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
+        if (partIter.hasNext && ksByPartition.contains(context.partitionId)) {
+          val part = partIter.next()
+          val ksForPartition = ksByPartition.get(context.partitionId).get
+          part.multiget(ksForPartition.iterator).toArray
+        } else {
+          Array.empty
+        }
+      }, partitions, allowLocal = true)
+
+    results.flatten.toMap
+  }
+
   /*************************************************/
 
 
@@ -98,7 +124,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
     val newPartitionsRDD = partitionsRDD.zipPartitions(partitioned, true)(f)
     new SpatialRDD(newPartitionsRDD)
   }
-
 
   // The following functions could have been anonymous, but we name them to work around a Scala
   // compiler bug related to specialization.
@@ -119,4 +144,36 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
       Iterator(thisPart.multiput(otherIter, z, f))
     }
   }
+}
+
+object SpatialRDD {
+  /**
+   * Constructs an updatable IndexedRDD from an RDD of pairs, merging duplicate keys arbitrarily.
+   */
+  def apply[K: ClassTag, V: ClassTag]
+  (elems: RDD[(K, V)]): SpatialRDD[K, V] = updatable(elems)
+
+  /**
+   * Constructs an updatable IndexedRDD from an RDD of pairs, merging duplicate keys arbitrarily.
+   */
+  def updatable[K: ClassTag , V: ClassTag]
+  (elems: RDD[(K, V)])
+  : SpatialRDD[K, V] = updatable[K, V, V](elems, (id, a) => a, (id, a, b) => b)
+
+  /** Constructs an IndexedRDD from an RDD of pairs. */
+  def updatable[K: ClassTag , U: ClassTag, V: ClassTag]
+  (elems: RDD[(K, V)], z: (K, U) => V, f: (K, V, U) => V)
+  : SpatialRDD[K, V] = {
+    val elemsPartitioned =
+      /*if
+        (elems.partitioner.isDefined) elems
+      else*/
+        elems.partitionBy(new Grid2DPartitioner(1000, 1000, elems.partitions.size))
+
+    val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+      iter => Iterator(RtreePartition(iter, z, f)),
+      preservesPartitioning = true)
+    new SpatialRDD(partitions)
+  }
+
 }

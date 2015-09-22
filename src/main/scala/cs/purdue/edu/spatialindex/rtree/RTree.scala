@@ -133,13 +133,24 @@ case class RTree[V](root: Node[V], size: Int) {
    * Return a sequence of all entries found in the given search space.
    */
   def searchPoint(pt: Point): Entry[V] =
-    root.search(pt.toBox, _ => true).head
+  {
+    val ret=root.search(pt.toBox, _ => true)
+
+    if(ret!=null&&ret.length!=0)
+      ret.head
+    else
+      null
+
+  }
+
 
   /**
    * Return a sequence of all entries found in the given search space.
    */
   def search(space: Box, f: Entry[V] => Boolean): Seq[Entry[V]] =
     root.search(space, f)
+
+
 
   /**
    * Return a sequence of all entries intersecting the given search space.
