@@ -45,7 +45,7 @@ import cs.purdue.edu.spatialindex.rtree._
      * test for knn search
      */
     val knnresults=indexrdd3.knnFilter(insertpoint,200,(id)=>true)
-```scala
+```
 ##Spatial data mining programing model
 ###clustering page-rank etc
 
