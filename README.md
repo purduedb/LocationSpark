@@ -3,12 +3,12 @@ The spatial spark based on the spatial index
 The spatial index is based on the immutable quadtree and R-tree inside the RDD
 
 ## Spatial operators 
-###Range K-NN skyline spatial intersection 
+###Range query and Knn query 
 ```scala
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialindex.rtree._
 
- val conf = new SparkConf().setAppName("Spark SpatialRDD").setMaster("local[2]")
+    val conf = new SparkConf().setAppName("Spark SpatialRDD").setMaster("local[2]")
 
     val spark = new SparkContext(conf)
 
@@ -45,7 +45,7 @@ import cs.purdue.edu.spatialindex.rtree._
      * test for knn search
      */
     val knnresults=indexrdd3.knnFilter(insertpoint,200,(id)=>true)
-
+```scala
 ##Spatial data mining programing model
 ###clustering page-rank etc
 
