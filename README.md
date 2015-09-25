@@ -1,9 +1,9 @@
-# SpatialSpark
-The spatial spark based on the spatial index
-The spatial index is based on the immutable quadtree and R-tree inside the RDD
+# SpatialRDD
+
+An Effecient spatialRDD based on the spatial index i.e., immutable quadtree and R-tree
 
 ## Spatial operators 
-###Range query and Knn query 
+###Update RDD, Range and Knn query examples
 ```scala
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialindex.rtree._
