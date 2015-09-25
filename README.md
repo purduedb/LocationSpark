@@ -46,9 +46,4 @@ import cs.purdue.edu.spatialindex.rtree._
      */
     val knnresults=indexrdd3.knnFilter(insertpoint,200,(id)=>true)
 ```
-##Spatial data mining programing model
-###clustering page-rank etc
-
-##Spatial moving object programing model 
-### to add
 ....
