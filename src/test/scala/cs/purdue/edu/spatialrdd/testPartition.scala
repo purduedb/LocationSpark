@@ -3,7 +3,6 @@ package cs.purdue.edu.spatialrdd
 import cs.purdue.edu.spatialrdd.impl._
 import cs.purdue.edu.spatialindex.rtree._
 
-import scala.reflect.ClassTag
 import scala.util.Random._
 
 /**
@@ -12,6 +11,7 @@ import scala.util.Random._
 
 
 object TestPartition {
+
   def main(args: Array[String]) {
 
     def uniformPoint(rangex:Int, rangey:Int):Point=
@@ -66,7 +66,7 @@ object TestPartition {
     /********************************************************/
     //test for range search
     val box1 =  Box(0 , 0, 100, 100)
-    val rangesearchresult=part3.rangesearch(box1,(id)=>true)
+    val rangesearchresult=part3.filter(box1,(id)=>true)
 
     //println("range search result")
     //rangesearchresult.foreach{(ks)=>println(ks._1.toString+","+ks._2)}

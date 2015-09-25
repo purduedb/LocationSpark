@@ -50,7 +50,13 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
    *range search and find points inside the box, and each element meet the condition, and return a iterator,
    * and this iterator can be used for other RDD
    */
-  def rangesearch[U](box:U, z:Entry[V]=>Boolean):Iterator[(K,V)]
+  def filter[U](box:U, z:Entry[V]=>Boolean):Iterator[(K,V)]
+
+  /**
+   * K-NN search for certain point, and return entries meet the condition
+   */
+
+  def knnfilter[U](entry:U, k:Int, z:Entry[V]=>Boolean):Iterator[(K,V, Double)]
 
   /**
    * Creates a new partition with values from `elems` that may share an index with `this`,

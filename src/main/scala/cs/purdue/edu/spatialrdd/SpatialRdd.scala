@@ -1,10 +1,12 @@
 package cs.purdue.edu.spatialrdd
 
-import cs.purdue.edu.spatialrdd.impl.{RtreePartition, Grid2DPartitioner}
+import cs.purdue.edu.spatialindex.rtree._
+import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitionerForBox, RtreePartition, Grid2DPartitioner}
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{TaskContext, Partition, OneToOneDependency}
 import org.apache.spark.rdd.RDD
 
+import scala.collection.mutable.HashSet
 import scala.reflect.ClassTag
 
 /**
@@ -21,6 +23,9 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   require(partitionsRDD.partitioner.isDefined)
 
   override val partitioner = partitionsRDD.partitioner
+
+  val spatial_rangex=1000
+  val spatial_rangey=1000
 
   override protected def getPartitions: Array[Partition] = partitionsRDD.partitions
 
@@ -94,7 +99,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
     val partitions = ksByPartition.keys.toSeq
 
     // TODO: avoid sending all keys to all partitions by creating and zipping an RDD of keys
-
     val results: Array[Array[(K, V)]] = context.runJob(partitionsRDD,
       (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
         if (partIter.hasNext && ksByPartition.contains(context.partitionId)) {
@@ -111,7 +115,95 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
   /*************************************************/
 
+  /** Gets the values corresponding to the specific box, if any. */
+  def rangeFilter[U](box:U,z:Entry[V]=>Boolean): Map[K, V] = {
 
+    val boxpartitioner=new Grid2DPartitionerForBox(spatial_rangex,spatial_rangey,this.getPartitions.length)
+
+    //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
+    val partitionset = boxpartitioner.getPartitions(box)
+
+    val results: Array[Array[(K, V)]] = context.runJob(partitionsRDD,
+      (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
+        if (partIter.hasNext && partitionset.contains(context.partitionId)) {
+          val part = partIter.next()
+          part.filter[U](box,z).toArray
+        } else {
+          Array.empty
+        }
+      }, partitionset.toSeq, allowLocal = true)
+
+    results.flatten.toMap
+
+  }
+
+  /** Gets k-nearset-neighbor values corresponding to the specific point, if any. */
+  def knnFilter[U](entry:U, k:Int, z:Entry[V]=>Boolean): Iterator[(K, V)] = {
+
+    val boxpartitioner=new Grid2DPartitionerForBox(spatial_rangex,spatial_rangey,this.getPartitions.length)
+
+    //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
+    val partitionid = boxpartitioner.getPartitionForPoint(entry)
+
+    /**
+     * find the knn point in certain partition
+     */
+    val results: Array[Array[(K, V,Double)]] = context.runJob(partitionsRDD,
+      (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
+        if (partIter.hasNext && partitionid==context.partitionId) {
+          val part = partIter.next()
+          part.knnfilter[U](entry,k,z).toArray
+        } else {
+          Array.empty
+        }
+      }, Seq(partitionid), allowLocal = true)
+
+
+    /**
+     * draw the circle, and do the range search over those overlaped partitions
+     */
+    val (_,_,distance)=results.flatten.tail.toSeq.head
+
+    /**
+     *get the box around the center point
+     */
+    def getbox(entry:U, range:Double):Box=
+    {
+      entry match
+      {
+        case point:Point=>
+          val trange=range.toFloat
+          Box(point.x-trange,point.y-trange,point.x+trange,point.y+trange)
+      }
+    }
+
+    val rangequery=this.rangeFilter(getbox(entry,distance),z)
+
+    /**
+     * merge the range query and knn query results
+     */
+    val rangequerieswithdistance=rangequery.map{
+      case(location:Point,value)=> (location,value, entry.asInstanceOf[Point].distanceSquared(location))
+    }.toList
+
+    //var pids=new HashSet[(Point,Double)]
+
+    val knnresultwithdistance=results.flatten.map{
+      case(location:Point,value,distance)=>
+        (location,value, distance)
+    }.toList
+
+    val finalresult=(knnresultwithdistance++rangequerieswithdistance).sortBy(_._3).distinct.slice(0,k)
+
+    /*finalresult.foreach{
+      ks=>println(ks._1+ks._2.toString+","+ks._3.toString)
+    }*/
+
+    finalresult.map{
+      case(location:Point,value,distance) =>(location.asInstanceOf[K],value)
+    }.toIterator
+
+  }
 
   /*************************************************/
 

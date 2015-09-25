@@ -101,16 +101,41 @@ class RtreePartition[K, V]
   }
 
 
-
-  def rangesearch[U](box:U, z:Entry[V]=>Boolean):Iterator[(K, V)]=
+  /**
+   * this is used for range search
+   * @param box
+   * @param z
+   * @tparam U
+   * @return
+   */
+  def filter[U](box:U, z:Entry[V]=>Boolean):Iterator[(K, V)]=
   {
     val newMap = this.tree
 
     val ret=newMap.search(box.asInstanceOf[Box],z)
 
-    //ret=
     ret.map(element=>(element.geom.asInstanceOf[K], element.value)).toIterator
 
+  }
+
+  /**
+   * this is used for knn search over local data
+   * @param entry
+   * @param k
+   * @param z
+   * @tparam U
+   * @return
+   */
+  def knnfilter[U](entry:U, k:Int, z:Entry[V]=>Boolean):Iterator[(K,V, Double)]=
+  {
+    entry match
+    {
+      case e:Point => this.tree.nearestK(e,k,z).map
+        {
+            case(dist,element)=>
+              (element.geom.asInstanceOf[K],element.value,dist)
+      }.toIterator
+    }
   }
 
   /*def createUsingIndex[V2: ClassTag](elems: Iterator[(K, V2)])(implicit kSer: PointSerializer[K,V]): SpatialRDDPartition[K, V2]=

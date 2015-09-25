@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cbbc309-e0f0-42c2-b6cc-59bb4a42c1eb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/Util.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testPartition.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/project/plugins.sbt" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/project/project/target/config-classes/$c98977d2a37c210b6cf1$$anonfun$$sbtdef$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/project/project/target/config-classes/$c98977d2a37c210b6cf1$.class" afterPath="" />
@@ -24,24 +20,73 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/project/target/config-classes/$918610bc748606cf1090$.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/project/target/config-classes/$918610bc748606cf1090.cache" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/project/target/config-classes/$918610bc748606cf1090.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/KeySerializer.scala" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialPartition.scala" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$nearest$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$nearest$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$searchIntersection$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$searchIntersection$1.class" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch$$anonfun$6$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch$$anonfun$7$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Leaf$$anonfun$8$$anonfun$apply$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Leaf$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$searchPoint$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/KeySerializer.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/PointSerializer.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/GridSpatialPartitioner.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$rangesearch$1.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Branch.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Entry$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Entry$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Entry.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Entry.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/Grid2DPartitioner.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/Grid2DPartitioner.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Leaf$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Leaf$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Leaf.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Leaf.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$contains$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$contains$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$map$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$map$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$map$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$map$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$splitter$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$splitter$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$splitter$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$splitter$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QuadtreePartitioner.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QuadtreePartitioner.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$values$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$values$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$count$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$count$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$count$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$count$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiget$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiget$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$MultiputZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$MultiputZipper.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDPartition.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDPartition.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/SumFunction$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/SumFunction$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialrdd/TestPartition$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialrdd/TestPartition$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testPartition.scala" afterPath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testPartition.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala" afterPath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SpatialSpark.iws" />
@@ -84,7 +129,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+              <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
               <folding>
                 <element signature="e#39#80#0" expanded="true" />
               </folding>
@@ -92,11 +137,75 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SpatialRDDPartition.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
+      <file leaf-file-name="SpatialRdd.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.7419353">
+              <caret line="205" column="3" selection-start-line="205" selection-start-column="3" selection-end-line="205" selection-end-column="3" />
+              <folding>
+                <element signature="e#34#75#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SeqLike.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/SeqLike.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
+              <caret line="489" column="6" selection-start-line="489" selection-start-column="6" selection-end-line="489" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testSpatialRDD.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="18" column="3" selection-start-line="18" selection-start-column="3" selection-end-line="54" selection-end-column="66" />
+              <folding>
+                <element signature="e#14#56#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4101266">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RDD.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="161" column="13" selection-start-line="161" selection-start-column="13" selection-end-line="161" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SparkContext.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/SparkContext.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="276" column="51" selection-start-line="276" selection-start-column="51" selection-end-line="276" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TimeStampedWeakValueHashMap.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/util/TimeStampedWeakValueHashMap.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="61" column="10" selection-start-line="61" selection-start-column="10" selection-end-line="61" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -106,66 +215,10 @@
         <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testPartition.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
+              <caret line="21" column="44" selection-start-line="21" selection-start-column="44" selection-end-line="21" selection-end-column="44" />
               <folding>
                 <element signature="e#34#72#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapLike.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/MapLike.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="81" column="28" selection-start-line="81" selection-start-column="28" selection-end-line="81" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Map.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/Map.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.16129">
-              <caret line="49" column="11" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="11" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Map.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/immutable/Map.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.16129">
-              <caret line="98" column="11" selection-start-line="98" selection-start-column="8" selection-end-line="98" selection-end-column="11" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpatialRdd.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.46190476">
-              <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
-              <folding>
-                <element signature="e#34#106#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SparkContext.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/SparkContext.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="1718" column="29" selection-start-line="1718" selection-start-column="29" selection-end-line="1718" selection-end-column="29" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -174,21 +227,9 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="111" column="16" selection-start-line="111" selection-start-column="16" selection-end-line="111" selection-end-column="16" />
+              <caret line="215" column="21" selection-start-line="215" selection-start-column="21" selection-end-line="215" selection-end-column="21" />
               <folding>
                 <element signature="e#42#102#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testSpatialRDD.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="7" selection-start-line="45" selection-start-column="7" selection-end-line="45" selection-end-column="7" />
-              <folding>
-                <element signature="e#14#56#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -220,21 +261,23 @@
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/PARTPartition.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/test.scala" />
         <option value="$PROJECT_DIR$/build.sbt" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Joined.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/test/testSpatialRDD.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/test/testPartition.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialPartition.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/KeySerializer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/Util.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testDataPartitioner.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testPartition.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -280,6 +323,72 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="External Libraries" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpatialSpark" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SBT: org.scala-lang:scala-library:2.10.5:jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-library-2.10.5.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpatialSpark" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SBT: org.scala-lang:scala-library:2.10.5:jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-library-2.10.5.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpatialSpark" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SBT: org.scala-lang:scala-library:2.10.5:jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-library-2.10.5.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="collection" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -431,6 +540,10 @@
               <option name="myItemId" value="spatialrdd" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testSpatialRDD.scala" />
+              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -460,6 +573,32 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="testPartition.scala" />
               <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpatialSpark" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpatialSpark" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="spatialrdd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -570,49 +709,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="spatialrdd" />
+              <option name="myItemId" value="rtree" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpatialSpark" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpatialSpark" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="edu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="spatialrdd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpatialPartitioner.scala" />
+              <option name="myItemId" value="RTree.scala" />
               <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -642,41 +743,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="spatialrdd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RtreePartition.scala" />
-              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpatialSpark" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpatialSpark" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="edu" />
+              <option name="myItemId" value="rtree" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -978,6 +1045,21 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="false" name="testPartitioner" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="cs.purdue.edu.spatialrdd.testDataPartitioner" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="spatialspark" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="false" name="testspatialRDD" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="test.testSpatialRDD" />
@@ -993,10 +1075,11 @@
       <envs />
       <method />
     </configuration>
-    <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="Application.testspatialRDD" />
-      <item index="1" class="java.lang.String" itemvalue="Application.TestPartition" />
-      <item index="2" class="java.lang.String" itemvalue="Application.TestPartition$" />
+    <list size="4">
+      <item index="0" class="java.lang.String" itemvalue="Application.testPartitioner" />
+      <item index="1" class="java.lang.String" itemvalue="Application.testspatialRDD" />
+      <item index="2" class="java.lang.String" itemvalue="Application.TestPartition" />
+      <item index="3" class="java.lang.String" itemvalue="Application.TestPartition$" />
     </list>
     <recent_temporary>
       <list size="2">
@@ -1103,8 +1186,14 @@
           <properties />
           <option name="timeStamp" value="19" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala</url>
+          <line>115</line>
+          <properties />
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="20" />
+      <option name="time" value="26" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1113,76 +1202,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-          <folding>
-            <element signature="e#107#151#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/amplab/spark-indexedrdd/jars/spark-indexedrdd-0.1.jar!/edu/berkeley/cs/amplab/spark/indexedrdd/util/VectorNode.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/amplab/spark-indexedrdd/jars/spark-indexedrdd-0.1.jar!/edu/berkeley/cs/amplab/spark/indexedrdd/IndexedRDDPartition.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="71" selection-start-line="5" selection-start-column="71" selection-end-line="5" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="121" column="17" selection-start-line="121" selection-start-column="6" selection-end-line="121" selection-end-column="17" />
-          <folding>
-            <element signature="e#42#102#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="449" column="11" selection-start-line="449" selection-start-column="11" selection-end-line="449" selection-end-column="11" />
-          <folding>
-            <element signature="e#42#102#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="23" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="23" />
-          <folding>
-            <element signature="e#39#80#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/amplab/spark-indexedrdd/jars/spark-indexedrdd-0.1.jar!/edu/berkeley/cs/amplab/spark/indexedrdd/util/BitSet.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1195,7 +1214,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
           <folding>
-            <element signature="e#107#151#0" expanded="true" />
+            <element signature="e#174#218#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1265,7 +1284,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="2" column="30" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
           <folding>
-            <element signature="e#107#151#0" expanded="true" />
+            <element signature="e#174#218#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1374,14 +1393,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/TraversableLike.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="240" column="7" selection-start-line="240" selection-start-column="7" selection-end-line="240" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/Predef.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1398,50 +1409,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="205" column="52" selection-start-line="205" selection-start-column="52" selection-end-line="205" selection-end-column="52" />
-          <folding>
-            <element signature="e#42#102#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="158" column="19" selection-start-line="158" selection-start-column="19" selection-end-line="158" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="46" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
-          <folding>
-            <element signature="e#39#74#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="683" column="25" selection-start-line="683" selection-start-column="25" selection-end-line="683" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/rdd/PairRDDFunctions.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="497" column="10" selection-start-line="497" selection-start-column="10" selection-end-line="497" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/Util.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1449,32 +1416,6 @@
           <folding>
             <element signature="e#39#93#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/SparkContext.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1718" column="29" selection-start-line="1718" selection-start-column="29" selection-end-line="1718" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="111" column="16" selection-start-line="111" selection-start-column="16" selection-end-line="111" selection-end-column="16" />
-          <folding>
-            <element signature="e#42#102#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1491,7 +1432,7 @@
         <state vertical-scroll-proportion="-4.16129">
           <caret line="49" column="11" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="11" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1501,7 +1442,111 @@
         <state vertical-scroll-proportion="-4.16129">
           <caret line="98" column="11" selection-start-line="98" selection-start-column="8" selection-end-line="98" selection-end-column="11" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/rdd/PairRDDFunctions.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="511" column="5" selection-start-line="511" selection-start-column="5" selection-end-line="511" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/HashSet.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="36" selection-start-line="55" selection-start-column="36" selection-end-line="55" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/Set.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="30" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/ArrayBuffer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="61" column="23" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/TraversableLike.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="323" column="0" selection-start-line="323" selection-start-column="0" selection-end-line="323" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="166" column="10" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="113" column="31" selection-start-line="113" selection-start-column="5" selection-end-line="113" selection-end-column="31" />
+          <folding>
+            <element signature="e#39#74#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="347" column="6" selection-start-line="347" selection-start-column="6" selection-end-line="347" selection-end-column="6" />
+          <folding>
+            <element signature="e#42#102#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testDataPartitioners.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+          <folding>
+            <element signature="e#34#72#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="58" column="6" selection-start-line="58" selection-start-column="6" selection-end-line="58" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/PriorityQueue.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="262" column="7" selection-start-line="262" selection-start-column="7" selection-end-line="262" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="215" column="21" selection-start-line="215" selection-start-column="21" selection-end-line="215" selection-end-column="21" />
+          <folding>
+            <element signature="e#42#102#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1509,17 +1554,59 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+          <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
           <folding>
             <element signature="e#39#80#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/SeqLike.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="489" column="6" selection-start-line="489" selection-start-column="6" selection-end-line="489" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.7419353">
+          <caret line="205" column="3" selection-start-line="205" selection-start-column="3" selection-end-line="205" selection-end-column="3" />
+          <folding>
+            <element signature="e#34#75#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="161" column="13" selection-start-line="161" selection-start-column="13" selection-end-line="161" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/SparkContext.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="276" column="51" selection-start-line="276" selection-start-column="51" selection-end-line="276" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.4.1-sources.jar!/org/apache/spark/util/TimeStampedWeakValueHashMap.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="61" column="10" selection-start-line="61" selection-start-column="10" selection-end-line="61" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testPartition.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
+          <caret line="21" column="44" selection-start-line="21" selection-start-column="44" selection-end-line="21" selection-end-column="44" />
           <folding>
             <element signature="e#34#72#0" expanded="true" />
           </folding>
@@ -1529,20 +1616,18 @@
     <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="7" selection-start-line="45" selection-start-column="7" selection-end-line="45" selection-end-column="7" />
+          <caret line="18" column="3" selection-start-line="18" selection-start-column="3" selection-end-line="54" selection-end-column="66" />
           <folding>
             <element signature="e#14#56#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46190476">
-          <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
-          <folding>
-            <element signature="e#34#106#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.4101266">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

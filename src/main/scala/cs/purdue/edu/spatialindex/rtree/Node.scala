@@ -311,7 +311,7 @@ sealed abstract class Node[V] extends HasGeom { self =>
    * add them to the given priority queue `pq`.
    *
    * This method returns the distance of the farthest entry that is
-   * still included.
+   * still included.``
    */
   def nearestK(pt: Point, k: Int, d0: Double, pq: PriorityQueue[(Double, Entry[V])]): Double = {
     var dist: Double = d0
@@ -326,6 +326,42 @@ sealed abstract class Node[V] extends HasGeom { self =>
               dist = pq.head._1
             }
           }
+        }
+      case Branch(children, box) =>
+        val cs = children.map(node => (node.box.distance(pt), node)).sortBy(_._1)
+        cs.foreach { case (d, node) =>
+          if (d >= dist) return dist //scalastyle:ignore
+          dist = node.nearestK(pt, k, dist, pq)
+        }
+    }
+    dist
+  }
+
+
+  /**
+   * Find the closest `k` entries to `pt` that are within `d0`, and
+   * add them to the given priority queue `pq`.
+   *
+   * This method returns the distance of the farthest entry that is
+   * still included.``
+   */
+  def nearestK(pt: Point, k: Int, d0: Double, z:Entry[V]=>Boolean, pq: PriorityQueue[(Double, Entry[V])]): Double = {
+    var dist: Double = d0
+    this match {
+      case Leaf(children, box) =>
+        children.foreach { entry =>
+          val d = entry.geom.distance(pt)
+          if(z(entry)) //meet the entry condition
+          {
+            if (d < dist) {
+              pq += ((d, entry))
+              if (pq.size > k) {
+                pq.dequeue
+                dist = pq.head._1
+              }
+            }
+          }
+
         }
       case Branch(children, box) =>
         val cs = children.map(node => (node.box.distance(pt), node)).sortBy(_._1)
