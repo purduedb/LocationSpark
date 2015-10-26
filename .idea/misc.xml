@@ -20,10 +20,6 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QuadtreePartition.scala" />
-    <file url="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/test.scala" />
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1,7" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

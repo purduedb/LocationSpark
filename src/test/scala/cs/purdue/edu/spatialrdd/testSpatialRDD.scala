@@ -52,7 +52,8 @@ object testSpatialRDD
     /**
      * test for knn search
      */
-    val knnresults=indexrdd3.knnFilter(insertpoint,200,(id)=>true)
+    val k=200
+    val knnresults=indexrdd3.knnFilter(insertpoint,k,(id)=>true)
     knnresults.foreach(println)
 
     /**

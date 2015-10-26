@@ -1,12 +1,10 @@
 package cs.purdue.edu.spatialrdd
 
 import cs.purdue.edu.spatialindex.rtree._
-import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitionerForBox, RtreePartition, Grid2DPartitioner}
+import cs.purdue.edu.spatialrdd.impl._
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{TaskContext, Partition, OneToOneDependency}
 import org.apache.spark.rdd.RDD
-
-import scala.collection.mutable.HashSet
 import scala.reflect.ClassTag
 
 /**
@@ -24,8 +22,8 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
   override val partitioner = partitionsRDD.partitioner
 
-  val spatial_rangex=1000
-  val spatial_rangey=1000
+  //val spatial_rangex=1000
+  //val spatial_rangey=1000
 
   override protected def getPartitions: Array[Partition] = partitionsRDD.partitions
 
@@ -118,7 +116,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets the values corresponding to the specific box, if any. */
   def rangeFilter[U](box:U,z:Entry[V]=>Boolean): Map[K, V] = {
 
-    val boxpartitioner=new Grid2DPartitionerForBox(spatial_rangex,spatial_rangey,this.getPartitions.length)
+    val boxpartitioner=new Grid2DPartitionerForBox(Util.get_spatial_rangx,Util.get_spatial_rangy,this.getPartitions.length)
 
     //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
     val partitionset = boxpartitioner.getPartitions(box)
@@ -140,7 +138,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets k-nearset-neighbor values corresponding to the specific point, if any. */
   def knnFilter[U](entry:U, k:Int, z:Entry[V]=>Boolean): Iterator[(K, V)] = {
 
-    val boxpartitioner=new Grid2DPartitionerForBox(spatial_rangex,spatial_rangey,this.getPartitions.length)
+    val boxpartitioner=new Grid2DPartitionerForBox(Util.get_spatial_rangx,Util.get_spatial_rangy,this.getPartitions.length)
 
     //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
     val partitionid = boxpartitioner.getPartitionForPoint(entry)
@@ -195,15 +193,21 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
     val finalresult=(knnresultwithdistance++rangequerieswithdistance).sortBy(_._3).distinct.slice(0,k)
 
-    /*finalresult.foreach{
-      ks=>println(ks._1+ks._2.toString+","+ks._3.toString)
-    }*/
-
     finalresult.map{
       case(location:Point,value,distance) =>(location.asInstanceOf[K],value)
     }.toIterator
 
   }
+
+  /**
+   * Deletes the specified keys. Returns a new spatialRDD that reflects the deletions.
+   */
+  def delete(ks: Array[K]): SpatialRDD[K, V] = {
+    val deletions = context.parallelize(ks.map(k => (k, ()))).partitionBy(partitioner.get)
+    zipPartitionsWithOther(deletions)(new DeleteZipper)
+  }
+
+
 
   /*************************************************/
 
@@ -236,6 +240,14 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
       Iterator(thisPart.multiput(otherIter, z, f))
     }
   }
+
+  private class DeleteZipper extends OtherZipPartitionsFunction[Unit, V] with Serializable {
+    def apply(thisIter: Iterator[SpatialRDDPartition[K, V]], otherIter: Iterator[(K, Unit)])
+    : Iterator[SpatialRDDPartition[K, V]] = {
+      val thisPart = thisIter.next()
+      Iterator(thisPart.delete(otherIter.map(_._1.asInstanceOf[Entry[V]])))
+    }
+  }
 }
 
 object SpatialRDD {
@@ -257,10 +269,7 @@ object SpatialRDD {
   (elems: RDD[(K, V)], z: (K, U) => V, f: (K, V, U) => V)
   : SpatialRDD[K, V] = {
     val elemsPartitioned =
-      /*if
-        (elems.partitioner.isDefined) elems
-      else*/
-        elems.partitionBy(new Grid2DPartitioner(1000, 1000, elems.partitions.size))
+        elems.partitionBy(new Grid2DPartitioner(Util.get_spatial_rangx, Util.get_spatial_rangy, elems.partitions.size))
 
     val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
       iter => Iterator(RtreePartition(iter, z, f)),

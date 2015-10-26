@@ -85,6 +85,8 @@ sealed trait Geom {
   def contains(geom: Geom): Boolean =
     x <= geom.x && geom.x2 <= x2 && y <= geom.y && geom.y2 <= y2
 
+  def ==(geom: Geom):Boolean=
+    x == geom.x && geom.x2 == x2 && y == geom.y && geom.y2 == y2
   /**
    * Returns whether this geometry intersects with the other.
    *
@@ -162,6 +164,8 @@ case class Point(x: Float, y: Float) extends Geom {
 
 case class Box(x: Float, y: Float, x2: Float, y2: Float) extends Geom {
   override def toBox: Box = this
+
+  override def toString:String={x+","+y+"; "+x2+","+y2}
 }
 
 object Box {
