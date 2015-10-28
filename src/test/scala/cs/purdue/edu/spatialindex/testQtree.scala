@@ -10,15 +10,15 @@ object testQtree {
 
   def main(args: Array[String]): Unit = {
 
-    val querybox=Box(0,0,5,5)
-    val qtree=QTree(querybox)
+    val querybox=Box(0,0,2,2)
 
-    val quertbox2=Box(0,0,3,3)
+    val quertbox3=Box(0,0,5,5)
 
-    val quertbox3=Box(10,10,30,30)
+    val qtree=QTree(quertbox3)
 
-    //qtree.insertBox(quertbox2)
+    val quertbox2=Box(0,0,7,7)
     //qtree.insertBox(quertbox3)
+    qtree.insertBox(quertbox2)
 
     qtree.printTreeStructure()
 
