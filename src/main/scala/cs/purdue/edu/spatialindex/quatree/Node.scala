@@ -33,7 +33,7 @@ case class Leaf(space:Box) extends Node(space) {
 
     branch.nw=Leaf(Box(x,y+hh,x+hw,this.space.y2))
     branch.ne=Leaf(Box(x + hw, y+hh, this.space.x2, this.space.y2))
-    branch.se=Leaf(Box(x,y+hh,x+hw,this.space.y2))
+    branch.se=Leaf(Box(x+hw,y,this.space.x2,this.space.y+hh))
     branch.sw=Leaf(Box(x, y, x+hw, y+hh))
 
     branch.nw.parent=branch

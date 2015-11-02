@@ -17,7 +17,7 @@ import cs.purdue.edu.spatialindex.rtree.Box
  */
 object binnaryopt {
 
-  def SetBit(k:Int, data:Array[Int])={
+  def setBit(k:Int, data:Array[Int])={
     val i=k/32
     val pos=k%32
 
@@ -34,7 +34,7 @@ object binnaryopt {
    * @param endK
    * @param data
    */
-  def SetBit(beginK:Int, endK:Int, setbyte:Int, data:Array[Int])=
+  def setBit(beginK:Int, endK:Int, setbyte:Int, data:Array[Int])=
   {
       if(endK-beginK<=qtreeUtil.binnaryUnit&&setbyte<=qtreeUtil.binnaryMax)
       {
@@ -51,7 +51,7 @@ object binnaryopt {
   }
 
 
-  def ClearBit(k:Int, data:Array[Int])={
+  def clearBit(k:Int, data:Array[Int])={
 
     val i=k/32
     val pos=k%32
@@ -65,7 +65,7 @@ object binnaryopt {
 
   }
 
-  def GetBit(k:Int, data:Array[Int]):Int={
+  def getBit(k:Int, data:Array[Int]):Int={
 
     val i=k/32
     val pos=k%32
@@ -119,7 +119,7 @@ object binnaryopt {
     flag
   }
 
-  def GetBytes(beginK:Int, endK:Int, data:Array[Int]):Int={
+  def getBytes(beginK:Int, endK:Int, data:Array[Int]):Int={
 
     if(endK-beginK<=qtreeUtil.binnaryUnit)
     {
@@ -127,7 +127,7 @@ object binnaryopt {
       val pos1=beginK%32
       //val pos2=endK%32
 
-      var flag=16 //1111, we assume this
+      var flag=15 //1111, we assume this
       flag=flag<<pos1  //0000 0000 1111 0000 if pos1=4
 
       var tmpdata=data(i) //1011 1101 1011 1101
@@ -153,6 +153,10 @@ object binnaryopt {
    */
   def getSetcount(begin:Int, end:Int, data:Array[Int]):Int={
 
+
+    if(begin==end)
+      return 0
+
     val i=begin/32
     val pos1=begin%32
 
@@ -163,6 +167,13 @@ object binnaryopt {
 
     var count=0
 
+    //those bit belong to only one integer
+    if(i==j)
+    {
+      return  bitcount((data(i)>>pos1)<<(32-pos2+pos1))
+    }
+
+    //wtf
     for(m<-i to j)
     {
       if(m==i)
@@ -171,7 +182,6 @@ object binnaryopt {
       }else if(m==j)
       {
         count=count+bitcount(data(m)<<(32-pos2))
-
       }else
       {
         count=count+bitcount(data(m))
@@ -200,18 +210,64 @@ object binnaryopt {
 
   }
 
+  def getBitString(begin:Int, end:Int, data:Array[Int]):String={
+
+
+    var ret:String=new String()
+    for(i<-begin to end-1)
+    {
+       if(this.getBit(i,data)==1)
+       {
+         ret+="1"
+         //print(1)
+       }else
+       {
+         //print(0)
+         ret+="0"
+       }
+    }
+
+    ret
+  }
+
+  def getBitString(data:Int):String={
+
+    var ret:String=new String()
+
+    for(i<-0 to 31)
+    {
+      if(this.getBit(i,data)==1)
+      {
+        ret+="1"
+        //print(1)
+      }else
+      {
+        //print(0)
+        ret+="0"
+      }
+    }
+
+    ret
+  }
 
 }
 
 object qtreeUtil{
 
-  def rangx=100
-  def rangy=100
+  final def rangx=100000
+  final def rangy=100000
+
   def leafcount=100
   final def binnaryUnit=4
   final def binnaryMax=16
 
-  def wholespace=Box(0,0,8f,8f)
+  //this bound is used for coalign testing between two lines
+  final def errorbound=0.05
+
+  //this bound is used to stop spilit the current node
+  final def leafStopBound=0.1
+
+  def wholespace=Box(0,0,rangx,rangy)
 
   def less(Key1:Float, Key2:Float):Boolean=
   {
@@ -226,6 +282,11 @@ object qtreeUtil{
     else
       false
 
+  }
+
+  def getAreaRatio(small:Box, big:Box):Double=
+  {
+    small.area/big.area
   }
 
 }

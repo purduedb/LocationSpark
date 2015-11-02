@@ -2,6 +2,7 @@ package cs.purdue.edu.spatialbloomfilter
 
 import cs.purdue.edu.spatialindex.rtree.Box
 
+import scala.collection.mutable.HashMap
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
@@ -13,20 +14,26 @@ import scala.collection.mutable.ArrayBuffer
 /**
  *this is a adpative spatial bloom filter, it accept a range query, and return whether there are data points inside that range
  */
-class sbfilter() {
+class SBFilter() {
 
 //define the global int array
-  private var internal=new Array[Int](10) //where 10 is the default size
+  private var internal=new Array[Int](3) //where 10 is the default size
 
-  private var leaf=new Array[Int](10) //where 10 is the default size
+  private var leaf=new Array[Int](3) //where 10 is the default size
 
   private var budgetsize=100 //100*32
 
   private var depth=0
 
-  private val widthInternal=ArrayBuffer[Int]() //number of internal node for that depth
+  //we will remove this two array later
+  private var widthInternal=ArrayBuffer[Int]() //number of internal node for that depth
+  private var widthInternalSum=Array[Int]() //number of internal node for that depth
+  private var widthLeaf=ArrayBuffer[Int]() //number of leaf nodes
+  private var widthLeafSum=Array[Int]() //number of leaf nodes
 
-  private val widthLeaf=ArrayBuffer[Int]() //number of leaf nodes
+  //this does not help anymore
+  private var Internallocation = scala.collection.mutable.HashMap.empty[Int,Int]
+  private var Leaflocation = scala.collection.mutable.HashMap.empty[Int,Int]
 
   def this(datasize:Int){
    this
@@ -70,7 +77,6 @@ class sbfilter() {
 
     case class tmpnode(depth:Int, beginBitLocation:Int, parentBox:Box)
 
-    var booleanresult=false
     var currentdepth=0
 
     //use dfs to search the rectangle, since once we find it has contain, we return true
@@ -84,10 +90,13 @@ class sbfilter() {
         //currentdepth=getDepth(point)
 
         //get the binary code for this node
-        val binnarycode =binnaryopt.GetBytes(
+        val binnarycode =binnaryopt.getBytes(
           point.beginBitLocation,
           point.beginBitLocation+qtreeUtil.binnaryUnit,
           this.internal)
+
+        //println("beginlocation "+  point.beginBitLocation)
+        //println("binnary code "+binnaryopt.getBitString(binnarycode))
 
       /********************************************/
       //find the first leaf and internal node bit location
@@ -97,16 +106,260 @@ class sbfilter() {
 
       if(point.depth!=0)
       {
-        val pre=this.widthInternal.take(point.depth-1).sum
+         val pre=this.widthInternalSum(point.depth-1)
+         val numberOnesTobound=binnaryopt.getSetcount(pre*qtreeUtil.binnaryUnit,point.beginBitLocation,this.internal)
+         val numberZerosToBound=point.beginBitLocation-pre*qtreeUtil.binnaryUnit-numberOnesTobound
+         InterNodeBitLocation=(this.widthInternalSum(point.depth)+numberOnesTobound)*qtreeUtil.binnaryUnit
+         LeafNodeBitLocation= this.widthLeafSum(point.depth)+numberZerosToBound
+
+      }else
+      {
+          InterNodeBitLocation=4
+      }
+
+      /********************************************/
+
+      var flag=1
+      var count=0
+      var leafcount=0
+      var intercount=0
+
+      //"and" operation to know the correct bitcode
+      //this cost is constant
+        while(count<qtreeUtil.binnaryUnit)
+        {
+          val subrectangle=GetSubRectangle(point.parentBox,count)
+
+          if((flag&binnarycode)==0)
+          {
+
+
+            if(subrectangle.intersects(space))
+             {
+               //println("intersect leaf is:"+subrectangle.toString)
+                val bitvalueofleaf=binnaryopt.getBit(LeafNodeBitLocation+leafcount,this.leaf)
+
+                if(bitvalueofleaf==1)  //if this leaf node is true, we return true
+                {
+                  return true
+
+                }else if(subrectangle.contains(space))
+                { //if this leaf is false and it contains the input the space, return the false
+                  //println("find the false leaf")
+                  return false
+                }
+            }
+            leafcount=leafcount+1
+
+          }else  // go to the internal node
+          {
+              //judge which subrectangle to prop
+            if(subrectangle.intersects(space))
+            {
+              //println("intersect branch is:"+subrectangle.toString)
+              beginlocations.push(tmpnode(point.depth+1,InterNodeBitLocation+intercount*qtreeUtil.binnaryUnit,subrectangle))
+            }
+              //if(IntersectionForTwoBox(subrectangle,space))
+            intercount=intercount+1
+          }
+
+          count=count+1
+          flag=flag<<1
+
+        }//go through four bit children
+
+     // println("current depth "+point.depth)
+      currentdepth=point.depth
+
+    }//while for dfs
+
+    false
+  }
+
+  //search
+  /**
+   * if this rectangle contain data, return true. or return false
+   * @return
+   */
+  def searchRectangleV2(space: Box):Boolean=
+  {
+
+    case class tmpnode(depth:Int, beginBitLocation:Int, parentBox:Box)
+
+    var currentdepth=0
+
+    //use dfs to search the rectangle, since once we find it has contain, we return true
+    val beginlocations = mutable.Stack[tmpnode]()
+
+    beginlocations.push(tmpnode(0,0,qtreeUtil.wholespace))
+
+    while(beginlocations.size>0&&currentdepth<this.depth)
+    {
+      val point=beginlocations.pop()
+      //currentdepth=getDepth(point)
+
+      //get the binary code for this node
+      val binnarycode =binnaryopt.getBytes(
+        point.beginBitLocation,
+        point.beginBitLocation+qtreeUtil.binnaryUnit,
+        this.internal)
+
+      //println("beginlocation "+  point.beginBitLocation)
+      //println("binnary code "+binnaryopt.getBitString(binnarycode))
+
+      /********************************************/
+      //find the first leaf and internal node bit location
+      //val internalwidth=
+      var InterNodeBitLocation=0
+      var LeafNodeBitLocation=0
+
+      if(point.depth!=0)
+      {
+        /*val pre=this.widthInternalSum(point.depth-1)
+        val numberOnesTobound=binnaryopt.getSetcount(pre*qtreeUtil.binnaryUnit,point.beginBitLocation,this.internal)
+        val numberZerosToBound=point.beginBitLocation-pre*qtreeUtil.binnaryUnit-numberOnesTobound
+        InterNodeBitLocation=(this.widthInternalSum(point.depth)+numberOnesTobound)*qtreeUtil.binnaryUnit
+        LeafNodeBitLocation= this.widthLeafSum(point.depth)+numberZerosToBound*/
+
+        InterNodeBitLocation=this.Internallocation.getOrElse(point.beginBitLocation, 0)
+        LeafNodeBitLocation=this.Leaflocation.getOrElse(point.beginBitLocation, 0)
 
         //this step might spend more time
+        //println("pre= "+pre+ " "+ pre*qtreeUtil.binnaryUnit)
+        //println("beginBitLocation= "+point.beginBitLocation)
+        //println("numberOnes Tobound "+numberOnesTobound)
+        //println("numberZeros ToBound "+numberOnesTobound)
+        //println("InterNodeBitLocation  "+InterNodeBitLocation)
+        //println("LeafNodeBitLocation "+LeafNodeBitLocation)
+
+      }else
+      {
+        InterNodeBitLocation=4
+      }
+
+      /********************************************/
+
+      var flag=1
+      var count=0
+      var leafcount=0
+      var intercount=0
+
+      //"and" operation to know the correct bitcode
+      //this cost is constant
+      while(count<qtreeUtil.binnaryUnit)
+      {
+        val subrectangle=GetSubRectangle(point.parentBox,count)
+
+        if((flag&binnarycode)==0)
+        {
+
+
+          if(subrectangle.intersects(space))
+          {
+            //println("intersect leaf is:"+subrectangle.toString)
+            val bitvalueofleaf=binnaryopt.getBit(LeafNodeBitLocation+leafcount,this.leaf)
+
+            if(bitvalueofleaf==1)  //if this leaf node is true, we return true
+            {
+              return true
+
+            }else if(subrectangle.contains(space))
+            { //if this leaf is false and it contains the input the space, return the false
+              //println("find the false leaf")
+              return false
+            }
+          }
+          leafcount=leafcount+1
+
+        }else  // go to the internal node
+        {
+          //judge which subrectangle to prop
+          if(subrectangle.intersects(space))
+          {
+            //println("intersect branch is:"+subrectangle.toString)
+            beginlocations.push(tmpnode(point.depth+1,InterNodeBitLocation+intercount*qtreeUtil.binnaryUnit,subrectangle))
+          }
+          //if(IntersectionForTwoBox(subrectangle,space))
+          intercount=intercount+1
+        }
+
+        count=count+1
+        flag=flag<<1
+
+      }//go through four bit children
+
+      // println("current depth "+point.depth)
+      currentdepth=point.depth
+
+    }//while for dfs
+
+    false
+  }
+
+  //search
+  /**
+   * if this rectangle contain data, return true. or return false
+   * @return
+   */
+  def searchRectangleWithP(space: Box):Double=
+  {
+
+    case class tmpnode(depth:Int, beginBitLocation:Int, parentBox:Box)
+
+    var falseratio=0.0
+
+    var currentdepth=0
+
+    //use dfs to search the rectangle, since once we find it has contain, we return true
+    val beginlocations = mutable.Stack[tmpnode]()
+
+    beginlocations.push(tmpnode(0,0,qtreeUtil.wholespace))
+
+    while(beginlocations.size>0&&currentdepth<this.depth)
+    {
+      val point=beginlocations.pop()
+      //currentdepth=getDepth(point)
+
+      //get the binary code for this node
+      val binnarycode =binnaryopt.getBytes(
+        point.beginBitLocation,
+        point.beginBitLocation+qtreeUtil.binnaryUnit,
+        this.internal)
+
+      //println("box is "+point.parentBox)
+      //println("point location "+  point.beginBitLocation)
+      //println("binnary code "+binnaryopt.getBitString(binnarycode))
+
+      /********************************************/
+      //find the first leaf and internal node bit location
+      //val internalwidth=
+      var InterNodeBitLocation=0
+      var LeafNodeBitLocation=0
+
+      if(point.depth!=0)
+      {
+        val pre=this.widthInternalSum(point.depth-1)
+        //this step might spend more time
+
+       // println("pre= "+pre+ " "+ pre*qtreeUtil.binnaryUnit)
+        //println("beginBitLocation= "+point.beginBitLocation)
+       // println("internal data is: "+binnaryopt.getBitString(0,100,this.internal))
         val numberOnesTobound=binnaryopt.getSetcount(pre*qtreeUtil.binnaryUnit,point.beginBitLocation,this.internal)
 
         val numberZerosToBound=point.beginBitLocation-pre*qtreeUtil.binnaryUnit-numberOnesTobound
 
-         InterNodeBitLocation=(pre+this.widthInternal(point.depth)+numberOnesTobound)*qtreeUtil.binnaryUnit
+        //println("numberOnes Tobound "+numberOnesTobound)
+       // println("numberZeros ToBound "+numberOnesTobound)
 
-         LeafNodeBitLocation=  this.widthLeaf.take(point.depth-1).sum+numberZerosToBound
+        InterNodeBitLocation=(this.widthInternalSum(point.depth)+numberOnesTobound)*qtreeUtil.binnaryUnit
+        LeafNodeBitLocation= this.widthLeafSum(point.depth)+numberZerosToBound
+
+        //println("InterNodeBitLocation  "+InterNodeBitLocation)
+        //println("LeafNodeBitLocation "+LeafNodeBitLocation)
+
+      }else
+      {
+        InterNodeBitLocation=4
       }
 
       /********************************************/
@@ -119,45 +372,60 @@ class sbfilter() {
 
       //"and" operation to know the correct bitcode
       //this cost is constant
-        while(count<qtreeUtil.binnaryUnit)
+      while(count<qtreeUtil.binnaryUnit)
+      {
+
+        val subrectangle=GetSubRectangle(point.parentBox,count)
+
+        if((flag&binnarycode)==0) //go to the leaf node
         {
-
-          if((flag&binnarycode)==0)
-          //go to the leaf node
+          if(space.contains(subrectangle))
           {
-              //find leaf relate binary code
-              val bitvalueofleaf=binnaryopt.GetBit(LeafNodeBitLocation+leafcount,this.leaf)
 
-              if(bitvalueofleaf==1)    //if this node is true, we return true
-              {
-                  return true
-              }
+           // println("leaf location is:"+LeafNodeBitLocation)
+            val bitvalueofleaf=binnaryopt.getBit(LeafNodeBitLocation+leafcount,this.leaf)
 
-            leafcount=leafcount+1
+            if(bitvalueofleaf==0)    //if this node is true, we return true
+            {
+              //println("contain leaf is:"+subrectangle.toString)
+              falseratio+=subrectangle.area
+            }
 
-          }else
-          // go to the internal node
-          {
-              //judge which subrectangle to prop
-              val subrectangle=GetSubRectangle(point.parentBox,count)
-
-              if(IntersectionForTwoBox(subrectangle,space))
-              {
-                beginlocations.push(tmpnode(point.depth+1,InterNodeBitLocation+intercount*qtreeUtil.binnaryUnit,subrectangle))
-              }
-              //find the children node location from the binary code
-            intercount=intercount+1
           }
 
-          count=count+1
-          flag=flag<<1
+          leafcount=leafcount+1
 
-        }//go through four bit children
+        }else
+        // go to the internal node
+        {
+          //println("branch is:"+subrectangle.toString)
 
+          //judge which subrectangle to prop
+          if(subrectangle.intersects(space))
+          {
+             //println("intersect branch is:"+subrectangle.toString)
+              beginlocations.push(tmpnode(point.depth+1,InterNodeBitLocation+intercount*qtreeUtil.binnaryUnit,subrectangle))
+          }
+          //if(IntersectionForTwoBox(subrectangle,space))
+
+          intercount=intercount+1
+          //find the children node location from the binary code
+
+        }
+
+        count=count+1
+        flag=flag<<1
+
+      }//go through four bit children
+
+
+      //println("current depth "+point.depth)
+     // println("!"*50)
       currentdepth=point.depth
     }//while for dfs
 
-    booleanresult
+    (falseratio/space.area)/(1 - qtreeUtil.leafStopBound)
+
   }
 
   /**
@@ -180,13 +448,16 @@ class sbfilter() {
    * @param count 0:nw 1:ne 2:se 3:ne
    * @return
    */
-  def GetSubRectangle(box:Box, count:Int):Box={
+  def GetSubRectangle(inputbox:Box, count:Int):Box={
+
+    val midx=(inputbox.x2+inputbox.x)/2
+    val midy=(inputbox.y2+inputbox.y)/2
 
     count match{
-      case 0=> Box(box.x,box.y+(box.y2-box.y)/2,box.x+(box.x2-box.x)/2,box.y2)
-      case 1=> Box(box.x+(box.x2-box.x)/2,box.y+(box.y2-box.y)/2,box.x2,box.y2)
-      case 2=> Box(box.x+(box.x2-box.x)/2,box.y,box.x2,box.y+(box.y2-box.y)/2)
-      case 3=> Box(box.x,box.y,box.x+(box.x2-box.x)/2,box.y+(box.y2-box.y)/2)
+      case 0=> Box(inputbox.x, midy, midx, inputbox.y2)
+      case 1=> Box(midx, midy, inputbox.x2, inputbox.y2)
+      case 2=> Box(midx, inputbox.y, inputbox.x2, midy)
+      case 3=> Box(inputbox.x, inputbox.y, midx, midy)
     }
 
   }
@@ -200,12 +471,91 @@ class sbfilter() {
 
   }
 
+
+
+  /*
+  def printTree():Unit={
+
+      def printInternal()={
+
+        //this.widthInternal.foldLeft(0)((i,j)=>)
+
+        for(i<-0 to this.widthInternal.length-2)
+        {
+            binnaryopt.getBitString(this.widthInternal(i), this.widthInternal(i+1), this.internal)
+        }
+
+         binnaryopt.getBitString(this.widthInternal(this.widthInternal.length-2), this.widthInternal(this.widthInternal.length-1), this.internal)
+
+      }
+
+      def printLeaf()={
+
+        //this.widthInternal.foldLeft(0)((i,j)=>)
+        for(i<-0 to this.widthLeaf.length-2)
+        {
+           binnaryopt.getBitString(this.widthLeaf(i), this.widthLeaf(i+1), this.leaf)
+        }
+
+        binnaryopt.getBitString(this.widthLeaf(this.widthLeaf(this.widthLeaf.length-2)), this.widthLeaf(this.widthLeaf.length-1), this.leaf)
+     }
+
+    println("*"*10)
+    printInternal()
+
+    println("*"*10)
+    printLeaf()
+
+  }*/
+
   //
 
 }
 
-object sbfilter
+/**
+ * class to transfer data from the local partition to mater node
+ */
+case class dataSBF(size:Int,
+                   internal:Array[Int],
+                   leaf:Array[Int],
+                   widthInternal:ArrayBuffer[Int],
+                   widthLeaf:ArrayBuffer[Int],
+                   Internallocation:HashMap[Int, Int],
+                   Leaflocation:HashMap[Int, Int])  extends Serializable ()
+
+object SBFilter
 {
 
-  def apply(size:Int)={new sbfilter(size)}
+  def apply(size:Int)={new SBFilter(size)}
+
+  def apply(data:dataSBF):SBFilter={
+    val sbfilter=new SBFilter(data.size)
+    sbfilter.internal=data.internal
+    sbfilter.leaf=data.leaf
+    sbfilter.widthInternal=data.widthInternal
+    sbfilter.widthLeaf=data.widthLeaf
+    sbfilter.depth=data.widthInternal.size
+
+    sbfilter.widthInternalSum=new Array[Int](sbfilter.widthInternal.size)
+    sbfilter.widthInternalSum(0)=sbfilter.widthInternal(0)
+
+    for(i<- 1 to sbfilter.widthInternal.size-1)
+    {
+      sbfilter.widthInternalSum(i)= sbfilter.widthInternalSum(i-1)+sbfilter.widthInternal(i)
+    }
+
+    sbfilter.widthLeafSum=new Array[Int](sbfilter.widthLeaf.size)
+    sbfilter.widthLeafSum(0)=sbfilter.widthLeaf(0)
+
+    for(i<- 1 to sbfilter.widthLeaf.size-1)
+    {
+      sbfilter.widthLeafSum(i)= sbfilter.widthLeafSum(i-1)+sbfilter.widthLeaf(i)
+    }
+
+    sbfilter.Internallocation=data.Internallocation
+    sbfilter.Leaflocation=data.Leaflocation
+
+    sbfilter
+  }
+
 }
