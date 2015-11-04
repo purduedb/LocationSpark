@@ -1,6 +1,6 @@
 package cs.purdue.edu.spatialindex.quatree
 
-import cs.purdue.edu.spatialbloomfilter.{binnaryopt, dataSBF, qtreeUtil}
+import cs.purdue.edu.spatialbloomfilter.{dataSBFV2, binnaryopt, dataSBF, qtreeUtil}
 import cs.purdue.edu.spatialindex.rtree.Box
 
 import scala.collection.mutable.ArrayBuffer
@@ -19,6 +19,8 @@ case class QTree() {
 
   var budget = 0
   var root: Node = null
+  var numofBranch=0
+  var numofLeaf=0
 
   var currentbox: Box = null
 
@@ -43,7 +45,6 @@ case class QTree() {
     val querybox = tmpBox(15, space)
 
     insertBox(this.root, querybox)
-
   }
 
   /**
@@ -76,7 +77,7 @@ case class QTree() {
    * insert a box if the true postive happen
    * @param space
    */
-  def insertTBox(space: Box) = {
+  def insertTrueBox(space: Box) = {
 
   }
 
@@ -101,7 +102,83 @@ case class QTree() {
    */
   def getSBFilter(): dataSBF = {
 
-    val maxdatasize = 1000
+    val maxdatasize = this.numofBranch/4
+
+    //define the global int array
+    val internal = new Array[Int](this.numofBranch/4) //where 10 is the default size
+    val leaf = new Array[Int](this.numofBranch/4) //where 10 is the default size
+
+    var widthInternal = ArrayBuffer[Int]() //number of internal node for that depth
+    var widthLeaf = ArrayBuffer[Int]() //number of leaf nodes
+
+    val queue = new scala.collection.mutable.Queue[Node]
+
+    queue += this.root
+
+    var numberLeaf = 0
+    var front = 1
+    var end = queue.length
+    var depth = 1
+    var leafLocation = 0
+    var internalLocation = 0
+
+    //this is used for the bound number
+
+    while (!queue.isEmpty) {
+
+      val pnode = queue.dequeue()
+
+      pnode match {
+        case l: Leaf => {
+
+          if (l.flag) {
+            binnaryopt.setBit(leafLocation, leaf)
+          }
+          else {
+            binnaryopt.clearBit(leafLocation, leaf)
+          }
+
+          leafLocation += 1
+          numberLeaf += 1
+        }
+
+        case b: Branch =>
+          queue.enqueue(b.nw)
+          queue.enqueue(b.ne)
+          queue.enqueue(b.se)
+          queue.enqueue(b.sw)
+          setbitOfBranch(b, internalLocation, internal)
+          internalLocation += 4
+      }
+
+      front = front + 1
+
+      if (front > end) {
+        widthLeaf+=(numberLeaf)
+        widthInternal+=(end - numberLeaf)
+        depth += 1
+        front= 1
+        end = queue.size
+        numberLeaf = 0
+        //
+      }
+
+    }
+
+    println("# of leaf "+leafLocation)
+    println("# of branch "+internalLocation/4)
+    //println("# of branch v2: "+this.numofBranch)
+    dataSBF(maxdatasize, internal, leaf, widthInternal, widthLeaf)
+
+  }
+
+  /**
+   * get the binary code of the quadtree
+   * this version to store the location of the children
+   */
+  def getSBFilterV2(): dataSBFV2 = {
+
+    val maxdatasize = 3000
 
     //define the global int array
     val internal = new Array[Int](maxdatasize) //where 10 is the default size
@@ -158,9 +235,9 @@ case class QTree() {
           internalLocation += 4
           numOnesToBound+=getbitOfBranch(b)
           numZerosToBound+=4-getbitOfBranch(b)
-          //println("branch: "+b.getbox.toString)
-          //println("internal: "+internalLocation)
-         // println(binnaryopt.getBitString(0,100,internal))
+        //println("branch: "+b.getbox.toString)
+        //println("internal: "+internalLocation)
+        // println(binnaryopt.getBitString(0,100,internal))
 
       }
 
@@ -180,12 +257,9 @@ case class QTree() {
 
     println("# of leaf "+leafLocation)
     println("# of branch "+internalLocation/4)
-    //InternalHash.foreach(println)
-    //LeafHash.foreach(println)
+    println("# of branche 2v "+this.numofBranch)
 
-    //println(binnaryopt.getBitString(0,100,internal))
-    //println(binnaryopt.getBitString(0,100,leaf))
-    dataSBF(maxdatasize, internal, leaf, widthInternal, widthLeaf, InternalHash,LeafHash)
+    dataSBFV2(maxdatasize, internal, leaf, widthInternal, widthLeaf, InternalHash,LeafHash)
 
 
   }
@@ -513,12 +587,8 @@ case class QTree() {
     true
   }
 
-  /**
-   * mark this node's sub children as false
-   * @param node
-   * @param box
-   */
-  private def markleafNode(node: Node, box: Box): Boolean = {
+
+  /*private def markleafNode(node: Node, box: Box): Boolean = {
 
     if (!box.contains(node.getbox)) {
       return false
@@ -536,7 +606,7 @@ case class QTree() {
         true
     }
 
-  }
+  }*/
 
   /**
    * return the new parent
@@ -567,7 +637,7 @@ case class QTree() {
   }
 
   /**
-   * insert the box into quadtree, and mark the leaf node as false
+   * insert the box without any data into quadtree, and mark the leaf node as false
    */
   private def insertBox(parent: Node, space: tmpBox): Unit = {
 
@@ -593,8 +663,8 @@ case class QTree() {
           //condition 1: the leaf node is big enough, when it compare to input box
           if (qtreeUtil.getAreaRatio(l.getbox, this.currentbox) > qtreeUtil.leafStopBound) {
 
-            //println("spilit this leaf node: " + l.getbox.toString)
             val branch = l.spilitLeafNode
+            this.numofBranch+=1
             relinkPointer(l, branch)
             // spilit the current query box
             val spilitbox = spilitQueryBox(space, l)
@@ -610,9 +680,6 @@ case class QTree() {
             }
           } else {
             //do not spilit this bound
-            //println("stop at this leaf: "+l.getbox.toString)
-            //println("current box is: "+this.currentbox.toString)
-            //println("ratio=== "+qtreeUtil.getAreaRatio(l.getbox, this.currentbox))
           }
 
         } //else
@@ -635,6 +702,7 @@ case class QTree() {
                   val newleaf = Leaf(bchildren.getbox)
                   newleaf.flag = false
                   relinkPointer(bchildren, newleaf)
+                  this.numofBranch-=1
               }
 
             } else {
@@ -645,7 +713,6 @@ case class QTree() {
         //we need to go for subbranch searching
         if (indicator) {
           val spilitbox = spilitQueryBox(space, b)
-
           spilitbox.foreach {
             newnode => newnode match {
               case null =>

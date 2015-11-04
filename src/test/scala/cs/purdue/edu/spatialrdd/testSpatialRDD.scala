@@ -20,6 +20,8 @@ object testSpatialRDD
 
     val spark = new SparkContext(conf)
 
+    spark.textFile("xxxx")
+
     /**
      * test for building a spatialrdd
      */
