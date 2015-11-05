@@ -91,4 +91,44 @@ case class Branch(space:Box) extends Node(space){
     iter.toIterator
   }
 
+  /**
+   *find child node intersect with the query box
+   */
+  def findChildFlag():Boolean={
+
+    var ret=true
+
+    this.nw match{
+      case l:Leaf=>
+        ret=ret&&l.flag
+        if(ret==true)
+          return ret
+    }
+
+    this.ne match{
+      case l:Leaf=>
+        ret=ret&&l.flag
+        if(ret==true)
+          return ret
+    }
+
+    this.se match{
+      case l:Leaf=>
+        ret=ret&&l.flag
+        if(ret==true)
+          return ret
+    }
+
+    this.sw match{
+      case l:Leaf=>
+        ret=ret&&l.flag
+        if(ret==true)
+          return ret
+    }
+
+    ret
+
+  }
+
+
 }

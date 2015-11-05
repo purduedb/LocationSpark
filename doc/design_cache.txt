@@ -1,0 +1,19 @@
+the cache mechanism: 
+
+1. update the LRU cache as well as the index is updating. This way, we need to track all the branch with four children, and update the LRU cache frequently. like some branch do not meed the condtion, we need to remove this branch from LRU. or, one branch with four children, we need to insert this branch into the LRU. this approach is very slow, and it is 50 times slow. 
+ 
+2. update the LRU cache, once the whole inserting false box is done. this is like batch oriented. it means that we have one postprocessing step to go through the index, and find the candidate branch to merge, then, we merge those nodes. 
+
+
+paper: 
+
+1. introduce how to use the LRU mechanism for merge nodes 
+   a. LRU cache to indentify candidate branch to merge 
+   b. during the insert process, insert branch with four children into LRU, and delete branch, which fail to meet the condition, from LRU 
+   c. during the query  process, make the visited branch into the tail to LRU.  
+   d. drawback: cache missing and expensive.   
+
+2. batch based LRU for merging node
+   a. inserting process, indentify those candidates as batch oriented. we indentify candidate after the inserting process is done.  
+   b. query process, we do not modify the LRU cache. we modify  
+   c.   
