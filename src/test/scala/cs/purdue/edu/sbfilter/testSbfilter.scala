@@ -1,7 +1,7 @@
 package cs.purdue.edu.sbfilter
 
 import cs.purdue.edu.spatialbloomfilter.{SBFilter, qtreeUtil}
-import cs.purdue.edu.spatialindex.quatree.QTree
+import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree._
 import scala.util.Random._
 
@@ -25,6 +25,123 @@ object testSbfilter {
   def build(es: Seq[Entry[Int]]): RTree[Int] =
     RTree(es: _*)
 
+
+  def queryTimeofRtree(rt:RTree[Int],boxes:Iterator[Box] ):Double={
+
+    var b2=System.currentTimeMillis
+
+    var emptyslot=0
+
+    boxes.foreach{
+      box=> //println(box.toString)
+        if(rt.search(box).size==0)
+        {
+          emptyslot=emptyslot+1
+        }
+      //println(rt.search(box).size)
+    }
+    val rtreeQuerytime=(System.currentTimeMillis-b2)
+    println("Rtree based range query time: "+rtreeQuerytime +" ms")
+    println("empty slot: "+emptyslot)
+    rtreeQuerytime
+  }
+
+  def buildTimeofSBQtree( rt:RTree[Int], boxes:Iterator[Box], rtreeQuerytime:Double):SBQTree={
+
+    //val box1 = Box(1,1,100,140)
+    //val results1 = rt.search(box1).toSet
+    val qtree=new SBQTree(1000)
+
+    val b2=System.currentTimeMillis
+
+    boxes.foreach{
+      box=> //println(box.toString)
+        if(rt.search(box).size==0)
+        {
+          qtree.insertBox(box)
+        }
+      //println(rt.search(box).size)
+    }
+
+    println("build SBQtree  time: "+(System.currentTimeMillis-b2-rtreeQuerytime) +" ms")
+
+    qtree
+  }
+
+  def queryTimeOfSBQtree(rt:RTree[Int],boxes:Iterator[Box], qtree:SBQTree)=
+  {
+    //qtree.printTreeStructure()
+   // println("merge all true branch "+qtree.mergeBranchWIthAllTrueLeafNode())
+
+    var b2=System.currentTimeMillis
+    var count=0
+    boxes.foreach{
+      box=> //println(box.toString)
+        if(qtree.queryBox(box))
+        {
+          rt.search(box)
+          count+=1
+        }
+      //println(rt.search(box).size)
+    }
+
+    println("rtree with naive-sbqtree time: "+(System.currentTimeMillis-b2) +" ms")
+    println("empty slot: "+count)
+  }
+
+  def queryTimeOfSBfilter(rt:RTree[Int],boxes:Iterator[Box], qtree:SBQTree): Unit =
+  {
+
+    println("merge all true branch "+qtree.mergeBranchWIthAllTrueLeafNode())
+    //qtree.printTreeStructure()
+
+    val sbfilter=SBFilter(qtree.getSBFilter())
+
+    val b2=System.currentTimeMillis
+    var count=0
+    boxes.foreach{
+      box=> //println(box.toString)
+        //if(sbfilter.searchRectangleWithP(box)>0.7)
+        if(sbfilter.searchRectangle(box))
+        {
+          rt.search(box)
+          count+=1
+        }
+    }
+    println("rtree with binnary sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
+    println("empty slot: "+count)
+  }
+
+  def trainTimeSBFilter(datapoint:Iterator[Geom]):SBFilter=
+  {
+    val b2=System.currentTimeMillis
+    val qtree=new SBQTree(1000)
+    val sbdata=qtree.trainSBfilter(datapoint)
+
+    qtree.printTreeStructure()
+
+    println("train the sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
+    SBFilter(sbdata)
+  }
+
+  def queryTimeofTrainSBfilter(rt:RTree[Int],boxes:Iterator[Box], sbfilter:SBFilter)={
+
+    val b2=System.currentTimeMillis
+    var count=0
+    boxes.foreach{
+      box=> //println(box.toString)
+       // if(sbfilter.searchRectangleWithP(box)>0.7)
+        if(sbfilter.searchRectangle(box))
+        {
+          rt.search(box)
+          count+=1
+        }
+    }
+    println("rtree with trained binnary sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
+    println("empty slot: "+count)
+
+  }
+
   def main(args: Array[String]): Unit = {
 
     val numofpoints=20000
@@ -47,84 +164,32 @@ object testSbfilter {
     rt=rt.insertAll(es3)
     println("build rtree index time: "+(System.currentTimeMillis-b1) +" ms")
 
-    var b2=System.currentTimeMillis
+    //get the rtree baseline query time
+    val rtreequerytime=queryTimeofRtree(rt,boxes.toIterator)
+    println("*"*100)
 
-    var emptyslot=0
+    //get the SBQtree build time
+    val sbqtree=buildTimeofSBQtree(rt,boxes.toIterator,rtreequerytime)
+    println("*"*100)
 
-    boxes.foreach{
-      box=> //println(box.toString)
-        if(rt.search(box).size==0)
-        {
-          emptyslot=emptyslot+1
-        }
-      //println(rt.search(box).size)
-    }
-    val rtreeQuerytime=(System.currentTimeMillis-b2)
-    println("Rtree based range query time: "+rtreeQuerytime +" ms")
-    println("empty slot: "+emptyslot)
+    //get the query time by SBQtree speedup
+    queryTimeOfSBQtree(rt,boxes.toIterator,sbqtree)
+    println("*"*100)
 
-    //val box1 = Box(1,1,100,140)
-    //val results1 = rt.search(box1).toSet
-    val qtree=new QTree(1000)
+    //get the query time by SBFilter Speedup
+    queryTimeOfSBfilter(rt,boxes.toIterator,sbqtree)
+    println("*"*100)
 
-    b2=System.currentTimeMillis
-    boxes.foreach{
-      box=> //println(box.toString)
-         if(rt.search(box).size==0)
-         {
-           qtree.insertBox(box)
-         }
-         //println(rt.search(box).size)
-    }
-    //println("number of output tuples: "+results1.size)
-    val sbfilter=SBFilter(qtree.getSBFilter())
-    println("build SBfilter time: "+(System.currentTimeMillis-b2-rtreeQuerytime) +" ms")
+    /*
+    //train the sbfilter time
+    val inputdata=(es.++:(es2).++:(es3)).map{entry=>entry.geom}.toIterator
+    val sbfilter=trainTimeSBFilter(inputdata)
+    println("*"*100)
 
-    //qtree.printTreeStructure()
-
-    b2=System.currentTimeMillis
-
-    boxes.foreach{
-      box=> //println(box.toString)
-        if(qtree.queryBox(box))
-        {
-          rt.search(box)
-        }
-      //println(rt.search(box).size)
-    }
-
-    println("rtree with naive-qtree time: "+(System.currentTimeMillis-b2) +" ms")
-
-    b2=System.currentTimeMillis
-
-    boxes.foreach{
-      box=> //println(box.toString)
-        if(sbfilter.searchRectangleWithP(box)>0.7)
-        {
-          rt.search(box)
-        }
-      //println(rt.search(box).size)
-    }
-
-    println("rtree with binnary sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
-
-
-    /*b2=System.currentTimeMillis
-
-    boxes.foreach{
-      box=> //println(box.toString)
-        if(sbfilter.searchRectangleV2(box))
-        {
-          rt.search(box)
-        }
-      //println(rt.search(box).size)
-    }
-
-    println("rtree with speed sbfilter V2 time: "+(System.currentTimeMillis-b2) +" ms")
+    //query over the trained sbfilter time
+    queryTimeofTrainSBfilter(rt,boxes.toIterator,sbfilter)
+    println("*"*100)
     */
-
-
-
 
   }
 }

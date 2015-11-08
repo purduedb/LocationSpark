@@ -1,7 +1,7 @@
 package cs.purdue.edu.spatialindex
 
 import cs.purdue.edu.spatialbloomfilter.SBFilter
-import cs.purdue.edu.spatialindex.quatree.QTree
+import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree.Box
 
 /**
@@ -21,27 +21,34 @@ object testQtree {
 
     val qtree=QTree(boxs.toIterator)*/
 
+    val quertbox4=Box(800,80,900,100)
+
     val quertbox6= Box(2,2,200,200)
 
-    val quertbox5=Box(220,220,400,433)
+    val quertbox5=Box(250,250,700,733)
 
-    val qtree=QTree(quertbox6)
+    val qtree=SBQTree(quertbox6)
 
     qtree.insertBox(quertbox5)
+    qtree.insertBox(quertbox4)
 
     qtree.printTreeStructure()
 
-    val querybox=Box(120,120,390,390)
+    val querybox=Box(220,220,390,390)
 
-    println(qtree.queryBox(querybox))
+   // println(qtree.queryBox(querybox))
 
     println(qtree.queryBoxWithP(querybox))
 
     val sbfilter=SBFilter(qtree.getSBFilter())
 
-    println(sbfilter.searchRectangle(querybox))
+   // println(sbfilter.searchRectangle(querybox))
 
-    println(sbfilter.searchRectangleWithP(querybox))
+   println(sbfilter.searchRectangleWithP(querybox))
+
+    //println(querybox.area/quertbox5.area)
+
+    //println(querybox.intersectionarea(quertbox5)/querybox.area)
 
   }
 

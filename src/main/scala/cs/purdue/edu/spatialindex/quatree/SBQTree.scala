@@ -1,7 +1,7 @@
 package cs.purdue.edu.spatialindex.quatree
 
 import cs.purdue.edu.spatialbloomfilter.{dataSBFV2, binnaryopt, dataSBF, qtreeUtil}
-import cs.purdue.edu.spatialindex.rtree.Box
+import cs.purdue.edu.spatialindex.rtree.{Geom, Box}
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
@@ -16,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
  * the spilit leaf box order is NW,NE,SE,SW
  */
 
-case class QTree() {
+case class SBQTree() {
 
   var budget = 0
   var root: Node = null
@@ -35,6 +35,96 @@ case class QTree() {
   def this(root: Node) {
     this(1000)
     this.root = root
+  }
+
+
+  /**
+   * train the SBFilter from the data,this process work as inserting points into quadtree, but i never record
+   * the data itself, it only mark the leaf node with data as leaf, and other leaf as false
+   * @param itr
+   */
+  def trainSBfilter(itr: Iterator[Geom]):dataSBF=
+  {
+      itr.foreach{p=>this.insertPoint(p)}
+      this.getSBFilter()
+  }
+
+  /**
+   * this function is used for training the SBFilter,
+   * it never store the data inside the leaf node
+   * @param point
+   */
+  protected def insertPoint(point:Geom): Unit =
+  {
+    insertPoint(this.root,point)
+  }
+
+  /**
+   * this function is used for training the SBQtree
+   * @param point
+   */
+  protected def insertPoint(parent: Node, point:Geom): Unit =
+  {
+    if (!parent.getbox.contains(point)) {
+      return
+    }
+
+    parent match {
+      case l: Leaf => {
+        if (l.count < qtreeUtil.leafbound) {
+          l.flag = true
+          l.count+=1
+          return
+
+        } else {
+          //split this leaf node
+          val branch = l.spilitLeafNode
+          this.numofBranch += 1
+          this.numofLeaf += 3
+          relinkPointer(l, branch)
+
+          //mark branch's leaf node as false
+          markChildrenAsFalse(branch)
+
+          branch.findChildNodes(point).foreach {
+            children =>
+              insertPoint(children, point)
+          }
+
+        }
+      }
+
+      case b: Branch => {
+        //println("go through this branch node: " + b.getbox.toString)
+        b.findChildNodes(point).foreach {
+          children=>
+            insertPoint(children,point)
+        }
+
+      }
+
+    }
+
+  }
+
+  private def markChildrenAsFalse(branch:Branch)={
+
+    branch.nw match {
+      case l:Leaf => l.flag=false
+    }
+
+    branch.ne match {
+      case l:Leaf => l.flag=false
+    }
+
+    branch.sw match {
+      case l:Leaf => l.flag=false
+    }
+
+    branch.se match {
+      case l:Leaf => l.flag=false
+    }
+
   }
 
   /**
@@ -170,7 +260,9 @@ case class QTree() {
     //find one leaf node false, return false
     val sum = Array[Double](1)
     queryBoxWithP(this.root, qspace, sum)
-    (sum(0) / qspace.area) / (1 - qtreeUtil.leafStopBound)
+    println((sum(0)))
+    println(qspace.area)
+    (sum(0) / qspace.area)
 
   }
 
@@ -255,6 +347,7 @@ case class QTree() {
     println("# of leaf "+leafLocation)
     println("# of branch "+internalLocation/4)
     //println("# of candidate to merge: "+this.lrucache.getNumnode())
+    println("leaf node: "+binnaryopt.getBitString(0,200,leaf))
     dataSBF(maxdatasize, internal, leaf, widthInternal, widthLeaf)
 
   }
@@ -462,18 +555,31 @@ case class QTree() {
 
     node match {
       case l: Leaf =>
-        if (qspace.intersects(l.getbox)&&l.flag==true)
+
+        if (qspace.intersects(l.getbox))
         {
-          l.flag
-        }else if(l.getbox.contains(qspace)&&l.flag==false)
-        {
+          println("intersect leaf is: "+l.getbox+" l.label "+l.flag)
+
+          if(l.flag==true)
+          {
+            return true
+          }
+          else if(l.getbox.contains(qspace)&&l.flag==false)
+          {
+            false
+          }
+          //we need to procede
           false
+
         }else
         {
-          true
+          false
         }
 
       case b: Branch => {
+
+        println("intersect branch is:"+b.getbox)
+
         b.findChildNodes(qspace).foreach {
           node =>
             if (queryBox(node, qspace) == true) {
@@ -491,14 +597,24 @@ case class QTree() {
   private def queryBoxWithP(node: Node, qspace: Box, sum: Array[Double]): Unit = {
     node match {
       case l: Leaf =>
-        //println("leaf node: "+l.getbox.toBox+" "+l.flag+" ")
+        println("*"*50)
+
         if (qspace.contains(l.getbox) && l.flag == false)
         {
-          //println("leaf is:"+l.getbox)
+          println("contain leaf is:"+l.getbox)
+          println("contain leaf area is: "+  l.getbox.area)
           sum(0) = sum(0) + l.getbox.area
+        }else if (!qspace.contains(l.getbox)&&qspace.intersects(l.getbox) && l.flag == false)
+        {
+          println("l leaf is "+ l.getbox)
+          println("intersect area is: "+ qspace.intersectionarea(l.getbox))
+          sum(0) = sum(0) + qspace.intersectionarea(l.getbox)
         }
 
       case b: Branch => {
+
+          println("intersect branch is"+ b.getbox)
+
         b.findChildNodes(qspace).foreach {
           node =>
             queryBoxWithP(node, qspace, sum)
@@ -810,14 +926,14 @@ case class QTree() {
 
 }
 
-object QTree {
+object SBQTree {
 
   /**
    * build a QTree from a query box
    * @param querybox
    */
-  def apply(querybox: Box): QTree = {
-    val qtree = QTree.empty
+  def apply(querybox: Box): SBQTree = {
+    val qtree = SBQTree.empty
     qtree.insertBox(querybox)
     qtree
   }
@@ -825,8 +941,8 @@ object QTree {
   /**
    * Construct an QTree from a sequence of entries.
    */
-  def apply(itr: Iterator[Box]): QTree = {
-    val qtree = QTree.empty
+  def apply(itr: Iterator[Box]): SBQTree = {
+    val qtree = SBQTree.empty
     itr.foreach { box => qtree.insertBox(box) }
     qtree
   }
@@ -834,10 +950,10 @@ object QTree {
   /**
    * Construct an empty QTree.
    */
-  def empty: QTree = {
+  def empty: SBQTree = {
     val leaf = Leaf(qtreeUtil.wholespace)
     val branch = leaf.spilitLeafNode
-    new QTree(branch)
+    new SBQTree(branch)
   }
 
 }
@@ -848,7 +964,7 @@ object QTree {
  * (2) propose the batch and clock based approach
  * (3)
  */
-class QTreeCache() extends QTree
+class QTreeCache() extends SBQTree
 {
 
   def this(size: Int) {

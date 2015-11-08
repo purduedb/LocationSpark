@@ -1,7 +1,7 @@
 package cs.purdue.edu.sbfilter
 
 import cs.purdue.edu.spatialbloomfilter.SBFilter
-import cs.purdue.edu.spatialindex.quatree.{QTreeCache, QTree}
+import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree.{Box, RTree, Entry, Point}
 
 import scala.util.Random._
@@ -68,7 +68,7 @@ object testCacheLRU {
     //val results1 = rt.search(box1).toSet
 
     b2=System.currentTimeMillis
-    val qtree=new QTree(1000)
+    val qtree=new SBQTree(1000)
     boxes.foreach{
       box=> //println(box.toString)
         if(rt.search(box).size==0)

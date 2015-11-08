@@ -1,6 +1,6 @@
 package cs.purdue.edu.spatialindex.quatree
 
-import cs.purdue.edu.spatialindex.rtree.Box
+import cs.purdue.edu.spatialindex.rtree.{Geom, Box}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -17,6 +17,7 @@ abstract class Node(space:Box)
 case class Leaf(space:Box) extends Node(space) {
 
   var flag=true
+  var count=0
 
   /**
    * spilit a leaf node, and return branch with leaf node
@@ -60,10 +61,11 @@ case class Branch(space:Box) extends Node(space){
   var bcode:Int=0
   var vcount:Int=0
 
+
   /**
    *find child node intersect with the query box
    */
-  def findChildNodes(querybox:Box):Iterator[Node]={
+  def findChildNodes(querybox:Geom):Iterator[Node]={
 
     val iter=new ArrayBuffer[Node]
 
@@ -78,14 +80,14 @@ case class Branch(space:Box) extends Node(space){
       iter.+=(this.ne)
     }
 
-    if(this.sw.getbox.intersects(querybox))
-    {
-      iter.+=(this.sw)
-    }
-
     if(this.se.getbox.intersects(querybox))
     {
       iter.+=(this.se)
+    }
+
+    if(this.sw.getbox.intersects(querybox))
+    {
+      iter.+=(this.sw)
     }
 
     iter.toIterator

@@ -166,6 +166,17 @@ case class Box(x: Float, y: Float, x2: Float, y2: Float) extends Geom {
   override def toBox: Box = this
 
   override def toString:String={x+","+y+"; "+x2+","+y2}
+
+  def intersectionarea(other:Box):Double=
+  {
+    Math.abs(
+      Math.max(0, (Math.min(this.y2,other.y2)-Math.max(this.y,other.y)))
+    *
+      Math.max(0, (Math.min(this.x2,other.x2)-Math.max(this.x,other.x)))
+    )
+
+  }
+
 }
 
 object Box {

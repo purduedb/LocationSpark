@@ -167,10 +167,15 @@ object binnaryopt {
 
     var count=0
 
+    println("data is: ")
+    println(binnaryopt.getBitString(begin,end,data))
+
+    println("pos2 "+pos2)
+
     //those bit belong to only one integer
     if(i==j)
     {
-      return  bitcount((data(i)>>pos1)<<(32-pos2+pos1))
+      return  bitcount((data(i)>>>pos1)<<(32-pos2+pos1))
     }
 
     //wtf
@@ -178,15 +183,23 @@ object binnaryopt {
     {
       if(m==i)
       {
-        count=count+bitcount(data(m)>>pos1)
+        count=count+bitcount(data(m)>>>pos1)
+        println("i  count=count+bitcount(data(m)>>pos1)"+binnaryopt.getBitString(data(m)>>>pos1))
       }else if(m==j)
       {
-        count=count+bitcount(data(m)<<(32-pos2))
+        if(pos2!=0)
+        {
+          println("j before"+ binnaryopt.getBitString(data(m)))
+          println("j "+binnaryopt.getBitString(data(m)<<(32-pos2)))
+          count=count+bitcount(data(m)<<(32-pos2))
+        }
+
       }else
       {
         count=count+bitcount(data(m))
       }
 
+      println("m: "+m+" "+ count)
     }
 
     count
@@ -254,8 +267,10 @@ object binnaryopt {
 
 object qtreeUtil{
 
-  final def rangx=100000
-  final def rangy=100000
+  final def rangx=200000
+  final def rangy=200000
+
+  final def leafbound=1000
 
   def leafcount=100
   final def binnaryUnit=4
