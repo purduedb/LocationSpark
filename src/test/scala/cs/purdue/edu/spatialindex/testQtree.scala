@@ -34,17 +34,18 @@ object testQtree {
 
     qtree.printTreeStructure()
 
-    val querybox=Box(220,220,390,390)
+    val querybox=Box(850,90,860,95)
+    println(qtree.queryBox(querybox))
 
-   // println(qtree.queryBox(querybox))
-
-    println(qtree.queryBoxWithP(querybox))
-
+    println("*"*100)
     val sbfilter=SBFilter(qtree.getSBFilter())
+    println(sbfilter.searchRectangle(querybox))
 
-   // println(sbfilter.searchRectangle(querybox))
+    println("*"*100)
+    val sbfilterv2=SBFilter(qtree.getSBFilterV2())
+    println(sbfilterv2.searchRectangleV2(querybox))
 
-   println(sbfilter.searchRectangleWithP(querybox))
+   // println(sbfilter.searchRectangleWithP(querybox))
 
     //println(querybox.area/quertbox5.area)
 

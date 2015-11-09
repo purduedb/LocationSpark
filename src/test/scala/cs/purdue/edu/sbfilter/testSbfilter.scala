@@ -3,6 +3,7 @@ package cs.purdue.edu.sbfilter
 import cs.purdue.edu.spatialbloomfilter.{SBFilter, qtreeUtil}
 import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree._
+import scala.collection.mutable.ArrayBuffer
 import scala.util.Random._
 
 /**
@@ -32,7 +33,25 @@ object testSbfilter {
 
     var emptyslot=0
 
+    val emptyresultBoxs=new ArrayBuffer[Box]()
+
     boxes.foreach{
+      box=> //println(box.toString)
+        if(rt.search(box).size==0)
+        {
+          emptyslot=emptyslot+1
+          emptyresultBoxs.+=(box)
+        }
+      //println(rt.search(box).size)
+    }
+    val rtreeQuerytime=(System.currentTimeMillis-b2)
+    println("Rtree based range query time: "+rtreeQuerytime +" ms")
+    println("# of empty slot: "+emptyslot)
+
+
+     b2=System.currentTimeMillis
+    emptyslot=0
+    emptyresultBoxs.foreach{
       box=> //println(box.toString)
         if(rt.search(box).size==0)
         {
@@ -40,11 +59,19 @@ object testSbfilter {
         }
       //println(rt.search(box).size)
     }
-    val rtreeQuerytime=(System.currentTimeMillis-b2)
-    println("Rtree based range query time: "+rtreeQuerytime +" ms")
-    println("empty slot: "+emptyslot)
+
+    println("Rtree query empty box time: "+(System.currentTimeMillis-b2) +" ms")
+    println("# of empty slot: "+emptyslot)
+
     rtreeQuerytime
   }
+
+
+  /*def learnFromKNN(rt:RTree[Int],datapoint:Iterator[Geom]) :SBQTree={
+
+
+  }*/
+
 
   def buildTimeofSBQtree( rt:RTree[Int], boxes:Iterator[Box], rtreeQuerytime:Double):SBQTree={
 
@@ -77,9 +104,10 @@ object testSbfilter {
     var count=0
     boxes.foreach{
       box=> //println(box.toString)
-        if(qtree.queryBox(box))
+        if(qtree.queryBox(box)==false)
+        //if(qtree.queryBoxWithP(box)<0.2)
         {
-          rt.search(box)
+          //rt.search(box)
           count+=1
         }
       //println(rt.search(box).size)
@@ -101,10 +129,10 @@ object testSbfilter {
     var count=0
     boxes.foreach{
       box=> //println(box.toString)
-        //if(sbfilter.searchRectangleWithP(box)>0.7)
-        if(sbfilter.searchRectangle(box))
+        //if(sbfilter.searchRectangleWithP(box)<0.2)
+        if(sbfilter.searchRectangle(box)==false)
         {
-          rt.search(box)
+          //rt.search(box)
           count+=1
         }
     }
@@ -112,17 +140,70 @@ object testSbfilter {
     println("empty slot: "+count)
   }
 
+  def queryTimeOfSBfilterV2(rt:RTree[Int],boxes:Iterator[Box], qtree:SBQTree): Unit =
+  {
+
+    println("merge all true branch "+qtree.mergeBranchWIthAllTrueLeafNode())
+    //qtree.printTreeStructure()
+
+    val sbfilter=SBFilter(qtree.getSBFilterV2())
+
+    val b2=System.currentTimeMillis
+    var count=0
+    boxes.foreach{
+      box=> //println(box.toString)
+        //if(sbfilter.searchRectangleWithP(box)<0.2)
+        //if(!sbfilter.searchRectangleWithPV2(box,0.9))
+        if(sbfilter.searchRectangleV2(box)==false)
+        {
+          //rt.search(box)
+          count+=1
+        }
+    }
+    println("binnary sbfilterv2 query time: "+(System.currentTimeMillis-b2) +" ms")
+    println("empty slot: "+count)
+  }
+
   def trainTimeSBFilter(datapoint:Iterator[Geom]):SBFilter=
   {
     val b2=System.currentTimeMillis
     val qtree=new SBQTree(1000)
-    val sbdata=qtree.trainSBfilter(datapoint)
+    qtree.trainSBfilter(datapoint)
 
-    qtree.printTreeStructure()
+    //qtree.printTreeStructure()
 
     println("train the sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
-    SBFilter(sbdata)
+    SBFilter(qtree.getSBFilter())
+
   }
+
+  def updateSBFilter(datapoint:Iterator[Geom],boxes:Iterator[Box],rt:RTree[Int]):SBFilter=
+  {
+    var b2=System.currentTimeMillis
+    val qtree=new SBQTree(1000)
+    qtree.trainSBfilter(datapoint)
+
+    //qtree.printTreeStructure()
+    println("train the sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
+
+    b2=System.currentTimeMillis
+
+    boxes.foreach{
+      box=> //println(box.toString)
+        if(rt.search(box).size==0)
+        {
+          qtree.insertBox(box)
+        }
+      //println(rt.search(box).size)
+    }
+    println("update the sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
+
+    val sbdata=qtree.getSBFilter()
+
+    SBFilter(sbdata)
+
+  }
+
 
   def queryTimeofTrainSBfilter(rt:RTree[Int],boxes:Iterator[Box], sbfilter:SBFilter)={
 
@@ -130,7 +211,7 @@ object testSbfilter {
     var count=0
     boxes.foreach{
       box=> //println(box.toString)
-       // if(sbfilter.searchRectangleWithP(box)>0.7)
+       //if(sbfilter.searchRectangleWithP(box)<0.2)
         if(sbfilter.searchRectangle(box))
         {
           rt.search(box)
@@ -138,22 +219,25 @@ object testSbfilter {
         }
     }
     println("rtree with trained binnary sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
-    println("empty slot: "+count)
+    println("not empty slot: "+count)
 
   }
 
   def main(args: Array[String]): Unit = {
 
-    val numofpoints=20000
-    val numofqueries=10000
+    val numofpoints=200000
+    val numofqueries=100000
 
     val es = (1 to numofpoints).map(n => Entry(gaussianPoint(100,100,400,500), n))
-    val es2 = (1 to numofpoints).map(n => Entry(gaussianPoint(600,600,2000,2000), n))
-    val es3 = (1 to numofpoints).map(n => Entry(gaussianPoint(1500,1500,3000,5000), n))
+    val es2 = (1 to numofpoints).map(n => Entry(gaussianPoint(300,300,1000,1000), n))
+    val es3 = (1 to numofpoints).map(n => Entry(gaussianPoint(500,700,3000,5000), n))
+    //val es4 = (1 to numofpoints).map(n => Entry(gaussianPoint(600,1300,3000,5000), n))
+    //val es5 = (1 to numofpoints).map(n => Entry(gaussianPoint(1500,2300,3000,3000), n))
+    //val es6 = (1 to numofpoints).map(n => Entry(gaussianPoint(200,300,800,800), n))
 
     val boxes = (1 to numofqueries).map{
       n =>
-      val p1=uniformPoint(100,10, 1000,3000)
+      val p1=uniformPoint(100,10, 600,200)
       val p2=gaussianPoint(0,0,200,200)
       Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
     }
@@ -162,6 +246,9 @@ object testSbfilter {
     var rt = build(es)
     rt=rt.insertAll(es2)
     rt=rt.insertAll(es3)
+
+
+    //rt=rt.insertAll(es6)
     println("build rtree index time: "+(System.currentTimeMillis-b1) +" ms")
 
     //get the rtree baseline query time
@@ -180,6 +267,10 @@ object testSbfilter {
     queryTimeOfSBfilter(rt,boxes.toIterator,sbqtree)
     println("*"*100)
 
+    queryTimeOfSBfilterV2(rt,boxes.toIterator,sbqtree)
+    println("*"*100)
+
+
     /*
     //train the sbfilter time
     val inputdata=(es.++:(es2).++:(es3)).map{entry=>entry.geom}.toIterator
@@ -188,6 +279,11 @@ object testSbfilter {
 
     //query over the trained sbfilter time
     queryTimeofTrainSBfilter(rt,boxes.toIterator,sbfilter)
+    println("*"*100)
+
+    val updatesbfliter=updateSBFilter(inputdata,boxes.toIterator,rt)
+
+    queryTimeofTrainSBfilter(rt,boxes.toIterator,updatesbfliter)
     println("*"*100)
     */
 

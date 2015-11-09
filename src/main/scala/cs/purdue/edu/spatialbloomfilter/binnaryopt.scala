@@ -167,10 +167,9 @@ object binnaryopt {
 
     var count=0
 
-    println("data is: ")
+    /*println("data is: ")
     println(binnaryopt.getBitString(begin,end,data))
-
-    println("pos2 "+pos2)
+    println("pos2 "+pos2)*/
 
     //those bit belong to only one integer
     if(i==j)
@@ -184,13 +183,13 @@ object binnaryopt {
       if(m==i)
       {
         count=count+bitcount(data(m)>>>pos1)
-        println("i  count=count+bitcount(data(m)>>pos1)"+binnaryopt.getBitString(data(m)>>>pos1))
+        //println("i  count=count+bitcount(data(m)>>pos1)"+binnaryopt.getBitString(data(m)>>>pos1))
       }else if(m==j)
       {
         if(pos2!=0)
         {
-          println("j before"+ binnaryopt.getBitString(data(m)))
-          println("j "+binnaryopt.getBitString(data(m)<<(32-pos2)))
+          //println("j before"+ binnaryopt.getBitString(data(m)))
+          //println("j "+binnaryopt.getBitString(data(m)<<(32-pos2)))
           count=count+bitcount(data(m)<<(32-pos2))
         }
 
@@ -199,7 +198,7 @@ object binnaryopt {
         count=count+bitcount(data(m))
       }
 
-      println("m: "+m+" "+ count)
+      //println("m: "+m+" "+ count)
     }
 
     count
@@ -267,17 +266,18 @@ object binnaryopt {
 
 object qtreeUtil{
 
-  final def rangx=200000
-  final def rangy=200000
+  final def rangx=10000
+  final def rangy=10000
 
-  final def leafbound=1000
+  final def leafbound=50
 
   def leafcount=100
+
   final def binnaryUnit=4
   final def binnaryMax=16
 
   //this bound is used for coalign testing between two lines
-  final def errorbound=0.05
+  final def errorbound=0.1
 
   //this bound is used to stop spilit the current node
   final def leafStopBound=0.1

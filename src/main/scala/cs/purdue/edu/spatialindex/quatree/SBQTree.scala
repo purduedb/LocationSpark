@@ -43,10 +43,10 @@ case class SBQTree() {
    * the data itself, it only mark the leaf node with data as leaf, and other leaf as false
    * @param itr
    */
-  def trainSBfilter(itr: Iterator[Geom]):dataSBF=
+  def trainSBfilter(itr: Iterator[Geom])=
   {
       itr.foreach{p=>this.insertPoint(p)}
-      this.getSBFilter()
+      //this.getSBFilter()
   }
 
   /**
@@ -260,8 +260,8 @@ case class SBQTree() {
     //find one leaf node false, return false
     val sum = Array[Double](1)
     queryBoxWithP(this.root, qspace, sum)
-    println((sum(0)))
-    println(qspace.area)
+    //println((sum(0)))
+   // println(qspace.area)
     (sum(0) / qspace.area)
 
   }
@@ -301,6 +301,7 @@ case class SBQTree() {
     var leafLocation = 0
     var internalLocation = 0
 
+    var falseleaf=0
     //this is used for the bound number
 
     while (!queue.isEmpty) {
@@ -315,6 +316,7 @@ case class SBQTree() {
           }
           else {
             binnaryopt.clearBit(leafLocation, leaf)
+            falseleaf+=1
           }
 
           leafLocation += 1
@@ -345,9 +347,10 @@ case class SBQTree() {
     }
 
     println("# of leaf "+leafLocation)
+    println("# of false leaf "+falseleaf)
     println("# of branch "+internalLocation/4)
     //println("# of candidate to merge: "+this.lrucache.getNumnode())
-    println("leaf node: "+binnaryopt.getBitString(0,200,leaf))
+    //println("leaf node: "+binnaryopt.getBitString(0,200,leaf))
     dataSBF(maxdatasize, internal, leaf, widthInternal, widthLeaf)
 
   }
@@ -358,7 +361,7 @@ case class SBQTree() {
    */
   def getSBFilterV2(): dataSBFV2 = {
 
-    val maxdatasize = 3000
+    val maxdatasize = this.numofBranch/4
 
     //define the global int array
     val internal = new Array[Int](maxdatasize) //where 10 is the default size
@@ -379,11 +382,12 @@ case class SBQTree() {
     var internalLocation = 0
 
     //this is used for the bound number
-    var numOnesToBound=0
+    var numOnesToBound=1
     var numZerosToBound=0
 
     val InternalHash = scala.collection.mutable.HashMap.empty[Int,Int]
     val LeafHash = scala.collection.mutable.HashMap.empty[Int,Int]
+    var falseleaf=0
 
     while (!queue.isEmpty) {
 
@@ -397,6 +401,7 @@ case class SBQTree() {
           }
           else {
             binnaryopt.clearBit(leafLocation, leaf)
+            falseleaf+=1
           }
 
           leafLocation += 1
@@ -409,12 +414,17 @@ case class SBQTree() {
           queue.enqueue(b.se)
           queue.enqueue(b.sw)
           setbitOfBranch(b, internalLocation, internal)
-          InternalHash.+=(internalLocation->numOnesToBound*qtreeUtil.binnaryUnit)
-          LeafHash.+=(internalLocation->numZerosToBound)
 
-          internalLocation += 4
+          {
+            InternalHash.+=(internalLocation->numOnesToBound*qtreeUtil.binnaryUnit)
+            LeafHash.+=(internalLocation->numZerosToBound)
+          }
+
           numOnesToBound+=getbitOfBranch(b)
           numZerosToBound+=4-getbitOfBranch(b)
+
+          internalLocation += 4
+
         //println("branch: "+b.getbox.toString)
         //println("internal: "+internalLocation)
         // println(binnaryopt.getBitString(0,100,internal))
@@ -436,11 +446,11 @@ case class SBQTree() {
     }
 
     println("# of leaf "+leafLocation)
+    println("# of false leaf "+falseleaf)
     println("# of branch "+internalLocation/4)
-    println("# of branche 2v "+this.numofBranch)
+   // InternalHash.foreach(println)
 
     dataSBFV2(maxdatasize, internal, leaf, widthInternal, widthLeaf, InternalHash,LeafHash)
-
 
   }
 
@@ -558,7 +568,7 @@ case class SBQTree() {
 
         if (qspace.intersects(l.getbox))
         {
-          println("intersect leaf is: "+l.getbox+" l.label "+l.flag)
+          //println("intersect leaf is: "+l.getbox+" l.label "+l.flag)
 
           if(l.flag==true)
           {
@@ -578,7 +588,7 @@ case class SBQTree() {
 
       case b: Branch => {
 
-        println("intersect branch is:"+b.getbox)
+        //println("intersect branch is:"+b.getbox)
 
         b.findChildNodes(qspace).foreach {
           node =>
@@ -597,23 +607,23 @@ case class SBQTree() {
   private def queryBoxWithP(node: Node, qspace: Box, sum: Array[Double]): Unit = {
     node match {
       case l: Leaf =>
-        println("*"*50)
+        //println("*"*50)
 
         if (qspace.contains(l.getbox) && l.flag == false)
         {
-          println("contain leaf is:"+l.getbox)
-          println("contain leaf area is: "+  l.getbox.area)
+          //println("contain leaf is:"+l.getbox)
+          //println("contain leaf area is: "+  l.getbox.area)
           sum(0) = sum(0) + l.getbox.area
         }else if (!qspace.contains(l.getbox)&&qspace.intersects(l.getbox) && l.flag == false)
         {
-          println("l leaf is "+ l.getbox)
-          println("intersect area is: "+ qspace.intersectionarea(l.getbox))
+         // println("l leaf is "+ l.getbox)
+         // println("intersect area is: "+ qspace.intersectionarea(l.getbox))
           sum(0) = sum(0) + qspace.intersectionarea(l.getbox)
         }
 
       case b: Branch => {
 
-          println("intersect branch is"+ b.getbox)
+          //println("intersect branch is"+ b.getbox)
 
         b.findChildNodes(qspace).foreach {
           node =>
