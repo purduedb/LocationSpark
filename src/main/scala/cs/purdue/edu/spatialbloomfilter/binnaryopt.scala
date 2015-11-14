@@ -1,6 +1,9 @@
 package cs.purdue.edu.spatialbloomfilter
 
-import cs.purdue.edu.spatialindex.rtree.Box
+import cs.purdue.edu.spatialindex.rtree.{Point, Box}
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution
+
+import scala.util.Random._
 
 
 /**
@@ -269,7 +272,7 @@ object qtreeUtil{
   final def rangx=10000
   final def rangy=10000
 
-  final def leafbound=50
+  final def leafbound=10
 
   def leafcount=100
 
@@ -280,9 +283,9 @@ object qtreeUtil{
   final def errorbound=0.1
 
   //this bound is used to stop spilit the current node
-  final def leafStopBound=0.1
+  final def leafStopBound=0.2
 
-  def wholespace=Box(0,0,rangx,rangy)
+  def wholespace=Box(-rangx/2,-rangy/2,rangx/2,rangy/2)
 
   def less(Key1:Float, Key2:Float):Boolean=
   {
@@ -303,6 +306,37 @@ object qtreeUtil{
   {
     small.area/big.area
   }
+
+  def getGaussianPoint(mean:Array[Double]): Point =
+  {
+    val cov=Array.ofDim[Double](2,2)
+
+    cov(0)(0)=1000
+    cov(0)(1)=1.5
+    cov(1)(0)=1.5
+    cov(1)(1)=3000
+
+    val generator=new MultivariateNormalDistribution(mean,cov)
+    val data=generator.sample()
+
+    Point(data(0).toFloat, data(1).toFloat)
+
+  }
+
+  def getRandomUniformPoint(rangex:Int, rangey:Int):Point=
+    Point(nextInt(rangex), nextInt(rangey))
+
+  def getRandomUniformPoint(startx:Int, starty:Int, rangx:Int, rangy:Int):Point=
+    Point(nextInt(rangx)+startx, nextInt(rangy)+starty)
+
+  def getRandomRectangle(rangex:Int, rangey:Int, rangx2:Int, rangey2:Int):Box=
+  {
+
+    val p1=getRandomUniformPoint(rangex,rangey, rangx2,rangey2)
+    val p2=getRandomUniformPoint(rangex/5,rangey/5, rangx2/5,rangey2/5)
+    Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
+  }
+
 
 }
 

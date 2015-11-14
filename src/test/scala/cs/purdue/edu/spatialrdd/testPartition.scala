@@ -1,5 +1,6 @@
 package cs.purdue.edu.spatialrdd
 
+import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.impl._
 import cs.purdue.edu.spatialindex.rtree._
 
@@ -17,7 +18,7 @@ object TestPartition {
     def uniformPoint(rangex:Int, rangey:Int):Point=
       Point(nextInt(rangex-2)+2, nextInt(rangey-2)+2)
 
-    val points=(1 to 100).map(id=>uniformPoint(1000,1000))
+    val points=(1 to 1000).map(id=>uniformPoint(1000,1000))
 
     val elements=points.zipWithIndex.toIterator
 
@@ -29,7 +30,6 @@ object TestPartition {
     /********************************************************/
     val results=part1.multiget(points.toIterator)
     assert(results.length==points.length)
-
 
     /**
      * test for multiput
@@ -68,6 +68,21 @@ object TestPartition {
     val box1 =  Box(0 , 0, 100, 100)
     val rangesearchresult=part3.filter(box1,(id)=>true)
 
+    val boxes=Array{(Box(0,0,100,100),1);(Box(0,100,1000,1000),2)}
+
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,9)
+
+    val transfromQueryRDD=boxes.flatMap{
+      case(box:Box,id:Int)=>
+        boxpartitioner.getPartitionsForRangeQuery(box).map(p=>(p,box))
+    }.toIterator
+
+    //val queryBoxes=spark.parallelize(boxes,9)
+    val joinresult=part3.sjoin(transfromQueryRDD)((k,id)=>id)
+
+    val it=joinresult.iterator
+
+    println(it.size)
     //println("range search result")
     //rangesearchresult.foreach{(ks)=>println(ks._1.toString+","+ks._2)}
 

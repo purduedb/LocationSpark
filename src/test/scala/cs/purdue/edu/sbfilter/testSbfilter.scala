@@ -3,6 +3,7 @@ package cs.purdue.edu.sbfilter
 import cs.purdue.edu.spatialbloomfilter.{SBFilter, qtreeUtil}
 import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree._
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random._
 
@@ -17,8 +18,29 @@ object testSbfilter {
     math.abs(nextGaussian()*100000%MinX).toInt
   }
 
-  def gaussianPoint(startx:Int, starty:Int,rangx:Int, rangy:Int): Point =
-    Point(GuassianRandom(rangx)+startx, GuassianRandom(rangy)+starty)
+  def gaussianPoint(mean:Array[Double]): Point =
+  {
+    val cov=Array.ofDim[Double](2,2)
+
+    //val cov2=new Array[Array[Double]](2,2)
+
+    /*cov(0)(0)=500
+    cov(0)(1)=0.4
+    cov(1)(0)=0.4
+    cov(1)(1)=500*/
+
+    cov(0)(0)=1000
+cov(0)(1)=1.5
+cov(1)(0)=1.5
+cov(1)(1)=3000
+
+    val generator=new MultivariateNormalDistribution(mean,cov)
+    val data=generator.sample()
+
+    Point(data(0).toFloat, data(1).toFloat)
+
+  }
+
 
   def uniformPoint(startx:Int, starty:Int, rangx:Int, rangy:Int):Point=
     Point(nextInt(rangx)+startx, nextInt(rangy)+starty)
@@ -148,20 +170,26 @@ object testSbfilter {
 
     val sbfilter=SBFilter(qtree.getSBFilterV2())
 
-    val b2=System.currentTimeMillis
+    var b2=System.currentTimeMillis
     var count=0
     boxes.foreach{
       box=> //println(box.toString)
-        //if(sbfilter.searchRectangleWithP(box)<0.2)
         //if(!sbfilter.searchRectangleWithPV2(box,0.9))
         if(sbfilter.searchRectangleV2(box)==false)
         {
-          //rt.search(box)
+         // rt.search(box)
           count+=1
         }
     }
     println("binnary sbfilterv2 query time: "+(System.currentTimeMillis-b2) +" ms")
+    //println("r-tree with binnary sbfilterv2 actually run time: "+(System.currentTimeMillis-b2) +" ms")
     println("empty slot: "+count)
+    println("*"*50)
+
+   // b2=System.currentTimeMillis
+
+    //println("r-tree with binnary sbfilterv2 actually run time: "+(System.currentTimeMillis-b2) +" ms")
+
   }
 
   def trainTimeSBFilter(datapoint:Iterator[Geom]):SBFilter=
@@ -171,18 +199,16 @@ object testSbfilter {
     qtree.trainSBfilter(datapoint)
 
     //qtree.printTreeStructure()
-
     println("train the sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
-    SBFilter(qtree.getSBFilter())
+    SBFilter(qtree.getSBFilterV2())
 
   }
 
-  def updateSBFilter(datapoint:Iterator[Geom],boxes:Iterator[Box],rt:RTree[Int]):SBFilter=
+  def updateSBFilter(datapoint:Iterator[Geom],boxes:Iterator[Box],rt:RTree[Int]):SBQTree=
   {
     var b2=System.currentTimeMillis
     val qtree=new SBQTree(1000)
     qtree.trainSBfilter(datapoint)
-
     //qtree.printTreeStructure()
     println("train the sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
 
@@ -196,11 +222,9 @@ object testSbfilter {
         }
       //println(rt.search(box).size)
     }
-    println("update the sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
+    println("update the time: "+(System.currentTimeMillis-b2) +" ms")
 
-    val sbdata=qtree.getSBFilter()
-
-    SBFilter(sbdata)
+    qtree
 
   }
 
@@ -212,33 +236,37 @@ object testSbfilter {
     boxes.foreach{
       box=> //println(box.toString)
        //if(sbfilter.searchRectangleWithP(box)<0.2)
-        if(sbfilter.searchRectangle(box))
+        if(!sbfilter.searchRectangleV2(box))
         {
-          rt.search(box)
+         // rt.search(box)
           count+=1
         }
     }
-    println("rtree with trained binnary sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
-    println("not empty slot: "+count)
+    println("query by trained binnary sbfilter time: "+(System.currentTimeMillis-b2) +" ms")
+    println("empty slot: "+count)
 
   }
 
   def main(args: Array[String]): Unit = {
 
-    val numofpoints=200000
-    val numofqueries=100000
+    val numofpoints=10000
+    val numofqueries=500000
 
-    val es = (1 to numofpoints).map(n => Entry(gaussianPoint(100,100,400,500), n))
-    val es2 = (1 to numofpoints).map(n => Entry(gaussianPoint(300,300,1000,1000), n))
-    val es3 = (1 to numofpoints).map(n => Entry(gaussianPoint(500,700,3000,5000), n))
+    val mean1=Array(600.0,600.0)
+    val mean2=Array(1000.0,1000.0)
+    val mean3=Array(600.0,1500.0)
+
+    val es = (1 to numofpoints).map(n => Entry(gaussianPoint(mean1), n))
+    val es2 = (1 to numofpoints).map(n => Entry(gaussianPoint(mean2), n))
+    val es3 = (1 to numofpoints).map(n => Entry(gaussianPoint(mean3), n))
     //val es4 = (1 to numofpoints).map(n => Entry(gaussianPoint(600,1300,3000,5000), n))
     //val es5 = (1 to numofpoints).map(n => Entry(gaussianPoint(1500,2300,3000,3000), n))
     //val es6 = (1 to numofpoints).map(n => Entry(gaussianPoint(200,300,800,800), n))
 
     val boxes = (1 to numofqueries).map{
       n =>
-      val p1=uniformPoint(100,10, 600,200)
-      val p2=gaussianPoint(0,0,200,200)
+      val p1=uniformPoint(400,400, 700,700)
+      val p2=uniformPoint(2,2, 300,300)
       Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
     }
 
@@ -246,7 +274,6 @@ object testSbfilter {
     var rt = build(es)
     rt=rt.insertAll(es2)
     rt=rt.insertAll(es3)
-
 
     //rt=rt.insertAll(es6)
     println("build rtree index time: "+(System.currentTimeMillis-b1) +" ms")
@@ -270,8 +297,6 @@ object testSbfilter {
     queryTimeOfSBfilterV2(rt,boxes.toIterator,sbqtree)
     println("*"*100)
 
-
-    /*
     //train the sbfilter time
     val inputdata=(es.++:(es2).++:(es3)).map{entry=>entry.geom}.toIterator
     val sbfilter=trainTimeSBFilter(inputdata)
@@ -283,9 +308,9 @@ object testSbfilter {
 
     val updatesbfliter=updateSBFilter(inputdata,boxes.toIterator,rt)
 
-    queryTimeofTrainSBfilter(rt,boxes.toIterator,updatesbfliter)
-    println("*"*100)
-    */
+    queryTimeOfSBfilterV2(rt,boxes.toIterator,updatesbfliter)
+
+   // println("*"*100)
 
   }
 }

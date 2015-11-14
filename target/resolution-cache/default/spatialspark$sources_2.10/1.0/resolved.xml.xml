@@ -4,7 +4,7 @@
 		module="spatialspark$sources_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20150807212956"
+		publication="20151111231050"
 	/>
 	<configurations>
 		<conf name="default" visibility="public" description=""/>

@@ -62,7 +62,6 @@ class SBFilter() {
 
     //option2: directly work on the bitarray, this is not a optimal solution
 
-
   }
 
 
@@ -153,10 +152,6 @@ class SBFilter() {
               //judge which subrectangle to prop
             if(subrectangle.intersects(space))
             {
-                //println("intersect branch is:"+subrectangle.toString)
-                //println("father's location is "+point.beginBitLocation)
-               // println("intercount "+intercount)
-               // println("chidlren location is "+(InterNodeBitLocation+intercount*qtreeUtil.binnaryUnit))
                beginlocations.push(tmpnode(point.depth+1,InterNodeBitLocation+intercount*qtreeUtil.binnaryUnit,subrectangle))
             }
 
@@ -277,7 +272,7 @@ class SBFilter() {
 
   //search
   /**
-   * return the possiblity for this input space have data
+   * return the possiblity for this input space do not data
    * @return
    */
   def searchRectangleWithP(space: Box):Double=
@@ -404,7 +399,6 @@ class SBFilter() {
    */
   def searchRectangleWithPV2(space: Box, falseThreshold:Double):Boolean=
   {
-
     case class tmpnode(depth:Int, beginBitLocation:Int, parentBox:Box)
 
     var falseratio=0.0

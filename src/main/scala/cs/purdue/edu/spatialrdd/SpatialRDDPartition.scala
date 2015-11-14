@@ -58,6 +58,28 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
 
   def knnfilter[U](entry:U, k:Int, z:Entry[V]=>Boolean):Iterator[(K,V, Double)]
 
+
+  /**
+   * spatial range join operation
+   * the other rdd is query rdd.
+   * the key is the location of the range query box, and value is the range query box
+   * the f function apply to the value of the filter condition
+   */
+  def sjoin[U: ClassTag]
+  (other: SpatialRDDPartition[K, U])
+  (f: (K, V) => V): SpatialRDDPartition[K, V]
+
+  /**
+   * the iterator is a key and value paris,
+   * key is partition location of the box, the value is the queried box
+   * the key is the location of the range query box, and value is the range query box
+   * the f function apply to the value of the filter condition
+   */
+  def sjoin[U: ClassTag]
+  (other: Iterator[(K, U)])
+  (f: (K, V) => V): SpatialRDDPartition[K, V]
+
+
   /**
    * Creates a new partition with values from `elems` that may share an index with `this`,
    * merging duplicate keys in `elems` arbitrarily.

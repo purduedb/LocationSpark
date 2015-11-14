@@ -1,5 +1,6 @@
 package cs.purdue.edu.spatialrdd
 
+import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.impl._
 import cs.purdue.edu.spatialindex.rtree._
 /**
@@ -11,19 +12,25 @@ object testDataPartitioners {
 
     def testGrid(): Unit =
     {
-      val gridpartitioner=new Grid2DPartitioner(100,100,9)
+      val gridpartitioner=new Grid2DPartitioner(90,90,9)
 
-      val point=Point(90,60)
+      val point=Point(-15,-15)
 
       val pid=gridpartitioner.getPartition(point)
 
       println(pid)
     }
 
-    val box =  Box(0 , 2, 90, 90)
+    testGrid()
+    println("x"*100)
 
-    val boxpartitioner=new Grid2DPartitionerForBox(100,100,9)
+    val box =  Box(1945,1529, 2296,1684)
 
-    boxpartitioner.getPartitions(box).foreach(println)
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,9)
+
+    boxpartitioner.getPartitionsForBox(box).foreach(println)
+
+    boxpartitioner.getPartitionsForRangeQuery(box).foreach(println)
+
   }
 }

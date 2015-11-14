@@ -17,9 +17,10 @@ object Util{
     k.asInstanceOf[Point]
   }
 
-  def get_spatial_rangx=1000
-  def get_spatial_rangy=1000
+  //def get_spatial_rangx=1000
+  //def get_spatial_rangy=1000
 
-  def uniformPoint(rangex:Int, rangey:Int):Point=
-    Point(nextInt(rangex-2)+2, nextInt(rangey-2)+2)
+
+
+
 }

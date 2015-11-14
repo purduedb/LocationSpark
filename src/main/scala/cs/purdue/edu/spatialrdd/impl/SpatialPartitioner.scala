@@ -26,12 +26,10 @@ class Grid2DPartitioner(rangex: Int,rangey: Int, numParts:Int) extends Partition
 
     case point:Point =>
       //val point=key.asInstanceOf[Point] //get an new entry
-      val rowid=(point.x/(num_col_part)).toInt
-      val columnid=(point.y/(num_row_part)).toInt
-
-      val tmp=rowid*ceilSqrtNumParts+columnid
-
-      ((rowid*ceilSqrtNumParts+columnid)%numParts).toInt
+        require(math.abs(point.x)<=rangex/2&&math.abs(point.y)<=rangey/2)
+        val rowid=((point.x+rangex/2)/(num_col_part)).toInt
+        val columnid=((point.y+rangey/2)/(num_row_part)).toInt
+        ((rowid*ceilSqrtNumParts+columnid)%numParts)
 
   }
 
@@ -68,14 +66,13 @@ class QuadtreePartitioner(rangex: Int,rangey: Int, numParts:Int) extends Partiti
 /**
  *quadtree based data partition approach
  */
-class Grid2DPartitionerForBox(rangex: Int,rangey: Int, numParts:Int){
+class Grid2DPartitionerForBox(rangex: Int,rangey: Int, numParts:Int) extends Partitioner{
 
   def numPartitions: Int = numParts
 
   def ceilSqrtNumParts = math.ceil(math.sqrt(numParts)).toInt
   def num_row_part=rangex/ceilSqrtNumParts
   def num_col_part=rangey/ceilSqrtNumParts
-
 
   def getPartitionIDForIndex(key: Any): Int = {
     key match {
@@ -85,31 +82,36 @@ class Grid2DPartitionerForBox(rangex: Int,rangey: Int, numParts:Int){
   }
 
 
-  def getPartitionForPoint(key:Any):Int={
-
+  def getPartition(key:Any):Int={
     key match
     {
-      case p:Point=>
-        val x1=(p.x/(num_col_part)).toInt
-        val y1=(p.y/(num_row_part)).toInt
-        getPartitionIDForIndex(x1,y1)
+      case point:Point=>
+
+        require(math.abs(point.x)<=rangex/2&&math.abs(point.y)<=rangey/2)
+        //if(math.abs(point.x)<=rangex/2&&math.abs(point.y)<=rangey/2)
+          val rowid=((point.x+rangex/2)/(num_col_part)).toInt
+          val columnid=((point.y+rangey/2)/(num_row_part)).toInt
+          getPartitionIDForIndex(rowid,columnid)
+
     }
 
   }
 
 
-  def getPartitions(key: Any): HashSet[Int] = key match {
+  def getPartitionsForBox(key: Any): HashSet[Int] = key match {
 
     case None => null
 
     case box:Box =>
       //val box=key.asInstanceOf[Box] //get an new entry
+      require(math.abs(box.x)<=rangex&&math.abs(box.y)<=rangey)
+      require(math.abs(box.x2)<=rangex&&math.abs(box.y2)<=rangey)
 
-      val x1=(box.x/(num_col_part)).toInt
-      val y1=(box.y/(num_row_part)).toInt
+      val x1=((box.x+rangex/2)/(num_col_part)).toInt
+      val y1=((box.y+rangey/2)/(num_row_part)).toInt
 
-      val x2=(box.x2/(num_col_part)).toInt
-      val y2=(box.y2/(num_row_part)).toInt
+      val x2=((box.x2+rangex/2)/(num_col_part)).toInt
+      val y2=((box.y2+rangey/2)/(num_row_part)).toInt
 
       var pids=new HashSet[Int]
 
@@ -120,7 +122,34 @@ class Grid2DPartitionerForBox(rangex: Int,rangey: Int, numParts:Int){
         }
       }
       pids
+  }
 
+
+
+  def getPartitionsForRangeQuery(key: Any): HashSet[Point] = key match {
+
+    case None => null
+
+    case box:Box =>
+      //val box=key.asInstanceOf[Box] //get an new entry
+      require(math.abs(box.x)<=rangex&&math.abs(box.y)<=rangey)
+      require(math.abs(box.x2)<=rangex&&math.abs(box.y2)<=rangey)
+
+      val x1=((box.x+rangex/2)/(num_col_part)).toInt
+      val y1=((box.y+rangey/2)/(num_row_part)).toInt
+
+      val x2=((box.x2+rangex/2)/(num_col_part)).toInt
+      val y2=((box.y2+rangey/2)/(num_row_part)).toInt
+
+      var pids=new HashSet[Point]
+
+      for(i<-x1 to x2) {
+        for (j <- y1 to y2) {
+          //val id=getPartitionIDForIndex(i,j)
+          pids+=Point(i*num_row_part-rangex/2, j*num_col_part-rangey/2)
+        }
+      }
+      pids
   }
 
   override def hashCode: Int = numPartitions

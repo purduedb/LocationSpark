@@ -1,5 +1,6 @@
 package cs.purdue.edu.spatialrdd
 
+import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree._
 import cs.purdue.edu.spatialrdd.impl._
 import org.apache.spark.storage.StorageLevel
@@ -22,8 +23,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
   override val partitioner = partitionsRDD.partitioner
 
-  //val spatial_rangex=1000
-  //val spatial_rangey=1000
 
   override protected def getPartitions: Array[Partition] = partitionsRDD.partitions
 
@@ -96,7 +95,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
     val ksByPartition = ks.groupBy(k => partitioner.get.getPartition(k))
     val partitions = ksByPartition.keys.toSeq
 
-    // TODO: avoid sending all keys to all partitions by creating and zipping an RDD of keys
     val results: Array[Array[(K, V)]] = context.runJob(partitionsRDD,
       (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
         if (partIter.hasNext && ksByPartition.contains(context.partitionId)) {
@@ -116,10 +114,10 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets the values corresponding to the specific box, if any. */
   def rangeFilter[U](box:U,z:Entry[V]=>Boolean): Map[K, V] = {
 
-    val boxpartitioner=new Grid2DPartitionerForBox(Util.get_spatial_rangx,Util.get_spatial_rangy,this.getPartitions.length)
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,this.getPartitions.length)
 
     //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
-    val partitionset = boxpartitioner.getPartitions(box)
+    val partitionset = boxpartitioner.getPartitionsForBox(box)
 
     val results: Array[Array[(K, V)]] = context.runJob(partitionsRDD,
       (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
@@ -138,10 +136,10 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets k-nearset-neighbor values corresponding to the specific point, if any. */
   def knnFilter[U](entry:U, k:Int, z:Entry[V]=>Boolean): Iterator[(K, V)] = {
 
-    val boxpartitioner=new Grid2DPartitionerForBox(Util.get_spatial_rangx,Util.get_spatial_rangy,this.getPartitions.length)
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,this.getPartitions.length)
 
     //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
-    val partitionid = boxpartitioner.getPartitionForPoint(entry)
+    val partitionid = boxpartitioner.getPartition(entry)
 
     /**
      * find the knn point in certain partition
@@ -208,6 +206,30 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   }
 
 
+  /**
+   * this rdd would be the data rdd, and other rdd is the spatial range query rdd
+   * this data rdd key is the location of data, value the correspond data
+   * this spatial range query rdd, with key is the location of the query box, the value is the range query box
+   * Notice:
+   * (1)the rdd.sjoin(other)!=other.sjoin(rdd)
+   * (2)the other rdd have key and box paris
+   */
+  def sjoin[U: ClassTag]
+  (other: RDD[(K, U)])(f: (K, V) => V): SpatialRDD[K, V] =
+    other match {
+    case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
+      this.zipIndexedRDDPartitions(other)(new JoinZipper(f))
+    case _ =>
+      this.zipPartitionsWithOther(other)(new OtherJoinZipper(f))
+  }
+
+  /** Applies a function to corresponding partitions of `this` and another IndexedRDD. */
+  private def zipIndexedRDDPartitions[V2: ClassTag, V3: ClassTag]
+  (other: SpatialRDD[K, V2]) (f: ZipPartitionsFunction[V2, V3]): SpatialRDD[K, V3] = {
+    assert(partitioner == other.partitioner)
+    val newPartitionsRDD = partitionsRDD.zipPartitions(other.partitionsRDD, true)(f)
+    new SpatialRDD(newPartitionsRDD)
+  }
 
   /*************************************************/
 
@@ -248,6 +270,25 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
       Iterator(thisPart.delete(otherIter.map(_._1.asInstanceOf[Entry[V]])))
     }
   }
+
+  private class JoinZipper[U: ClassTag](f: (K, V) => V)
+    extends ZipPartitionsFunction[U, V] with Serializable {
+    def apply(thisIter: Iterator[SpatialRDDPartition[K, V]], otherIter: Iterator[SpatialRDDPartition[K, U]]):
+    Iterator[SpatialRDDPartition[K, V]] = {
+      val thisPart = thisIter.next()
+      val otherPart = otherIter.next()
+      Iterator(thisPart.sjoin(otherPart)(f))
+    }
+  }
+
+  private class OtherJoinZipper[U: ClassTag](f: (K, V) => V)
+    extends OtherZipPartitionsFunction[U, V] with Serializable {
+    def apply(thisIter: Iterator[SpatialRDDPartition[K, V]], otherIter: Iterator[(K, U)]):
+    Iterator[SpatialRDDPartition[K, V]] = {
+      val thisPart = thisIter.next()
+      Iterator(thisPart.sjoin(otherIter)(f))
+    }
+  }
 }
 
 object SpatialRDD {
@@ -269,7 +310,7 @@ object SpatialRDD {
   (elems: RDD[(K, V)], z: (K, U) => V, f: (K, V, U) => V)
   : SpatialRDD[K, V] = {
     val elemsPartitioned =
-        elems.partitionBy(new Grid2DPartitioner(Util.get_spatial_rangx, Util.get_spatial_rangy, elems.partitions.size))
+        elems.partitionBy(new Grid2DPartitioner(qtreeUtil.rangx, qtreeUtil.rangy, elems.partitions.size))
 
     val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
       iter => Iterator(RtreePartition(iter, z, f)),

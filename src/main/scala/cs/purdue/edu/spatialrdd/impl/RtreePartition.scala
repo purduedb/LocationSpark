@@ -138,6 +138,55 @@ class RtreePartition[K, V]
     }
   }
 
+  override def sjoin[U: ClassTag]
+  (other: SpatialRDDPartition[K, U])
+  (f: (K, V) => V): SpatialRDDPartition[K, V] = sjoin(other.iterator)(f)
+
+  /**
+   *the U need to be box
+   */
+  override def sjoin[U: ClassTag]
+  (other: Iterator[(K, U)])
+  (f: (K, V) => V): SpatialRDDPartition[K, V] = {
+
+    val newMap = this.tree
+
+    var retmap=new RTree(Node.empty[V], 0)
+
+    for (ku <- other)
+    {
+      //val kBytes = kSer.toBytes(ku._1)
+      ku._2 match
+      {
+        case b:Box=> {
+
+          //println("boxes:"+b)
+
+          val ret = newMap.search(b, _ => true)
+
+          //println("ret size"+ret.length)
+
+          if(ret!=null)
+          {
+            ret.foreach{
+              element=>
+                val newV=f(element.geom.asInstanceOf[K],element.value)
+                retmap=retmap.insert(element.geom.asInstanceOf[Point], newV)
+            }
+          }
+        }
+        case _=>
+          println("wrong for range query type")
+      }
+
+    }
+
+    //println(retmap.size)
+
+    this.withMap(retmap)
+  }
+
+
   /*def createUsingIndex[V2: ClassTag](elems: Iterator[(K, V2)])(implicit kSer: PointSerializer[K,V]): SpatialRDDPartition[K, V2]=
   {
     //val map = RTree(elems.flatMap{ (k, v) => kSer.toEntry(k,v)})

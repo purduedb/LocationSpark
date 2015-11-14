@@ -703,9 +703,9 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.13.8!test-agent.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
-[debug] :: resolution report :: resolve 815ms :: artifacts dl 126ms
+[debug] :: resolution report :: resolve 2820ms :: artifacts dl 144ms
 [debug] 	report for default#spatialspark$sbt_2.10;1.0 default produced in /home/merlin/workspacescala/spatialspark/SpatialSpark/target/resolution-cache/reports/default-spatialspark$sbt_2.10-default.xml
-[debug] 	resolve done (815ms resolve - 126ms download)
+[debug] 	resolve done (2820ms resolve - 144ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: default#spatialspark$sources_2.10;1.0
 [debug] 	confs: [default]
@@ -1069,6 +1069,6 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.13.8!precompiled-2_8_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_2;0.13.8!precompiled-2_9_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_3;0.13.8!precompiled-2_9_3.jar(src)
-[debug] :: resolution report :: resolve 149ms :: artifacts dl 102ms
+[debug] :: resolution report :: resolve 174ms :: artifacts dl 125ms
 [debug] 	report for default#spatialspark$sources_2.10;1.0 default produced in /home/merlin/workspacescala/spatialspark/SpatialSpark/target/resolution-cache/reports/default-spatialspark$sources_2.10-default.xml
-[debug] 	resolve done (149ms resolve - 102ms download)
+[debug] 	resolve done (174ms resolve - 125ms download)
