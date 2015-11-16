@@ -4,7 +4,7 @@
 		module="spatialspark_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20151111231020"
+		publication="20151113222452"
 	>
 		<description>
 		SpatialSpark
@@ -27,7 +27,9 @@
 	</configurations>
 	<publications>
 		<artifact name="spatialspark_2.10" type="pom" ext="pom" conf="pom"/>
-		<artifact name="spatialspark_2.10" type="jar" ext="jar" conf="optional" e:classifier="download, resolveClassifiers, resolveSbtClassifiers"/>
+		<artifact name="spatialspark_2.10" type="jar" ext="jar" conf="compile"/>
+		<artifact name="spatialspark_2.10" type="src" ext="jar" conf="sources" e:classifier="sources"/>
+		<artifact name="spatialspark_2.10" type="doc" ext="jar" conf="docs" e:classifier="javadoc"/>
 	</publications>
 	<dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.10.5" conf="scala-tool->default,optional(default)"/>

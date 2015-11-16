@@ -12,9 +12,9 @@ object testDataPartitioners {
 
     def testGrid(): Unit =
     {
-      val gridpartitioner=new Grid2DPartitioner(90,90,9)
+      val gridpartitioner=new Grid2DPartitioner(qtreeUtil.rangx,qtreeUtil.rangy,4)
 
-      val point=Point(-15,-15)
+      val point=Point(30.40094f,-86.8612f)
 
       val pid=gridpartitioner.getPartition(point)
 
@@ -22,11 +22,12 @@ object testDataPartitioners {
     }
 
     testGrid()
+
     println("x"*100)
 
-    val box =  Box(1945,1529, 2296,1684)
+    val box =Box(30.10094f,-86.8612f, 32.41f, -80.222f)
 
-    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,9)
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,4)
 
     boxpartitioner.getPartitionsForBox(box).foreach(println)
 

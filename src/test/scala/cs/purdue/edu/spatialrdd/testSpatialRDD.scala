@@ -16,6 +16,15 @@ import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitionerForBox, Util}
 object testSpatialRDD
 {
 
+
+  def testForBuildRDD(spark:SparkContext): Unit =
+  {
+
+    val numofpoints=1000
+    val rdd = spark.parallelize((1 to numofpoints).map(x => (qtreeUtil.getRandomUniformPoint(3000,3000), x)), 9)
+    val indexed = SpatialRDD(rdd).cache()
+
+  }
   /**
    * test for put and get function
    */
@@ -26,10 +35,13 @@ object testSpatialRDD
     assert(indexrdd2.get(insertpoint)==Some(100))
   }
 
-  def testForGet(srdd:SpatialRDD[Point,Int])=
+  def testForGet[V](indexed:SpatialRDD[Point,V])=
   {
-    val insertpoint2=Point(-17, 18)
-    assert(srdd.get(insertpoint2)==None)
+    val insertpoint2=Point(30.40094f,-86.8612f)
+
+    indexed.get(insertpoint2).foreach(println)
+
+    assert(indexed.get(insertpoint2)!=None)
 
   }
 
@@ -46,71 +58,79 @@ object testSpatialRDD
   /**
    * test for range query
    */
-  def testForRangeQuery(srdd:SpatialRDD[Point,Int])=
+  def testForRangeQuery[V](srdd:SpatialRDD[Point,V])=
   {
-    val box = Box(2 , 2, 90, 90)
-    val rangesearchresult=srdd.rangeFilter(box,(id)=>true)
-    //rangesearchresult.foreach(println)
+    //val box = Box(2 , 2, 90, 90)
+
+    val searchbox=Box(20.10094f,-86.8612f, 32.41f, -80.222f)
+
+    val rangesearchresult=srdd.rangeFilter(searchbox,(id)=>true)
+
+    rangesearchresult.foreach(println)
+
   }
 
   /**
    * test for knn search
    */
-  def testForKNNQuery(srdd:SpatialRDD[Point,Int])=
+  def testForKNNQuery[V](srdd:SpatialRDD[Point,V])=
   {
-    val k=200
-    val insertpoint=Point(-17, 18)
-    val knnresults=srdd.knnFilter(insertpoint,k,(id)=>true)
+    val k=20
+    val querypoint=Point(30.40094f,-86.8612f)
+    //val insertpoint=Point(-17, 18)
+    val knnresults=srdd.knnFilter(querypoint,k,(id)=>true)
+
+    knnresults.foreach(println)
+
   }
 
-  def testForSJOIN(srdd:SpatialRDD[Point,Int])=
+  def testForSJOIN[V](srdd:SpatialRDD[Point,V], spark:SparkContext)=
   {
-
-  }
-
-
-  def main(args: Array[String]) {
-
-    val conf = new SparkConf().setAppName("Spark SpatialRDD").setMaster("local[2]")
-
-    val spark = new SparkContext(conf)
-
-    spark.textFile("xxxx")
-
-    val numofpoints=10000
-    /**
-     * test for building a spatialrdd
-     */
-    val rdd = spark.parallelize((1 to numofpoints).map(x => (qtreeUtil.getRandomUniformPoint(3000,3000), x)), 9)
-    val indexed = SpatialRDD(rdd).cache()
-
-    //indexed.foreach(println)
-
     /**
      * test for the spatial join
      */
-    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,9)
+
+    val numpartition=4
+
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,numpartition)
 
     val numofQueries=2
 
     //val boxes=Array{(Box(0,0,100,100),1); (Box(0,100,1000,1000),2)}
-    val boxes=Array{(Box(900,900,1000,1000),2)}
-    val queryBoxes=spark.parallelize(boxes,9)
+    val boxes=Array{(Box(20.10094f,-86.8612f, 32.41f, -80.222f),2)}
 
-    //val QueryRDD = spark.parallelize((1 to numofQueries).map(x => (qtreeUtil.getRandomRectangle(2,2,2000,2000), x)), 9)
+    val queryBoxes=spark.parallelize(boxes,numpartition)
 
     val transfromQueryRDD=queryBoxes.flatMap{
       case(box:Box,id)=>
         boxpartitioner.getPartitionsForRangeQuery(box).map(p=>(p,box))
     }
 
-    //transfromQueryRDD.foreach(println)
-
-    val joinresultRdd=indexed.sjoin(transfromQueryRDD)((k,id)=>id)
-
-    //println("*"*100)
+    val joinresultRdd=srdd.sjoin(transfromQueryRDD)((k,id)=>id)
 
     joinresultRdd.foreach(println)
+  }
+
+
+  def main(args: Array[String]) {
+
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+
+    val spark = new SparkContext(conf)
+
+    val inputfile=args(0)
+
+    val datardd=spark.textFile(inputfile)
+
+    val locationRDD=datardd.filter((line:String)=>line.split(",").length>=6).map{
+      line=>
+       val arry=line.split(",")
+        (Point(arry(2).toFloat, arry(3).toFloat), arry(5) )
+    }
+
+    val indexed = SpatialRDD(locationRDD).cache()
+
+    testForSJOIN(indexed,spark)
 
     spark.stop()
 

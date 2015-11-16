@@ -5,6 +5,7 @@ import cs.purdue.edu.spatialrdd.impl._
 import cs.purdue.edu.spatialindex.rtree._
 
 import scala.util.Random._
+import scala.io.Source
 
 /**
  * Created by merlin on 9/20/15.
@@ -15,7 +16,7 @@ object TestPartition {
 
   def main(args: Array[String]) {
 
-    def uniformPoint(rangex:Int, rangey:Int):Point=
+   /* def uniformPoint(rangex:Int, rangey:Int):Point=
       Point(nextInt(rangex-2)+2, nextInt(rangey-2)+2)
 
     val points=(1 to 1000).map(id=>uniformPoint(1000,1000))
@@ -85,6 +86,22 @@ object TestPartition {
     println(it.size)
     //println("range search result")
     //rangesearchresult.foreach{(ks)=>println(ks._1.toString+","+ks._2)}
+    */
+
+    val lines = Source.fromFile("/home/merlin/workspacescala/spatialspark/test.txt").getLines.toList
+
+    val data=lines.filter((line:String)=>line.split(",").length>=6).map{
+      line=>
+        val arry=line.split(",")
+        (Point(arry(2).toFloat, arry(3).toFloat), arry(5) )
+    }.toIterator
+
+    val part1= RtreePartition(data)
+
+    val box1 =Box(30.10094f,-86.8612f, 32.41f, -80.222f)
+    val rangesearchresult=part1.filter(box1,(id)=>true)
+
+    rangesearchresult.foreach(println)
 
   }
 }

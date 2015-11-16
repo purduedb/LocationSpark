@@ -16,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
  * the spilit leaf box order is NW,NE,SE,SW
  */
 
-case class SBQTree() {
+case class SBQTree() extends serializable{
 
   var budget = 0
   var root: Node = null
@@ -275,7 +275,6 @@ case class SBQTree() {
   }
 
 
-
   /**
    * get the binary code of the quadtree
    */
@@ -346,9 +345,9 @@ case class SBQTree() {
 
     }
 
-    println("# of leaf "+leafLocation)
-    println("# of false leaf "+falseleaf)
-    println("# of branch "+internalLocation/4)
+    //println("# of leaf "+leafLocation)
+    //println("# of false leaf "+falseleaf)
+   // println("# of branch "+internalLocation/4)
     //println("# of candidate to merge: "+this.lrucache.getNumnode())
     //println("leaf node: "+binnaryopt.getBitString(0,200,leaf))
     dataSBF(maxdatasize, internal, leaf, widthInternal, widthLeaf)
@@ -367,8 +366,8 @@ case class SBQTree() {
     val internal = new Array[Int](maxdatasize) //where 10 is the default size
     val leaf = new Array[Int](maxdatasize) //where 10 is the default size
 
-    var widthInternal = ArrayBuffer[Int]() //number of internal node for that depth
-    var widthLeaf = ArrayBuffer[Int]() //number of leaf nodes
+    //var widthInternal = ArrayBuffer[Int]() //number of internal node for that depth
+   // var widthLeaf = ArrayBuffer[Int]() //number of leaf nodes
 
     val queue = new scala.collection.mutable.Queue[Node]
 
@@ -434,8 +433,8 @@ case class SBQTree() {
       front = front + 1
 
       if (front > end) {
-        widthLeaf+=(numberLeaf)
-        widthInternal+=(end - numberLeaf)
+        //widthLeaf+=(numberLeaf)
+        //widthInternal+=(end - numberLeaf)
         depth += 1
         front= 1
         end = queue.size
@@ -445,12 +444,12 @@ case class SBQTree() {
 
     }
 
-    println("# of leaf "+leafLocation)
-    println("# of false leaf "+falseleaf)
-    println("# of branch "+internalLocation/4)
+    //println("# of leaf "+leafLocation)
+   // println("# of false leaf "+falseleaf)
+    //println("# of branch "+internalLocation/4)
    // InternalHash.foreach(println)
 
-    dataSBFV2(maxdatasize, internal, leaf, widthInternal, widthLeaf, InternalHash,LeafHash)
+    dataSBFV2(maxdatasize, depth ,internal, leaf, InternalHash,LeafHash)
 
   }
 

@@ -114,10 +114,13 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets the values corresponding to the specific box, if any. */
   def rangeFilter[U](box:U,z:Entry[V]=>Boolean): Map[K, V] = {
 
-    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,this.getPartitions.length)
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,this.partitions.size)
 
     //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
     val partitionset = boxpartitioner.getPartitionsForBox(box)
+
+    //println("get the location of partition")
+    //partitionset.foreach(println)
 
     val results: Array[Array[(K, V)]] = context.runJob(partitionsRDD,
       (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
@@ -136,7 +139,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets k-nearset-neighbor values corresponding to the specific point, if any. */
   def knnFilter[U](entry:U, k:Int, z:Entry[V]=>Boolean): Iterator[(K, V)] = {
 
-    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,this.getPartitions.length)
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,this.partitions.size)
 
     //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
     val partitionid = boxpartitioner.getPartition(entry)
@@ -160,6 +163,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
      */
     val (_,_,distance)=results.flatten.tail.toSeq.head
 
+
     /**
      *get the box around the center point
      */
@@ -175,6 +179,8 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
     val rangequery=this.rangeFilter(getbox(entry,distance),z)
 
+    //println("range query result")
+    //rangequery.foreach(println)
     /**
      * merge the range query and knn query results
      */
@@ -191,9 +197,12 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
     val finalresult=(knnresultwithdistance++rangequerieswithdistance).sortBy(_._3).distinct.slice(0,k)
 
+    //finalresult.foreach(println)
+
     finalresult.map{
       case(location:Point,value,distance) =>(location.asInstanceOf[K],value)
     }.toIterator
+
 
   }
 

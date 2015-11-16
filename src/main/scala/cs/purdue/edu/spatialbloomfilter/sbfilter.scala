@@ -581,10 +581,9 @@ class SBFilter() {
  * class to transfer data from the local partition to mater node
  */
 case class dataSBFV2(size:Int,
+                    depth:Int,
                    internal:Array[Int],
                    leaf:Array[Int],
-                   widthInternal:ArrayBuffer[Int],
-                   widthLeaf:ArrayBuffer[Int],
                    Internallocation:HashMap[Int, Int],
                    Leaflocation:HashMap[Int, Int])  extends Serializable ()
 
@@ -608,25 +607,7 @@ object SBFilter
 
     sbfilter.internal=data.internal
     sbfilter.leaf=data.leaf
-
-    sbfilter.depth=data.widthInternal.size
-
-    /*sbfilter.widthInternalSum=new Array[Int](data.widthInternal.size)
-    sbfilter.widthInternalSum(0)=data.widthInternal(0)
-
-    for(i<- 1 to data.widthInternal.size-1)
-    {
-      sbfilter.widthInternalSum(i)= sbfilter.widthInternalSum(i-1)+data.widthInternal(i)
-    }
-
-    sbfilter.widthLeafSum=new Array[Int](data.widthLeaf.size)
-    sbfilter.widthLeafSum(0)=data.widthLeaf(0)
-
-    for(i<- 1 to data.widthLeaf.size-1)
-    {
-      sbfilter.widthLeafSum(i)= sbfilter.widthLeafSum(i-1)+data.widthLeaf(i)
-    }*/
-
+    sbfilter.depth=data.depth
     sbfilter.Internallocation=data.Internallocation
     sbfilter.Leaflocation=data.Leaflocation
 
