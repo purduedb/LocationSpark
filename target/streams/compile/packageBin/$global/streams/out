@@ -158,6 +158,8 @@
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Joined$Single$.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1.class[0m
+[0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$2.class[0m
+[0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$2.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialbloomfilter/qtreeUtil.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialbloomfilter/qtreeUtil.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/impl/Util.class[0m
@@ -262,6 +264,8 @@
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree/QTreeCache$$anonfun$cs$purdue$edu$spatialindex$quatree$QTreeCache$$insertBoxWithCache$2.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/quatree/QTreeCache$$anonfun$cs$purdue$edu$spatialindex$quatree$QTreeCache$$insertBoxWithCache$3.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree/QTreeCache$$anonfun$cs$purdue$edu$spatialindex$quatree$QTreeCache$$insertBoxWithCache$3.class[0m
+[0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$main$1.class[0m
+[0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$main$1.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/quatree[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$2.class[0m
@@ -276,6 +280,8 @@
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Node$$anonfun$map$2.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class[0m
+[0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$1.class[0m
+[0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$1.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/quatree/SBQTree$$anonfun$cs$purdue$edu$spatialindex$quatree$SBQTree$$insertBox$3.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree/SBQTree$$anonfun$cs$purdue$edu$spatialindex$quatree$SBQTree$$insertBox$3.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/rtree/Node$$anonfun$1.class[0m
@@ -288,6 +294,8 @@
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$multiput$1.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/quatree/QTreeCache$$anonfun$cs$purdue$edu$spatialindex$quatree$QTreeCache$$insertBoxWithCache$3$$anonfun$apply$5.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree/QTreeCache$$anonfun$cs$purdue$edu$spatialindex$quatree$QTreeCache$$insertBoxWithCache$3$$anonfun$apply$5.class[0m
+[0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$3.class[0m
+[0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/spatialRDDMain$$anonfun$3.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialbloomfilter/SBFilter$tmpnode$9.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialbloomfilter/SBFilter$tmpnode$9.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/quatree/SBQTree$$anonfun$insertPoint$2.class[0m
@@ -328,6 +336,8 @@
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$remove$1.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialbloomfilter/dataSBF$.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialbloomfilter/dataSBF$.class[0m
+[0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/SpaRDD.class[0m
+[0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpaRDD.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$5.class[0m
@@ -372,6 +382,8 @@
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialbloomfilter/SBFilter$$anonfun$apply$2.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/rtree/Entry$.class[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Entry$.class[0m
+[0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialrdd/spatialRDDMain.class[0m
+[0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/spatialRDDMain.class[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/rtree[0m
 [0m[[0mdebug[0m] [0m	  /home/merlin/workspacescala/spatialspark/SpatialSpark/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree[0m
 [0m[[0mdebug[0m] [0m	cs/purdue/edu/spatialindex/rtree/Node.class[0m
