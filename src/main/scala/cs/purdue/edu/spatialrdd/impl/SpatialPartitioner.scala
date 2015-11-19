@@ -44,10 +44,11 @@ class Grid2DPartitioner(rangex: Int,rangey: Int, numParts:Int) extends Partition
 /**
  *quadtree based data partition approach
  */
-class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int,
-                               fraction:Float,
-                               @transient rdd: RDD[_ <: Product2[K, V]])
-  extends Partitioner{
+class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
+                               @transient rdd: RDD[_ <: Product2[K, V]]) extends Partitioner{
+
+  // We allow partitions = 0, which happens when sorting an empty RDD under the default settings.
+  require(partitions >= 0, s"Number of partitions cannot be negative but found $partitions.")
 
   var realnumPartitions=0
 
@@ -62,10 +63,8 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int,
     }
 
   }
-  // We allow partitions = 0, which happens when sorting an empty RDD under the default settings.
-  require(partitions >= 0, s"Number of partitions cannot be negative but found $partitions.")
 
-  private val quadtree:QtreeForPartion={
+  val quadtree:QtreeForPartion={
 
     val total=rdd.count()
 
@@ -102,7 +101,24 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int,
       this.quadtree.getPID(p)
   }
 
-  override def hashCode: Int = numPartitions
+  /**
+   * get the overlap region for the input box
+   * @param box
+   * @return
+   */
+  def getPartitionForBox(box:Any):HashSet[Int]=
+  {
+    box match {
+      case box: Box =>
+        this.quadtree.getPIDforBox(box)
+
+      case _ =>
+        println("do not support other data type now")
+        null
+    }
+  }
+
+  override def hashCode: Int = realnumPartitions
 
 }
 

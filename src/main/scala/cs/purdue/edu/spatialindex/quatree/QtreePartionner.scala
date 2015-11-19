@@ -1,9 +1,10 @@
 package cs.purdue.edu.spatialindex.quatree
 
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
-import cs.purdue.edu.spatialindex.rtree.Geom
+import cs.purdue.edu.spatialindex.rtree.{Box, Geom}
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
+import scala.collection.mutable.{HashSet, ArrayBuffer}
 
 /**
  * Created by merlin on 11/18/15.
@@ -155,6 +156,45 @@ class QtreeForPartion() extends Serializable{
     tmp.foreach(l=>l.id=pid)
 
     pid+1
+
+  }
+
+  /**
+   * get the overlap partition region for the input box
+   * @param box
+   * @return
+   */
+  def getPIDforBox(box:Box):HashSet[Int]=
+  {
+    val ret=new mutable.HashSet[Int]()
+
+    getPIDforBox(box,ret,this.root)
+
+    ret
+  }
+
+  /**
+   * recursive to find the overlap leaf node for the input box
+   * @param box
+   * @param ret
+   * @param n
+   */
+  private def getPIDforBox(box:Box,ret:HashSet[Int], n:Node):Unit=
+  {
+    n match {
+      case l: leafwithcount =>
+
+        // println("search leaf "+l.getbox)
+        if (l.getbox.intersects(box))
+        {
+          ret.+=(l.id)
+        }
+
+      case b: Branch => {
+        //println("brach is "+b.getbox)
+        b.findChildNodes(box).foreach(child=>getPIDforBox(box,ret,child))
+      }
+    }
 
   }
 

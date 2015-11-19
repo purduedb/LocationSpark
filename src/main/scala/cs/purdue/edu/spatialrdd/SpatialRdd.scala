@@ -6,6 +6,7 @@ import cs.purdue.edu.spatialrdd.impl._
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{TaskContext, Partition, OneToOneDependency}
 import org.apache.spark.rdd.RDD
+import scala.collection.mutable
 import scala.reflect.ClassTag
 
 /**
@@ -114,10 +115,25 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets the values corresponding to the specific box, if any. */
   def rangeFilter[U](box:U,z:Entry[V]=>Boolean): Map[K, V] = {
 
-    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,this.partitions.size)
+    //val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,this.partitions.size)
 
     //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
-    val partitionset = boxpartitioner.getPartitionsForBox(box)
+    //val partitionset = boxpartitioner.getPartitionsForBox(box)
+
+    var partitionset=new mutable.HashSet[Int]
+
+    this.partitioner.getOrElse(None) match{
+
+      case qtree:QtreePartitioner[K,V]=>
+        partitionset=qtree.getPartitionForBox(box)
+
+      case grid:Grid2DPartitioner=>
+        val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,this.partitions.size)
+        partitionset = boxpartitioner.getPartitionsForBox(box)
+
+      case None=>
+        return Map.empty
+    }
 
     //println("get the location of partition")
     //partitionset.foreach(println)
@@ -314,12 +330,15 @@ object SpatialRDD {
   (elems: RDD[(K, V)])
   : SpatialRDD[K, V] = updatable[K, V, V](elems, (id, a) => a, (id, a, b) => b)
 
-  /** Constructs an IndexedRDD from an RDD of pairs. */
+  /** Constructs an IndexedRDD from an RDD of pairs.
+    * the default partitioner is the quadtree based partioner
+    * */
   def updatable[K: ClassTag , U: ClassTag, V: ClassTag]
   (elems: RDD[(K, V)], z: (K, U) => V, f: (K, V, U) => V)
   : SpatialRDD[K, V] = {
     val elemsPartitioned =
-        elems.partitionBy(new Grid2DPartitioner(qtreeUtil.rangx, qtreeUtil.rangy, elems.partitions.size))
+        //elems.partitionBy(new Grid2DPartitioner(qtreeUtil.rangx, qtreeUtil.rangy, elems.partitions.size))
+      elems.partitionBy(new QtreePartitioner(elems.partitions.length,0.2f,elems))
 
     val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
       iter => Iterator(RtreePartition(iter, z, f)),

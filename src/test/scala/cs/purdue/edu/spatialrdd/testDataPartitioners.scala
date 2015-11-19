@@ -72,18 +72,26 @@ object testDataPartitioners {
     val point=Point(30.40094f,-86.8612f)
 
     val pid=qtreepartioner.getPartition(point)
-
+    println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     println(pid)
 
     val indexed = locationRDD.partitionBy(qtreepartioner)
 
-    def sumfunction[V](iterator: Iterator[V])=
+    val box=Box(29.10094f,-87.8612f, 31.41f, -85.222f)
+    println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    qtreepartioner.quadtree.getPIDforBox(box).foreach(println)
+
+
+
+    /*def sumfunction[V](iterator: Iterator[V])=
     {
       println(iterator.size)
     }
 
     println("data in each partition")
-    indexed.foreachPartition(sumfunction)
+    indexed.foreachPartition(sumfunction)*/
+
+
 
   }
 }
