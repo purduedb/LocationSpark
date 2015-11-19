@@ -1,6 +1,8 @@
 package cs.purdue.edu.spatialrdd
 
+import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree.{Box, Point}
+import cs.purdue.edu.spatialrdd.impl.Grid2DPartitionerForBox
 import org.apache.spark.{SparkContext, SparkConf}
 /**
  * Created by merlin on 11/16/15.
@@ -43,20 +45,19 @@ object SpatialRDDMain {
     //println("data size")
     //println(locationRDD.count())
 
-    val indexed = SpatialRDD(locationRDD).cache()
+    /*val indexed = SpatialRDD(locationRDD).cache()
 
-    println("index rdd data size")
-    println(indexed.count())
+   println("index rdd data size")
+   println(indexed.count())
 
-    println("*"*100)
+   println("*"*100)
 
-    val searchbox=Box(20.10094f,-86.8612f, 32.41f, -80.222f)
+  val k=20
+   val querypoint=Point(30.40094f,-86.8612f)
+   val knnresults=indexed.knnFilter(querypoint,k,(id)=>true)
 
-    val rangesearchresult=indexed.rangeFilter(searchbox,(id)=>true)
-
-    //rangesearchresult.foreach(println)
-
-    rangesearchresult.size
+   println("result for the knn search k="+k)
+   println(knnresults.size)*/
 
 
     //samplerdd.foreach(println)
@@ -68,6 +69,38 @@ object SpatialRDDMain {
     val rangesearchresult=indexed.rangeFilter(searchbox,(id)=>true)
 
     rangesearchresult.foreach(println)*/
+
+    val indexed = SpatialRDD(locationRDD).cache()
+
+    val numpartition=indexed.partitions.size
+
+    val queryrdd=locationRDD.sample(false,0.01)
+
+    val queryboxes=queryrdd.map{
+      case (p:Point,v)=>
+        val r=qtreeUtil.getRandomUniformPoint(5,5)
+        (Box(p.x,p.y,p.x+r.x,p.y+r.y))
+    }
+
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,numpartition)
+
+    val transfromQueryRDD=queryboxes.flatMap{
+      case(box:Box)=>
+        boxpartitioner.getPartitionsForRangeQuery(box).map(p=>(p,box))
+    }.cache()
+
+    //transfromQueryRDD.foreach(println)
+
+    //val boxes=Array{(Box(0,0,100,100),1); (Box(0,100,1000,1000),2)}
+    //val boxes=Array{(Box(20.10094f,-86.8612f, 32.41f, -80.222f),2)}
+
+    //val queryBoxes=spark.parallelize(boxes,numpartition)
+
+    val joinresultRdd=indexed.sjoin(transfromQueryRDD)((k,id)=>id)
+
+    println("join size is ")
+    joinresultRdd.count()
+    //joinresultRdd.foreach(println)
 
     spark.stop()
 

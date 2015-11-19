@@ -7,7 +7,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
  * Created by merlin on 10/15/15.
  */
-abstract class Node(space:Box)
+abstract class Node(space:Box) extends Serializable
 {
   var parent:Node=null
   var belong:Int=0
@@ -18,6 +18,7 @@ case class Leaf(space:Box) extends Node(space) {
 
   var flag=true
   var count=0
+  var id=0
 
   /**
    * spilit a leaf node, and return branch with leaf node
@@ -45,6 +46,78 @@ case class Leaf(space:Box) extends Node(space) {
     branch
   }
 
+}
+
+/**
+ * this class is used for bracnhing with count
+ * @param space
+ */
+class leafwithcount(override val space:Box) extends Leaf(space)
+{
+  var countnw=0
+  var countne=0
+  var countse=0
+  var countsw=0
+
+   def updatecount(p:Geom) =
+  {
+    val x = this.space.x
+    val y = this.space.y
+
+    val hw = ((this.space.x2-this.space.x) / 2)
+    val hh = ((this.space.y2-this.space.y) / 2)
+
+    if(p.x<hw&&p.y<hh)
+    {
+      this.countsw+=1
+    }else if(p.x>=hw&&p.y<hh)
+    {
+      this.countse+=1
+    }else if(p.x<hw&&p.y>=hh)
+    {
+      this.countnw+=1
+    }else if(p.x>=hw&&p.y>=hh)
+    {
+      this.countne+=1
+    }
+
+  }
+
+  /**
+   * spilit a leaf node, and return branch with leaf node
+   */
+  override  def spilitLeafNode:Branch={
+
+    val x = this.space.x
+    val y = this.space.y
+
+    val hw = ((this.space.x2-this.space.x) / 2)
+    val hh = ((this.space.y2-this.space.y) / 2)
+
+    val branch=Branch(this.space)
+    val nw=new leafwithcount(Box(x,y+hh,x+hw,this.space.y2))
+    nw.count=this.countnw
+    branch.nw=nw
+
+    val ne=new leafwithcount(Box(x + hw, y+hh, this.space.x2, this.space.y2))
+    ne.count=this.countne
+    branch.ne=ne
+
+    val sw=new leafwithcount(Box(x, y, x+hw, y+hh))
+    sw.count=this.countsw
+    branch.sw=sw
+
+    val se=new leafwithcount(Box(x+hw,y,this.space.x2,this.space.y+hh))
+    nw.count=this.countse
+    branch.se=se
+
+    branch.nw.parent=branch
+    branch.ne.parent=branch
+    branch.se.parent=branch
+    branch.sw.parent=branch
+
+    branch
+  }
 }
 
 /**

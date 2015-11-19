@@ -1,9 +1,13 @@
 package cs.purdue.edu.spatialrdd.impl
 
+import cs.purdue.edu.spatialindex.quatree.{QtreeForPartion}
 import org.apache.spark.Partitioner
 import cs.purdue.edu.spatialindex.rtree._
+import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable.HashSet
+import scala.reflect.ClassTag
+
 
 /**
  * static data partition approach
@@ -40,28 +44,148 @@ class Grid2DPartitioner(rangex: Int,rangey: Int, numParts:Int) extends Partition
 /**
  *quadtree based data partition approach
  */
-class QuadtreePartitioner(rangex: Int,rangey: Int, numParts:Int) extends Partitioner{
+class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int,
+                               fraction:Float,
+                               @transient rdd: RDD[_ <: Product2[K, V]])
+  extends Partitioner{
 
-  def numPartitions: Int = numParts
+  var realnumPartitions=0
 
-  def nonNegativeMod(x: Int, mod: Int): Int = {
-    val rawMod = x % mod
-    rawMod + (if (rawMod < 0) mod else 0)
+  def numPartitions: Int = {
+
+    if(realnumPartitions!=0&&realnumPartitions<=partitions)
+    {
+      realnumPartitions
+    }else
+    {
+      partitions
+    }
+
+  }
+  // We allow partitions = 0, which happens when sorting an empty RDD under the default settings.
+  require(partitions >= 0, s"Number of partitions cannot be negative but found $partitions.")
+
+  private val quadtree:QtreeForPartion={
+
+    val total=rdd.count()
+
+    //var sampledata:Array.type =null
+
+    //the max sample data size would be smaller than 0.5 million
+    var fraction2=fraction
+
+    if(total*fraction>5e5)
+    {
+        fraction2=(5e5/total).toFloat
+    }
+
+    val sampledata=rdd.map(_._1).sample(false,fraction2).collect()
+
+    val leafbound=sampledata.length/partitions
+
+    val qtree=new QtreeForPartion(leafbound.toInt)
+
+    sampledata.foreach{
+      case p:Point=>
+        qtree.insertPoint(p)
+      case _=>println("do not support this data type")
+    }
+
+    realnumPartitions=qtree.computePIDofLeaf(sampledata.length,partitions)
+    //qtree.printTreeStructure()
+    qtree
   }
 
 
   def getPartition(key: Any): Int = key match {
-
-    case null => 0
-
-    case _ =>
-      key.asInstanceOf[Integer]
-
+    case p:Point =>
+      this.quadtree.getPID(p)
   }
 
   override def hashCode: Int = numPartitions
 
 }
+
+
+/*private[spark] object QuadtreePartitioner {
+
+  /** Fast multiplicative hash with a nice distribution.
+    */
+  def byteswap32(v: Int): Int = {
+    var hc = v * 0x9e3775cd
+    hc = java.lang.Integer.reverseBytes(hc)
+    hc * 0x9e3775cd
+  }
+
+  /**
+   * Reservoir sampling implementation that also returns the input size.
+   *
+   * @param input input size
+   * @param k reservoir size
+   * @param seed random seed
+   * @return (samples, input size)
+   */
+  def reservoirSampleAndCount[T: ClassTag](
+                                            input: Iterator[T],
+                                            k: Int,
+                                            seed: Long = Random.nextLong())
+  : (Array[T], Int) = {
+    val reservoir = new Array[T](k)
+    // Put the first k elements in the reservoir.
+    var i = 0
+    while (i < k && input.hasNext) {
+      val item = input.next()
+      reservoir(i) = item
+      i += 1
+    }
+
+    // If we have consumed all the elements, return them. Otherwise do the replacement.
+    if (i < k) {
+      // If input size < k, trim the array to return only an array of input size.
+      val trimReservoir = new Array[T](i)
+      System.arraycopy(reservoir, 0, trimReservoir, 0, i)
+      (trimReservoir, i)
+    } else {
+      // If input size > k, continue the sampling process.
+      val rand = new XORShiftRandom(seed)
+      while (input.hasNext) {
+        val item = input.next()
+        val replacementIndex = rand.nextInt(i)
+        if (replacementIndex < k) {
+          reservoir(replacementIndex) = item
+        }
+        i += 1
+      }
+      (reservoir, i)
+    }
+  }
+
+
+  /**
+   * Sketches the input RDD via reservoir sampling on each partition.
+   *
+   * @param rdd the input RDD to sketch
+   * @param sampleSizePerPartition max sample size per partition
+   * @return (total number of items, an array of (partitionId, number of items, sample))
+   */
+  def sketch[K : ClassTag](rdd: RDD[K], sampleSizePerPartition: Int):
+  (Long, Array[(Int, Int, Array[K])]) = {
+    val shift = rdd.id
+
+    // val classTagK = classTag[K] // to avoid serializing the entire partitioner object
+    val sketched = rdd.mapPartitionsWithIndex { (idx, iter) =>
+      val seed = byteswap32(idx ^ (shift << 16))
+      val (sample, n) = reservoirSampleAndCount(
+        iter, sampleSizePerPartition, seed)
+      Iterator((idx, n, sample))
+    }.collect()
+
+    val numItems = sketched.map(_._2.toLong).sum
+    (numItems, sketched)
+
+  }
+
+}*/
 
 /**
  *quadtree based data partition approach

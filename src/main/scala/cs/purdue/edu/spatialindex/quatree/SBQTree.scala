@@ -82,7 +82,6 @@ case class SBQTree() extends serializable{
           this.numofBranch += 1
           this.numofLeaf += 3
           relinkPointer(l, branch)
-
           //mark branch's leaf node as false
           markChildrenAsFalse(branch)
 
