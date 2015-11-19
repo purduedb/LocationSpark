@@ -63,7 +63,7 @@ import cs.purdue.edu.spatialindex.rtree._
     val spatialtextualresult=indexrdd3.rangeFilter(box,textcondition)
   
    /**
-    *test for spatial range join
+    *spatial range join
     */
     val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,9)
     val boxes=Array{(Box(-10,-10,299,399),1);(Box(900,900,1000,1000),2)}
