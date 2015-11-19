@@ -3,7 +3,7 @@
 An Effecient spatialRDD based on the spatial index i.e., immutable quadtree and R-tree
 
 ## Spatial operators 
-###Update RDD, Range and Knn query examples
+###Update RDD, Range Query, KNN Query, Spatial Textual Query, Spatial Join
 ```scala
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialindex.rtree._
