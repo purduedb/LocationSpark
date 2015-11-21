@@ -66,7 +66,7 @@ import cs.purdue.edu.spatialindex.rtree._
     *spatial range join
     */
     val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,9)
-    val boxes=Array{(Box(-10,-10,299,399),1);(Box(900,900,1000,1000),2)}
+    val boxes=Array((Box(-10,-10,299,399),1),(Box(900,900,1000,1000),2))
     val queryBoxes=spark.parallelize(boxes,9)
     val transfromQueryRDD=queryBoxes.flatMap{
       case(box:Box,id)=>
