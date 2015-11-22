@@ -66,19 +66,23 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
 
   val quadtree:QtreeForPartion={
 
-    val total=rdd.count()
+    /*val total=rdd.count()
 
-    //var sampledata:Array.type =null
-
-    //the max sample data size would be smaller than 0.5 million
     var fraction2=fraction
 
     if(total*fraction>5e5)
     {
-        fraction2=(5e5/total).toFloat
-    }
+      fraction2=(5e5/total).toFloat
+    }*/
 
-    val sampledata=rdd.map(_._1).sample(false,fraction2).collect()
+    var sampledata=rdd.map(_._1).sample(false,fraction).collect()
+
+    //in case the sample data size is too small
+    //expand the sample ratio 50 times.
+    if(sampledata.length<10000)
+    {
+      sampledata=rdd.map(_._1).sample(false,fraction*100).collect()
+    }
 
     val leafbound=sampledata.length/partitions
 
@@ -111,6 +115,18 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
     box match {
       case box: Box =>
         this.quadtree.getPIDforBox(box)
+
+      case _ =>
+        println("do not support other data type now")
+        null
+    }
+  }
+
+  def getPointsForSJoin(box:Any):HashSet[Point]={
+
+    box match {
+      case box: Box =>
+        this.quadtree.getPointForRangeQuery(box)
 
       case _ =>
         println("do not support other data type now")
@@ -263,7 +279,6 @@ class Grid2DPartitionerForBox(rangex: Int,rangey: Int, numParts:Int) extends Par
       }
       pids
   }
-
 
 
   def getPartitionsForRangeQuery(key: Any): HashSet[Point] = key match {

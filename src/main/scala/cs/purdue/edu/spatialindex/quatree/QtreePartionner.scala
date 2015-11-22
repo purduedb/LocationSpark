@@ -1,7 +1,7 @@
 package cs.purdue.edu.spatialindex.quatree
 
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
-import cs.purdue.edu.spatialindex.rtree.{Box, Geom}
+import cs.purdue.edu.spatialindex.rtree.{Point, Box, Geom}
 
 import scala.collection.mutable
 import scala.collection.mutable.{HashSet, ArrayBuffer}
@@ -193,6 +193,45 @@ class QtreeForPartion() extends Serializable{
       case b: Branch => {
         //println("brach is "+b.getbox)
         b.findChildNodes(box).foreach(child=>getPIDforBox(box,ret,child))
+      }
+    }
+
+  }
+
+  /**
+   * for the input box, find the corresponding point in each partition.
+    * @param box
+   * @return
+   */
+  def getPointForRangeQuery(box:Box):HashSet[Point]=
+  {
+    val ret=new mutable.HashSet[Point]()
+
+    getPointForRangeQuery(box,ret,this.root)
+
+    ret
+  }
+  /**
+   * recursive to find the overlap leaf node for the input box
+   * @param box
+   * @param ret
+   * @param n
+   */
+  private def getPointForRangeQuery(box:Box,ret:HashSet[Point], n:Node):Unit=
+  {
+    n match {
+      case l: leafwithcount =>
+
+        //println("search leaf "+l.getbox)
+        if (l.getbox.intersects(box))
+        {
+          //ret.+=(l.id)
+          ret.+=(Point((l.getbox.x+l.getbox.x2)/2,(l.getbox.y+l.getbox.y2)/2))
+        }
+
+      case b: Branch => {
+        //println("brach is "+b.getbox)
+        b.findChildNodes(box).foreach(child=>getPointForRangeQuery(box,ret,child))
       }
     }
 

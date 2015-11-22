@@ -3,8 +3,9 @@ package test
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialindex.rtree._
+import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkContext, SparkConf}
-import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitionerForBox, Util}
+import cs.purdue.edu.spatialrdd.impl.{QtreePartitioner, Grid2DPartitionerForBox, Util}
 
 
 /**
@@ -58,15 +59,25 @@ object testSpatialRDD
   /**
    * test for range query
    */
-  def testForRangeQuery[V](srdd:SpatialRDD[Point,V])=
+  def testForRangeQuery[V](indexed:SpatialRDD[Point,V])=
   {
     //val box = Box(2 , 2, 90, 90)
 
-    val searchbox=Box(20.10094f,-86.8612f, 32.41f, -80.222f)
+    val searchbox=Box(23.10094f,-86.8612f, 32.41f, -85.222f)
 
-    val rangesearchresult=srdd.rangeFilter(searchbox,(id)=>true)
+    def textcondition[V](z:Entry[V]):Boolean=
+    {
+      z.value match
+      {
+        case v:String =>
+          val vl=v.toLowerCase()
+          (vl.contains("bitches")||vl.contains("bitch")||v.contains("bit"))
+      }
+    }
 
-    rangesearchresult.foreach(println)
+    val rangesearchresult=indexed.rangeFilter(searchbox,textcondition)
+
+    println(rangesearchresult.size)
 
   }
 
@@ -94,15 +105,13 @@ object testSpatialRDD
 
     val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,numpartition)
 
-    val numofQueries=2
-
     //val boxes=Array{(Box(0,0,100,100),1); (Box(0,100,1000,1000),2)}
-    val boxes=Array{(Box(20.10094f,-86.8612f, 32.41f, -80.222f),2)}
+    val boxes=Array{Box(20.10094f,-86.8612f, 32.41f, -80.222f);Box(23.10094f,-83.8612f, 32.41f, -80.222f)}
 
     val queryBoxes=spark.parallelize(boxes,numpartition)
 
     val transfromQueryRDD=queryBoxes.flatMap{
-      case(box:Box,id)=>
+      case(box:Box)=>
         boxpartitioner.getPartitionsForRangeQuery(box).map(p=>(p,box))
     }
 
@@ -112,9 +121,33 @@ object testSpatialRDD
   }
 
 
+  def tranformRDDGridPartition[K,V](queriesboxes:RDD[V], numpartition:Int):RDD[(K,V)]={
+
+    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,numpartition)
+
+    queriesboxes.flatMap{
+      case(box:Box)=>
+        boxpartitioner.getPartitionsForRangeQuery(box).map(p=>(p.asInstanceOf[K],box.asInstanceOf[V]))
+    }
+  }
+
+  def tranformRDDQuadtreePartition[K,V](boxRDD:RDD[V], partionner:Option[org.apache.spark.Partitioner]):RDD[(K,V)]={
+    boxRDD.flatMap{
+      case(box:Box)=>
+      {
+        partionner.getOrElse(None) match
+        {
+          case qtreepartition:QtreePartitioner[K,V]=>
+            qtreepartition.getPointsForSJoin(box).map(p=>(p.asInstanceOf[K],box.asInstanceOf[V]))
+        }
+      }
+    }
+  }
+
+
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
     val spark = new SparkContext(conf)
 
@@ -122,15 +155,42 @@ object testSpatialRDD
 
     val datardd=spark.textFile(inputfile)
 
-    val locationRDD=datardd.filter((line:String)=>line.split(",").length>=6).map{
+    val locationRDD=datardd.map{
       line=>
-       val arry=line.split(",")
-        (Point(arry(2).toFloat, arry(3).toFloat), arry(5) )
-    }
+        val arry=line.split(",")
+        try {
+          (Point(arry(2).toFloat, arry(3).toFloat), arry(5))
+        }catch
+          {
+            case e:Exception=>
+            //println("input format error")
+          }
+    }.map
+    {
+      case (point:Point,v)=>(point,v)
+      case ()=>null
+      case _=>null
+    }.filter(_!=null)
 
     val indexed = SpatialRDD(locationRDD).cache()
 
-    testForSJOIN(indexed,spark)
+    val numpartition=indexed.partitions.length
+
+    val boxes=Array(Box(20.10094f,-86.8612f, 32.41f, -80.222f),Box(23.10094f,-83.8612f, 32.41f, -80.222f))
+
+    val queryBoxes=spark.parallelize(boxes,numpartition)
+
+    val queriesRDD=tranformRDDQuadtreePartition[Point,Box](queryBoxes,indexed.partitioner)
+
+    queriesRDD.foreach(println)
+
+    val joinresultRdd=indexed.sjoins(queriesRDD)((k,id)=>id)
+
+    joinresultRdd.foreach(println)
+
+    val joinresultRdd2=indexed.sjoin(queryBoxes)((k,id)=>id)
+
+    joinresultRdd2.foreach(println)
 
     spark.stop()
 

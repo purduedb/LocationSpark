@@ -239,7 +239,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
    * (1)the rdd.sjoin(other)!=other.sjoin(rdd)
    * (2)the other rdd have key and box paris
    */
-  def sjoin[U: ClassTag]
+  def sjoins[U: ClassTag]
   (other: RDD[(K, U)])(f: (K, V) => V): SpatialRDD[K, V] =
     other match {
     case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
@@ -247,6 +247,79 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
     case _ =>
       this.zipPartitionsWithOther(other)(new OtherJoinZipper(f))
   }
+
+  /**
+   * this rdd would be the data rdd, and other rdd is the spatial range query rdd
+   * this data rdd key is the location of data, value the correspond data
+   * this spatial range query rdd, with key is the location of the query box, the value is the range query box
+   * Notice:
+   * (1)the rdd.sjoin(other)!=other.sjoin(rdd)
+   * (2)the other rdd(box)
+   */
+  def sjoin[U: ClassTag]
+  (other: RDD[U])(f: (K, V) => V): SpatialRDD[K, V] = {
+
+    /**
+     * map the rdd(box) to rdd(point, box)
+     */
+    def tranformRDDGridPartition[K: ClassTag, U: ClassTag](queriesboxes: RDD[U], numpartition: Int): RDD[(K, U)] = {
+
+      val boxpartitioner = new Grid2DPartitionerForBox(qtreeUtil.rangx, qtreeUtil.rangx, numpartition)
+
+      queriesboxes.flatMap {
+        case (box: Box) =>
+          boxpartitioner.getPartitionsForRangeQuery(box).map(p => (p.asInstanceOf[K], box.asInstanceOf[U]))
+      }
+    }
+
+    /**
+     * map the rdd(box) to rdd(point, box)
+     */
+    def tranformRDDQuadtreePartition[K: ClassTag, U: ClassTag](boxRDD: RDD[U], partionner: Option[org.apache.spark.Partitioner]):
+    RDD[(K, U)] = {
+      boxRDD.flatMap {
+        case (box: Box) => {
+          partionner.getOrElse(None) match {
+            case qtreepartition: QtreePartitioner[K, V] =>
+              qtreepartition.getPointsForSJoin(box).map(p => (p.asInstanceOf[K], box.asInstanceOf[U]))
+          }
+        }
+      }
+    }
+
+    //transform this rdd(box) into a RDD(point, box)
+    this.partitioner.getOrElse(None) match {
+
+      case qtree: QtreePartitioner[K, V] =>
+
+        val queriesRDD = tranformRDDQuadtreePartition[K, U](other, this.partitioner)
+
+        queriesRDD match {
+          case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
+            this.zipIndexedRDDPartitions(other)(new JoinZipper(f))
+
+          case other: RDD[(K, U)] =>
+            this.zipPartitionsWithOther(other)(new OtherJoinZipper(f))
+        }
+
+      case grid: Grid2DPartitioner =>
+
+        val queriesRDD = tranformRDDGridPartition[K, U](other, this.partitions.length)
+
+        queriesRDD match {
+          case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
+            this.zipIndexedRDDPartitions(other)(new JoinZipper(f))
+
+          case other: RDD[(K, U)] =>
+            this.zipPartitionsWithOther(other)(new OtherJoinZipper(f))
+        }
+
+      case None => this
+
+    }
+
+  }
+
 
   /** Applies a function to corresponding partitions of `this` and another IndexedRDD. */
   private def zipIndexedRDDPartitions[V2: ClassTag, V3: ClassTag]
@@ -338,7 +411,7 @@ object SpatialRDD {
   : SpatialRDD[K, V] = {
     val elemsPartitioned =
         //elems.partitionBy(new Grid2DPartitioner(qtreeUtil.rangx, qtreeUtil.rangy, elems.partitions.size))
-      elems.partitionBy(new QtreePartitioner(elems.partitions.length,0.2f,elems))
+      elems.partitionBy(new QtreePartitioner(elems.partitions.length,0.001f,elems))
 
     val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
       iter => Iterator(RtreePartition(iter, z, f)),

@@ -236,6 +236,15 @@ case class RTree[V](root: Node[V], size: Int) {
     root.contains(entry)
 
   /**
+   * Return whether or not the given entry exists in the tree.
+   */
+  def contains[K](k:K, value:V): Boolean =
+  {
+    root.contains(Entry(k.asInstanceOf[Point], value) )
+  }
+
+
+  /**
    * Map the entry values from A to B.
    */
   def map[B](f: V => B): RTree[B] =

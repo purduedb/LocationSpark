@@ -151,18 +151,22 @@ class RtreePartition[K, V]
 
     val newMap = this.tree
 
-    var retmap=new RTree(Node.empty[V], 0)
+    val retmap=new RTree(Node.empty[V], 0)
 
-    for (ku <- other)
+    other.foreach{
+      case(point,b:Box)=>
+        //println("boxes:"+b)
+        val ret = newMap.search(b, _ => true)
+        retmap.insertAll(ret)
+    }
+
+    /*for (ku <- other)
     {
       //val kBytes = kSer.toBytes(ku._1)
       ku._2 match
       {
         case b:Box=> {
 
-          //println("boxes:"+b)
-
-          val ret = newMap.search(b, _ => true)
 
           //println("ret size"+ret.length)
 
@@ -171,15 +175,20 @@ class RtreePartition[K, V]
             ret.foreach{
               element=>
                 val newV=f(element.geom.asInstanceOf[K],element.value)
-                retmap=retmap.insert(element.geom.asInstanceOf[Point], newV)
+                //avoide insert the duplicate items
+                if(!retmap.contains(element))
+                {
+                  retmap=retmap.insert(element.geom.asInstanceOf[Point], newV)
+                }
+
             }
           }
         }
         case _=>
           println("wrong for range query type")
       }
-
-    }
+        }
+        */
 
     //println(retmap.size)
 
