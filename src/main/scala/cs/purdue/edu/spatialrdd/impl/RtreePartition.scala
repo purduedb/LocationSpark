@@ -5,6 +5,8 @@ import cs.purdue.edu.spatialrdd._
 
 import org.apache.spark.Logging
 
+import scala.collection.immutable.HashMap
+
 
 /**
  * the key is the location, and value is the related data like text
@@ -153,6 +155,10 @@ class RtreePartition[K, V]
 
     val newMap = this.tree
 
+    /**
+     * below is build a rtree based hashmap, this will bring overhead to
+     * build a rtree for the return results
+     */
     val retmap=new RTree(Node.empty[V], 0)
 
     other.foreach{
@@ -161,6 +167,25 @@ class RtreePartition[K, V]
         val ret = newMap.search(b, _ => true)
         retmap.insertAll(ret)
     }
+      this.withMap(retmap)
+
+    /**
+     * below is used for hashmap based join
+     */
+    /*var retmap=new HashMap[K,V]
+
+    other.foreach{
+      case(point,b:Box)=>
+        //println("boxes:"+b)
+        val ret = newMap.search(b, _ => true)
+        ret.foreach {
+          case (e: Entry[V]) =>
+            retmap = retmap + (e.geom.asInstanceOf[K] -> e.value.asInstanceOf[V])
+        }
+    }
+
+    new SMapPartition(retmap)*/
+
 
     /*for (ku <- other)
     {
@@ -194,7 +219,7 @@ class RtreePartition[K, V]
 
     //println(retmap.size)
 
-    this.withMap(retmap)
+
   }
 
 

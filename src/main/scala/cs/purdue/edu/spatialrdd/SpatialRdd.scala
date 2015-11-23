@@ -280,12 +280,25 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
       }
     }
 
+
+
+    def getPartitionSize[K : ClassTag](rdd: RDD[K]): (Array[(Int, Int)]) = {
+      // val classTagK = classTag[K] // to avoid serializing the entire partitioner object
+      val sketched = rdd.mapPartitionsWithIndex { (idx, iter) =>
+        Iterator((idx, iter.size))
+      }.collect()
+      sketched
+    }
+
     //transform this rdd(box) into a RDD(point, box)
     this.partitioner.getOrElse(None) match {
 
       case qtree: QtreePartitioner[K, V] =>
 
         val queriesRDD = tranformRDDQuadtreePartition[K, U](other, this.partitioner)
+
+        println("partition summary for query")
+        getPartitionSize(queriesRDD).foreach(println)
 
         queriesRDD match {
           case other: SpatialRDD[K, U] if partitioner == other.partitioner =>

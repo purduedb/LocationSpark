@@ -4,7 +4,12 @@ import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree.{Entry, Box, Point}
 import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
 import org.apache.spark.rdd.RDD
+import org.apache.spark.util.random.SamplingUtils
 import org.apache.spark.{SparkContext, SparkConf}
+
+import scala.reflect.ClassTag
+import scala.util.hashing._
+
 /**
  * Created by merlin on 11/16/15.
  */
@@ -13,9 +18,9 @@ object SpatialRDDMain {
 
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
 
     val spark = new SparkContext(conf)
 
@@ -88,6 +93,20 @@ object SpatialRDDMain {
 
     println("join result")
     println(joinresultRdd.count())
+
+    println("partition summary for data")
+    getPartitionSize(indexed).foreach(println)
+
+    //println("partition summary for query")
+    //getPartitionSize(queryboxes).foreach(println)
+
+    def getPartitionSize[K : ClassTag](rdd: RDD[K]): (Array[(Int, Int)]) = {
+      // val classTagK = classTag[K] // to avoid serializing the entire partitioner object
+      val sketched = rdd.mapPartitionsWithIndex { (idx, iter) =>
+        Iterator((idx, iter.size))
+      }.collect()
+      sketched
+    }
 
     //joinresultRdd.foreach(println)
 
