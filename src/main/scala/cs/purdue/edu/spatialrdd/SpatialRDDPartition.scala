@@ -55,7 +55,6 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
   /**
    * K-NN search for certain point, and return entries meet the condition
    */
-
   def knnfilter[U](entry:U, k:Int, z:Entry[V]=>Boolean):Iterator[(K,V, Double)]
 
 

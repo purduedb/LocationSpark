@@ -117,7 +117,14 @@ sealed abstract class Node[V] extends HasGeom { self =>
   def insert(entry: Entry[V]): Either[Vector[Node[V]], Node[V]] = {
     this match {
       case Leaf(children, box) =>
-        val cs = children :+ entry
+
+        var cs=children
+
+        if(!children.contains(entry))
+        {
+            cs = children :+ entry
+        }
+
         if (cs.length <= MaxEntries) {
           Right(Leaf(cs, box.expand(entry.geom)))
         } else {

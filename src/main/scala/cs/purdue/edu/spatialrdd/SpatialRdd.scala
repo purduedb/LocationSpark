@@ -115,11 +115,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /** Gets the values corresponding to the specific box, if any. */
   def rangeFilter[U](box:U,z:Entry[V]=>Boolean): Map[K, V] = {
 
-    //val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangy,this.partitions.size)
-
-    //val ksByPartition = ks.map(k => boxpartitioner.getPartitions(k))
-    //val partitionset = boxpartitioner.getPartitionsForBox(box)
-
     var partitionset=new mutable.HashSet[Int]
 
     this.partitioner.getOrElse(None) match{
@@ -135,8 +130,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
         return Map.empty
     }
 
-    //println("get the location of partition")
-    //partitionset.foreach(println)
 
     val results: Array[Array[(K, V)]] = context.runJob(partitionsRDD,
       (context: TaskContext, partIter: Iterator[SpatialRDDPartition[K, V]]) => {
@@ -329,6 +322,8 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
     new SpatialRDD(newPartitionsRDD)
   }
 
+
+
   /*************************************************/
 
   /** Applies a function to corresponding partitions of `this` and a pair RDD. */
@@ -403,7 +398,7 @@ object SpatialRDD {
   (elems: RDD[(K, V)])
   : SpatialRDD[K, V] = updatable[K, V, V](elems, (id, a) => a, (id, a, b) => b)
 
-  /** Constructs an IndexedRDD from an RDD of pairs.
+  /** Constructs an SpatialRDD from an RDD of pairs.
     * the default partitioner is the quadtree based partioner
     * */
   def updatable[K: ClassTag , U: ClassTag, V: ClassTag]
@@ -414,8 +409,11 @@ object SpatialRDD {
       elems.partitionBy(new QtreePartitioner(elems.partitions.length,0.001f,elems))
 
     val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
-      iter => Iterator(RtreePartition(iter, z, f)),
-      preservesPartitioning = true)
+      //iter => Iterator(RtreePartition(iter, z, f)),
+      iter => Iterator(SMapPartition(iter, z, f)),
+      preservesPartitioning = true
+    )
+
     new SpatialRDD(partitions)
   }
 

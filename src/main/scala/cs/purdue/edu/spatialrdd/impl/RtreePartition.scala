@@ -78,7 +78,9 @@ class RtreePartition[K, V]
    * values, if an old value exists, or `z` otherwise. Returns a new IndexedRDDPartition that
    * reflects the modification.
    */
-  override def multiput[U](kvs: Iterator[(K, U)], z: (K, U) => V, f: (K, V, U) => V): SpatialRDDPartition[K, V] =
+  override def multiput[U](kvs: Iterator[(K, U)],
+                           z: (K, U) => V,
+                           f: (K, V, U) => V): SpatialRDDPartition[K, V] =
   {
 
     var newMap = this.tree
@@ -113,7 +115,7 @@ class RtreePartition[K, V]
     val newMap = this.tree
 
     val ret=newMap.search(box.asInstanceOf[Box],z)
-
+    //println("search XXXXXXXXXXXXXXXXXXXXXX"+ret.size+" "+newMap.size)
     ret.map(element=>(element.geom.asInstanceOf[K], element.value)).toIterator
 
   }
