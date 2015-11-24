@@ -1,4 +1,4 @@
-# SpatialRDD++
+# LocationSpark
 
 An Effecient spatialRDD based on the spatial index i.e., immutable quadtree and R-tree
 
