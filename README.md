@@ -1,6 +1,6 @@
 # LocationSpark
 
-An Effecient spatialRDD based on the spatial index i.e., immutable quadtree and R-tree
+An Effecient RDD based on the spatial index i.e., immutable quadtree and R-tree
 
 ## Spatial operators 
 ###Update RDD, Range Query, KNN Query, Spatial Textual Query, Spatial Join
