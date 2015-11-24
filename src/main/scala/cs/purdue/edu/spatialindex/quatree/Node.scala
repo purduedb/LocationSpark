@@ -115,7 +115,7 @@ class leafwithcount(override val space:Box) extends Leaf(space)
     branch.ne.parent=branch
     branch.se.parent=branch
     branch.sw.parent=branch
-
+    //branch.vcount=this.count
     branch
   }
 }

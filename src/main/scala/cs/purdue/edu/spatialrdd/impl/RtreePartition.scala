@@ -154,12 +154,11 @@ class RtreePartition[K, V]
   (f: (K, V) => V): SpatialRDDPartition[K, V] = {
 
     val newMap = this.tree
-
     /**
      * below is build a rtree based hashmap, this will bring overhead to
      * build a rtree for the return results
      */
-    val retmap=new RTree(Node.empty[V], 0)
+   /* val retmap=new RTree(Node.empty[V], 0)
 
     other.foreach{
       case(point,b:Box)=>
@@ -167,24 +166,25 @@ class RtreePartition[K, V]
         val ret = newMap.search(b, _ => true)
         retmap.insertAll(ret)
     }
-      this.withMap(retmap)
+    this.withMap(retmap)
+    */
 
     /**
      * below is used for hashmap based join
      */
-    /*var retmap=new HashMap[K,V]
+    var retmap=new HashMap[K,V]
 
     other.foreach{
       case(point,b:Box)=>
-        //println("boxes:"+b)
         val ret = newMap.search(b, _ => true)
         ret.foreach {
           case (e: Entry[V]) =>
-            retmap = retmap + (e.geom.asInstanceOf[K] -> e.value.asInstanceOf[V])
+            if(!retmap.contains(e.geom.asInstanceOf[K]))
+              retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
         }
     }
 
-    new SMapPartition(retmap)*/
+    new SMapPartition(retmap)
 
 
     /*for (ku <- other)
@@ -219,21 +219,8 @@ class RtreePartition[K, V]
 
     //println(retmap.size)
 
-
   }
 
-
-  /*def createUsingIndex[V2: ClassTag](elems: Iterator[(K, V2)])(implicit kSer: PointSerializer[K,V]): SpatialRDDPartition[K, V2]=
-  {
-    //val map = RTree(elems.flatMap{ (k, v) => kSer.toEntry(k,v)})
-
-    //new RtreePartition(map)
-
-    var newMap = this.tree
-
-    this.withMap(newMap)
-
-  }*/
 
 }
 

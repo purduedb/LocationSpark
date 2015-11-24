@@ -18,9 +18,9 @@ object SpatialRDDMain {
 
   def main(args: Array[String]) {
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
 
     val spark = new SparkContext(conf)
 
@@ -79,7 +79,7 @@ object SpatialRDDMain {
 
     println(joinresultRdd.count())*/
 
-    val queryrdd=locationRDD.sample(false,0.0001)
+    val queryrdd=locationRDD.sample(false,0.1)
 
     println(queryrdd.count)
 

@@ -12,6 +12,7 @@ import scala.collection.mutable.{HashSet, ArrayBuffer}
 class QtreeForPartion() extends Serializable{
 
   var root: Node = null
+  var depth=0
 
   var leafbound=0
 
@@ -103,9 +104,73 @@ class QtreeForPartion() extends Serializable{
 
     queue += this.root
 
-    var front = 1
-    var end = queue.length
-    var depth = 0
+    var pid=0
+
+    val tmp=new ArrayBuffer[leafwithcount]()
+
+    val bound=total/numPartition
+
+    var countindex=0
+    var leafcount=0
+
+    while (!queue.isEmpty) {
+
+      val pnode = queue.dequeue()
+
+      pnode match {
+
+        case l: leafwithcount =>
+
+          if((l.count+countindex)<bound)
+          {
+            countindex=countindex+l.count
+            leafcount+=1
+          }else
+          {
+            tmp.foreach(l=>l.id=pid)
+            pid+=1
+            countindex=0
+            tmp.clear()
+          }
+
+          tmp.+=(l)
+
+        case b: Branch =>
+          queue.enqueue(b.nw)
+          queue.enqueue(b.ne)
+          queue.enqueue(b.se)
+          queue.enqueue(b.sw)
+
+      }
+
+     /* front = front + 1
+
+      if (front > end) {
+        depth = depth + 1
+        front = 1
+        end = queue.length
+      }*/
+
+    }//for bfs
+
+    tmp.foreach(l=>l.id=pid)
+
+    pid+1
+
+  }
+
+  /**
+   * annotate those leaf node with pid
+   */
+  def computePIDofLeafDFS(total:Int,numPartition:Int):Int={
+
+    //val queue:Queue[Node]=new Queue()
+
+    val stack = new scala.collection.mutable.Stack[Node]
+
+    stack.push(this.root)
+    //queue +=
+
     var pid=0
 
     val tmp=new ArrayBuffer[leafwithcount]()
@@ -113,9 +178,9 @@ class QtreeForPartion() extends Serializable{
     val bound=total/numPartition
     var countindex=0
 
-    while (!queue.isEmpty) {
+    while (!stack.isEmpty) {
 
-      val pnode = queue.dequeue()
+      val pnode = stack.pop()
 
       pnode match {
 
@@ -136,19 +201,11 @@ class QtreeForPartion() extends Serializable{
           tmp.+=(l)
 
         case b: Branch =>
-          queue.enqueue(b.nw)
-          queue.enqueue(b.ne)
-          queue.enqueue(b.se)
-          queue.enqueue(b.sw)
+          stack.push(b.nw)
+          stack.push(b.ne)
+          stack.push(b.se)
+          stack.push(b.sw)
 
-      }
-
-      front = front + 1
-
-      if (front > end) {
-        depth = depth + 1
-        front = 1
-        end = queue.length
       }
 
     }//for bfs
@@ -308,7 +365,7 @@ class QtreeForPartion() extends Serializable{
 
       pnode match {
         case l: leafwithcount =>
-          print(" L(" + l.id + ") ")
+          print(" L(id: " + l.id+" c:"+l.count + ") ")
           numofleaf = numofleaf + 1
 
         case b: Branch =>

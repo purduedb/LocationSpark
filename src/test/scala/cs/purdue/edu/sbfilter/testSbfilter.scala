@@ -252,9 +252,9 @@ cov(1)(1)=3000
     val numofpoints=10000
     val numofqueries=500000
 
-    val mean1=Array(600.0,600.0)
-    val mean2=Array(1000.0,1000.0)
-    val mean3=Array(600.0,1500.0)
+    val mean1=Array(6.0,6.0)
+    val mean2=Array(10.0,10.0)
+    val mean3=Array(60.0,15.0)
 
     val es = (1 to numofpoints).map(n => Entry(gaussianPoint(mean1), n))
     val es2 = (1 to numofpoints).map(n => Entry(gaussianPoint(mean2), n))
@@ -265,8 +265,8 @@ cov(1)(1)=3000
 
     val boxes = (1 to numofqueries).map{
       n =>
-      val p1=uniformPoint(400,400, 700,700)
-      val p2=uniformPoint(2,2, 300,300)
+      val p1=uniformPoint(-(qtreeUtil.rangx/2),-qtreeUtil.rangy/2, (qtreeUtil.rangx/2),qtreeUtil.rangy/2)
+      val p2=uniformPoint(1,1, 3,3)
       Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
     }
 

@@ -66,19 +66,18 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
 
   val quadtree:QtreeForPartion={
 
-    /*val total=rdd.count()
+    val total=rdd.count()
 
     var fraction2=fraction
 
     if(total*fraction>5e5)
     {
       fraction2=(5e5/total).toFloat
-    }*/
+    }
 
-    var sampledata=rdd.map(_._1).sample(false,fraction).collect()
+    var sampledata=rdd.map(_._1).sample(false,fraction2).collect()
 
-    //in case the sample data size is too small
-    //expand the sample ratio 50 times.
+    //in case the sample data size is too small,expand the sample ratio 50 times.
     if(sampledata.length<10000)
     {
       sampledata=rdd.map(_._1).sample(false,fraction*100).collect()
@@ -91,11 +90,14 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
     sampledata.foreach{
       case p:Point=>
         qtree.insertPoint(p)
+
       case _=>println("do not support this data type")
     }
 
     realnumPartitions=qtree.computePIDofLeaf(sampledata.length,partitions)
+    //println("bound "+leafbound)
     //qtree.printTreeStructure()
+
     qtree
   }
 
