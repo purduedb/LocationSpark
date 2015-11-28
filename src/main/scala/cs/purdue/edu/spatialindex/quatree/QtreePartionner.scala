@@ -14,7 +14,7 @@ class QtreeForPartion() extends Serializable{
   var root: Node = null
   var depth=0
 
-  var leafbound=0
+  var leafbound=10
 
   def this(leafbound:Int) {
     this
@@ -55,6 +55,8 @@ class QtreeForPartion() extends Serializable{
           val branch = l.spilitLeafNode
           relinkPointer(l, branch)
           val subbranch=this.findSubchildren(branch,point)
+          if(subbranch==null)
+            return
           insertPoint(subbranch,point)
         }
       }

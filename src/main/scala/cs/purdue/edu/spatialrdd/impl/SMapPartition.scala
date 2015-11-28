@@ -1,5 +1,6 @@
 package cs.purdue.edu.spatialrdd.impl
 
+import cs.purdue.edu.spatialindex.quatree.SBQTree
 import cs.purdue.edu.spatialindex.rtree.{Entry}
 import cs.purdue.edu.spatialrdd.SpatialRDDPartition
 import org.apache.spark.Logging
@@ -20,6 +21,9 @@ class SMapPartition[K, V]
   )
   extends SpatialRDDPartition[K,V] with Logging
 {
+
+   val Quadfilter=new SBQTree(1000)
+  //qtree.trainSBfilter(datapoint)
 
   override def isDefined(k: K): Boolean = {
       data.contains(k)
@@ -108,15 +112,19 @@ class SMapPartition[K, V]
     other.foreach
     {
       case(pid,b:Box)=>
-
-        this.data.foreach
+        //if(this.Quadfilter.queryBox(b))
         {
-          case(p,v)=>
-            if(b.contains(p.asInstanceOf[Geom])&&(!ret.contains(p)))
-            {
-              ret=ret + (p -> f(p,v))
-            }
+          this.data.foreach
+          {
+            case(p,v)=>
+
+              if(b.contains(p.asInstanceOf[Geom])&&(!ret.contains(p)))
+              {
+                ret=ret + (p -> f(p,v))
+              }
+          }
         }
+
     }
 
     new SMapPartition(ret)
@@ -189,7 +197,10 @@ private[spatialrdd] object SMapPartition
       case(k, v) => map = map + (k -> v)
     }
 
-    new SMapPartition(map)
+    val smp=new SMapPartition(map)
+    //smp.Quadfilter.trainSBfilter(iter.map{case(k,v)=>k.asInstanceOf[Geom]})
+
+    smp
   }
 
 }

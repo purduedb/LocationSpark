@@ -2,7 +2,9 @@ package cs.purdue.edu.spatialindex
 
 import cs.purdue.edu.spatialbloomfilter.SBFilter
 import cs.purdue.edu.spatialindex.quatree.{SBQTree}
-import cs.purdue.edu.spatialindex.rtree.Box
+import cs.purdue.edu.spatialindex.rtree.{Geom, Box}
+
+import scala.collection.immutable.HashMap
 
 /**
  * Created by merlin on 10/24/15.
@@ -47,6 +49,7 @@ object testQtree {
     val sbfilterv2=SBFilter(qtree.getSBFilterV2())
     println(sbfilterv2.searchRectangleV2(querybox))
     println(sbfilter.searchRectangleWithPV2(querybox,0.9))
+
 
    // println(sbfilter.searchRectangleWithP(querybox))
 

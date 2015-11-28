@@ -29,10 +29,10 @@ object testSbfilter {
     cov(1)(0)=0.4
     cov(1)(1)=500*/
 
-    cov(0)(0)=1000
-cov(0)(1)=1.5
-cov(1)(0)=1.5
-cov(1)(1)=3000
+    cov(0)(0)=110
+    cov(0)(1)=1.5
+    cov(1)(0)=1.5
+    cov(1)(1)=60
 
     val generator=new MultivariateNormalDistribution(mean,cov)
     val data=generator.sample()
@@ -249,7 +249,7 @@ cov(1)(1)=3000
 
   def main(args: Array[String]): Unit = {
 
-    val numofpoints=10000
+    val numofpoints=400000
     val numofqueries=500000
 
     val mean1=Array(6.0,6.0)
@@ -282,6 +282,9 @@ cov(1)(1)=3000
     val rtreequerytime=queryTimeofRtree(rt,boxes.toIterator)
     println("*"*100)
 
+
+
+    /*
     //get the SBQtree build time
     val sbqtree=buildTimeofSBQtree(rt,boxes.toIterator,rtreequerytime)
     println("*"*100)
@@ -311,6 +314,7 @@ cov(1)(1)=3000
     queryTimeOfSBfilterV2(rt,boxes.toIterator,updatesbfliter)
 
    // println("*"*100)
+   */
 
   }
 }

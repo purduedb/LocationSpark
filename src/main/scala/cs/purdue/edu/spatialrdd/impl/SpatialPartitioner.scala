@@ -1,5 +1,6 @@
 package cs.purdue.edu.spatialrdd.impl
 
+import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.quatree.{QtreeForPartion}
 import org.apache.spark.Partitioner
 import cs.purdue.edu.spatialindex.rtree._
@@ -83,7 +84,12 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
       sampledata=rdd.map(_._1).sample(false,fraction*100).collect()
     }
 
-    val leafbound=sampledata.length/partitions
+    var leafbound=sampledata.length/partitions
+
+    if(leafbound==0)
+    {
+      leafbound=qtreeUtil.leafbound
+    }
 
     val qtree=new QtreeForPartion(leafbound.toInt)
 

@@ -492,6 +492,7 @@ case class Leaf[V](children: Vector[Entry[V]], box: Box) extends Node[V] {
  */
 case class Entry[V](geom: Geom, value: V) extends HasGeom
 
+
 object Node {
 
   def empty[V]: Node[V] = Leaf(Vector.empty, Box.empty)

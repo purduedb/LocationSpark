@@ -272,7 +272,9 @@ object qtreeUtil{
   final def rangx=180
   final def rangy=360
 
-  final def leafbound=10
+  final def leafbound=100
+
+  final def MaxLeafBound=80
 
   def leafcount=100
 
@@ -336,7 +338,6 @@ object qtreeUtil{
     val p2=getRandomUniformPoint(rangex/5,rangey/5, rangx2/5,rangey2/5)
     Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
   }
-
 
 }
 

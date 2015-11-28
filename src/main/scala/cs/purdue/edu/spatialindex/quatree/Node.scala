@@ -1,8 +1,9 @@
 package cs.purdue.edu.spatialindex.quatree
 
-import cs.purdue.edu.spatialindex.rtree.{Geom, Box}
+import cs.purdue.edu.spatialindex.rtree.{Entry, Geom, Box}
 
 import scala.collection.mutable.ArrayBuffer
+import scala.reflect.ClassTag
 
 /**
  * Created by merlin on 10/15/15.
@@ -46,10 +47,87 @@ case class Leaf(space:Box) extends Node(space) {
     branch
   }
 
+
+
 }
 
 /**
- * this class is used for bracnhing with count
+ * this is used for store the data for that partition
+ * @param space
+ */
+class leafwithstorage[V](override val space:Box) extends Leaf(space)
+{
+  private val NODE_POINTS_HASH= new scala.collection.mutable.HashMap[Geom,V]
+
+  def storage=this.NODE_POINTS_HASH
+
+  def clean=this.NODE_POINTS_HASH.clear()
+
+  def addEntry(e:Entry[V]):Boolean=
+  {
+    if(!NODE_POINTS_HASH.contains(e.geom))
+    {
+      NODE_POINTS_HASH.put(e.geom, e.value)
+      this.count += 1
+      true
+    }else
+    {
+      false
+    }
+  }
+
+  def removeEntry(e:Entry[V]):Boolean=
+  {
+    if(NODE_POINTS_HASH.contains(e.geom))
+    {
+      NODE_POINTS_HASH.remove(e.geom)
+      this.count -= 1
+      true
+    }else
+    {
+      false
+    }
+  }
+
+  def getEntry(key:Geom): Option[Entry[V]] =
+  {
+    if(this.NODE_POINTS_HASH.contains(key))
+    {
+      Some(Entry(key,this.NODE_POINTS_HASH.get(key).get))
+    }else{
+      None
+    }
+  }
+
+  /**
+   * spilit a leaf node, and return branch with leaf node
+   */
+  override def spilitLeafNode:Branch={
+
+    val x = this.space.x
+    val y = this.space.y
+
+    val hw = ((this.space.x2-this.space.x) / 2)
+    val hh = ((this.space.y2-this.space.y) / 2)
+
+    val branch=Branch(this.space)
+
+    branch.nw=new leafwithstorage(Box(x,y+hh,x+hw,this.space.y2))
+    branch.ne=new leafwithstorage(Box(x + hw, y+hh, this.space.x2, this.space.y2))
+    branch.se=new leafwithstorage(Box(x+hw,y,this.space.x2,this.space.y+hh))
+    branch.sw=new leafwithstorage(Box(x, y, x+hw, y+hh))
+
+    branch.nw.parent=branch
+    branch.ne.parent=branch
+    branch.se.parent=branch
+    branch.sw.parent=branch
+
+    branch
+  }
+
+}
+/**
+ * this class is used for store the count into the subchildren
  * @param space
  */
 class leafwithcount(override val space:Box) extends Leaf(space)
@@ -134,7 +212,14 @@ case class Branch(space:Box) extends Node(space){
   var bcode:Int=0
   var vcount:Int=0
 
-
+  def children:Iterator[Node]={
+    var children= new Array[Node](4)
+    children(0)=nw
+    children(1)=ne
+    children(2)=sw
+    children(3)=se
+    children.toIterator
+  }
   /**
    *find child node intersect with the query box
    */
