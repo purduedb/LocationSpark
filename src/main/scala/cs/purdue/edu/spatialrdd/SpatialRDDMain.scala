@@ -18,16 +18,16 @@ object SpatialRDDMain {
 
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
 
     val spark = new SparkContext(conf)
 
     require(args.length==2)
 
     val inputfile=args(0)
-    val outputfile=args(1)
+    val ratio=args(1).toFloat
 
     val datardd=spark.textFile(inputfile)
 
@@ -79,7 +79,7 @@ object SpatialRDDMain {
 
     println(joinresultRdd.count())*/
 
-    val queryrdd=locationRDD.sample(false,0.1)
+    val queryrdd=locationRDD.sample(false,ratio)
 
     println(queryrdd.count)
 
@@ -89,16 +89,7 @@ object SpatialRDDMain {
         (Box(p.x,p.y,p.x+r.x,p.y+r.y))
     }
 
-    val joinresultRdd=indexed.sjoin(queryboxes)((k,id)=>id)
-
-    println("join result")
-    println(joinresultRdd.count())
-
     println("partition summary for data")
-    getPartitionSize(indexed).foreach(println)
-
-    //println("partition summary for query")
-    //getPartitionSize(queryboxes).foreach(println)
 
     def getPartitionSize[K : ClassTag](rdd: RDD[K]): (Array[(Int, Int)]) = {
       // val classTagK = classTag[K] // to avoid serializing the entire partitioner object
@@ -107,6 +98,20 @@ object SpatialRDDMain {
       }.collect()
       sketched
     }
+
+    getPartitionSize(indexed).foreach(println)
+
+
+    val joinresultRdd=indexed.sjoin(queryboxes)((k,id)=>id)
+
+    println("join result")
+    println(joinresultRdd.count())
+
+
+    //println("partition summary for query")
+    //getPartitionSize(queryboxes).foreach(println)
+
+
 
     //joinresultRdd.foreach(println)
 
@@ -143,8 +148,6 @@ object SpatialRDDMain {
     /*val indexed = SpatialRDD(locationRDD).cache()
 
     val numpartition=indexed.partitions.size
-
-
 
     val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,numpartition)
 

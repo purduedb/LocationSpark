@@ -343,8 +343,11 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
       sketched
     }
 
-    //println("query box overlap partitions")
-    //getPartitionSize(partitioned).foreach(println)
+    println("query box overlap partitions")
+    println("*"*100)
+    getPartitionSize(partitioned).foreach(println)
+
+
     val newPartitionsRDD = partitionsRDD.zipPartitions(partitioned, true)(f)
     new SpatialRDD(newPartitionsRDD)
   }

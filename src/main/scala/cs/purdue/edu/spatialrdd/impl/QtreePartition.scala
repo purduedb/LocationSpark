@@ -149,9 +149,17 @@ class QtreePartition [K, V]
      */
     var retmap=new HashMap[K,V]
 
+    def textfunction(entry:Entry[V]):Boolean={
+      entry.value match
+      {
+        case s:String=>s.toLowerCase().contains("bitch")
+      }
+    }
+
     other.foreach{
       case(point,b:Box)=>
         val ret = newMap.search(b, _ => true)
+        //val ret = newMap.search(b, textfunction)
         ret.foreach {
           case (e: Entry[V]) =>
             if(!retmap.contains(e.geom.asInstanceOf[K]))
