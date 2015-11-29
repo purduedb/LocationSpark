@@ -1,6 +1,6 @@
-# SpatialRDD++
+# LocationSpark
 
-An Effecient spatialRDD based on the spatial index i.e., immutable quadtree and R-tree
+An Effecient RDD based on the spatial index i.e., immutable quadtree and R-tree
 
 ## Spatial operators 
 ###Update RDD, Range Query, KNN Query, Spatial Textual Query, Spatial Join
@@ -11,11 +11,11 @@ import cs.purdue.edu.spatialindex.rtree._
     val conf = new SparkConf().setAppName("Spark SpatialRDD").setMaster("local[2]")
 
     val spark = new SparkContext(conf)
-
+    val numofpartition=9
     /**
      * build a spatialrdd
      */
-    val rdd = spark.parallelize((1 to 100000).map(x => (Util.uniformPoint(1000,1000), x)), 9)
+    val rdd = spark.parallelize((1 to 100000).map(x => (Util.uniformPoint(1000,1000), x)), numofpartition)
     val indexed = SpatialRDD(rdd).cache()
 
     /**
@@ -65,9 +65,8 @@ import cs.purdue.edu.spatialindex.rtree._
    /**
     *spatial range join
     */
-    val boxpartitioner=new Grid2DPartitionerForBox(qtreeUtil.rangx,qtreeUtil.rangx,9)
-    val boxes=Array((Box(-10,-10,299,399)),(Box(900,900,1000,1000)))
-    val queryBoxes=spark.parallelize(boxes,9)
+    val boxes=Array((Box(-21,30,-35,35)),(Box(-28.111,81.333,-31.33,86.333)))
+    val queryBoxes=spark.parallelize(boxes,numofpartition)
     val joinresultRdd=indexed.sjoin(transfromQueryRDD)((k,id)=>id)
     
 ....
