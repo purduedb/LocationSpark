@@ -251,68 +251,59 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
    */
   def sjoin[U: ClassTag]
   (other: RDD[U])(f: (K, V) => V): SpatialRDD[K, V] = {
-
-    /**
-     * map the rdd(box) to rdd(point, box)
-     */
-    def tranformRDDGridPartition[K: ClassTag, U: ClassTag](queriesboxes: RDD[U], numpartition: Int): RDD[(K, U)] = {
-
-      val boxpartitioner = new Grid2DPartitionerForBox(qtreeUtil.rangx, qtreeUtil.rangx, numpartition)
-
-      queriesboxes.flatMap {
-        case (box: Box) =>
-          boxpartitioner.getPartitionsForRangeQuery(box).map(p => (p.asInstanceOf[K], box.asInstanceOf[U]))
-      }
-    }
-
-    /**
-     * map the rdd(box) to rdd(point, box)
-     */
-    def tranformRDDQuadtreePartition[K: ClassTag, U: ClassTag](boxRDD: RDD[U], partionner: Option[org.apache.spark.Partitioner]):
-    RDD[(K, U)] = {
-      boxRDD.flatMap {
-        case (box: Box) => {
-          partionner.getOrElse(None) match {
-            case qtreepartition: QtreePartitioner[K, V] =>
-              qtreepartition.getPointsForSJoin(box).map(p => (p.asInstanceOf[K], box.asInstanceOf[U]))
-          }
-        }
-      }
-    }
-
-
     //transform this rdd(box) into a RDD(point, box)
     this.partitioner.getOrElse(None) match {
 
       case qtree: QtreePartitioner[K, V] =>
 
         val queriesRDD = tranformRDDQuadtreePartition[K, U](other, this.partitioner)
-
-
-        queriesRDD match {
-          case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
-            this.zipIndexedRDDPartitions(other)(new JoinZipper(f))
-
-          case other: RDD[(K, U)] =>
-            this.zipPartitionsWithOther(other)(new OtherJoinZipper(f))
-        }
+        sjoins(queriesRDD)(f)
 
       case grid: Grid2DPartitioner =>
 
         val queriesRDD = tranformRDDGridPartition[K, U](other, this.partitions.length)
+        sjoins(queriesRDD)(f)
 
-        queriesRDD match {
+        /*queriesRDD match {
           case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
             this.zipIndexedRDDPartitions(other)(new JoinZipper(f))
 
           case other: RDD[(K, U)] =>
             this.zipPartitionsWithOther(other)(new OtherJoinZipper(f))
-        }
+        }*/
 
       case None => this
 
     }
 
+  }
+
+  /**
+   * map the rdd(box) to rdd(point, box)
+   */
+  private def tranformRDDGridPartition[K: ClassTag, U: ClassTag](boxRDD: RDD[U], numpartition: Int): RDD[(K, U)] = {
+
+    val boxpartitioner = new Grid2DPartitionerForBox(qtreeUtil.rangx, qtreeUtil.rangx, numpartition)
+
+    boxRDD.flatMap {
+      case (box: Box) =>
+        boxpartitioner.getPartitionsForRangeQuery(box).map(p => (p.asInstanceOf[K], box.asInstanceOf[U]))
+    }
+  }
+
+  /**
+   * map the rdd(box) to rdd(point, box)
+   */
+ private def tranformRDDQuadtreePartition[K: ClassTag, U: ClassTag](boxRDD: RDD[U], partionner: Option[org.apache.spark.Partitioner]):
+  RDD[(K, U)] = {
+    boxRDD.flatMap {
+      case (box: Box) => {
+        partionner.getOrElse(None) match {
+          case qtreepartition: QtreePartitioner[K, V] =>
+            qtreepartition.getPointsForSJoin(box).map(p => (p.asInstanceOf[K], box.asInstanceOf[U]))
+        }
+      }
+    }
   }
 
 
@@ -335,18 +326,17 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
       SpatialRDD[K, V3] = {
     val partitioned = other.partitionBy(partitioner.get)
 
-    def getPartitionSize[K : ClassTag](rdd: RDD[K]): (Array[(Int, Int)]) = {
+   /* def getPartitionSize[K : ClassTag](rdd: RDD[K]): (Array[(Int, Int)]) = {
       // val classTagK = classTag[K] // to avoid serializing the entire partitioner object
       val sketched = rdd.mapPartitionsWithIndex { (idx, iter) =>
         Iterator((idx, iter.size))
       }.collect()
       sketched
-    }
+    }*/
 
-    println("query box overlap partitions")
-    println("*"*100)
-    getPartitionSize(partitioned).foreach(println)
-
+    //println("query box overlap partitions")
+    //println("*"*100)
+    //getPartitionSize(partitioned).foreach(println)
 
     val newPartitionsRDD = partitionsRDD.zipPartitions(partitioned, true)(f)
     new SpatialRDD(newPartitionsRDD)
@@ -430,7 +420,6 @@ object SpatialRDD {
       iter => Iterator(QtreePartition(iter, z, f)),
       preservesPartitioning = true
     )
-
     new SpatialRDD(partitions)
   }
 
