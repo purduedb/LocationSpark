@@ -102,7 +102,7 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     /**
      * option1: get the topk partitions based on the query size
      */
-    val threshold=0.2
+    val threshold=0.5
     val topk=(stat.size*threshold).toInt
     stat.sortWith(_._3>_._3).slice(0,topk).map(elem=>(elem._1,elem._2)).toMap
 
@@ -114,6 +114,49 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
      */
 
   }
+
+  /*private def findSkewPartition(stat:IndexedSeq[(Int,Int,Int)], maxPartition:Int):Map[Int,Int]=
+  {
+
+    /**
+     * option2: herusitic and cost based partitions.
+     * step1: get the half partition, run and get the execution time
+     * step2:
+     * step3:
+     */
+
+    //find the partition with very few number of queries
+    //for example, number of queries in that partition<100
+    var available=stat.size
+
+    val withoutempty=stat.filter(e=>e._3!=0)
+
+    //val maxability=
+    val n=withoutempty.size
+    val N=maxPartition+(available-withoutempty.size)
+
+    //find those skew partitions,
+    val sortlist=withoutempty.sortBy(r => (r._3*r._2))
+
+    var prefixsum= (sortlist(0)._2)*(sortlist(0)._3)
+    var prefixquery=(sortlist(0)._3)
+    var prefixdata=(sortlist(0)._2)
+
+    var latermax=0
+
+    for( i <- 1 to sortlist.size-1)
+    {
+
+      prefixquery=prefixquery+(sortlist(i)._3)
+      prefixdata=prefixdata+(sortlist(0)._2)
+      //assum the averag is the max here?
+      val average=(prefixquery+prefixdata)/(i+1)
+
+    }
+
+  }*/
+
+
 
   /**
    * this scheduler work as following
@@ -162,16 +205,18 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
 
     //the simplist way to implement here
     val nonskew_datardd =this.datardd
-
     /***************************************************************/
     /***********************execute join****************************/
-
     val skewindexrdd=SpatialRDD(skew_datardd)
+    //val skewindexrdd=SpatialRDD.buildSPRDDwithPartitionNumber(skew_datardd,100)
     val part1=skewindexrdd.sjoins[U](skew_queryrdd)((k, id) => id)
+
+
 
     val part2=nonskew_datardd.sjoins(nonskew_queryrdd)((k, id) => id)
     /***************************************************************/
 
+    //part2
     part1.union(part2)
 
     //Array(skew_queryrdd,skew_datardd,nonskew_queryrdd,nonskew_datardd)
@@ -180,6 +225,11 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
 }
 
 /*
+
+    println("nonskew "+nonskew_queryrdd.count())
+    println("skew "+skew_queryrdd.count())
+    println("total "+transformQueryrdd.count())
+
     println("*"*100)
     println(part1.count())
 
