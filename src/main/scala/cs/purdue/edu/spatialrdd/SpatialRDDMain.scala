@@ -19,9 +19,9 @@ object SpatialRDDMain {
 
   def main(args: Array[String]) {
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
 
     val spark = new SparkContext(conf)
 

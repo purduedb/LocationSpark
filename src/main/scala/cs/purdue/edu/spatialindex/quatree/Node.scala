@@ -136,6 +136,7 @@ class leafwithcount(override val space:Box) extends Leaf(space)
   var countne=0
   var countse=0
   var countsw=0
+  var visitcount=0 // this count is used to record frequency of box visit that leaf
 
    def updatecount(p:Geom) =
   {

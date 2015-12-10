@@ -265,14 +265,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
         val queriesRDD = tranformRDDGridPartition[K, U](other, this.partitions.length)
         sjoins(queriesRDD)(f)
 
-        /*queriesRDD match {
-          case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
-            this.zipIndexedRDDPartitions(other)(new JoinZipper(f))
-
-          case other: RDD[(K, U)] =>
-            this.zipPartitionsWithOther(other)(new OtherJoinZipper(f))
-        }*/
-
       case None => this
 
     }

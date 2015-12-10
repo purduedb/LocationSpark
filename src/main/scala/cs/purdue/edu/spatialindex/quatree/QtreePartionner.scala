@@ -22,6 +22,40 @@ class QtreeForPartion() extends Serializable{
     this.root = new leafwithcount(qtreeUtil.wholespace).spilitLeafNode
   }
 
+  /**
+   * colone this quadtree's data structure
+   * @return
+   */
+  def coloneTree():Node=
+  {
+     def coloneTree(node:Node):Node=
+    {
+      node match {
+        case l: leafwithcount =>
+          //copy this leaf node
+          val newl=new leafwithcount(l.getbox)
+          newl.id=l.id
+          newl.count=l.count
+          newl
+
+        case b: Branch => {
+
+          val newbranch= Branch(b.space)
+          newbranch.ne=coloneTree(b.ne)
+          newbranch.nw=coloneTree(b.nw)
+          newbranch.se=coloneTree(b.se)
+          newbranch.sw=coloneTree(b.sw)
+
+          newbranch
+        }
+      }
+    }
+
+    coloneTree(this.root)
+  }
+
+
+
 
   /**
    * this function is used for training the SBFilter,
@@ -65,6 +99,43 @@ class QtreeForPartion() extends Serializable{
         //println("go through this branch node: " + b.getbox.toString)
         val branch=this.findSubchildren(b,point)
         insertPoint(branch,point)
+      }
+    }
+
+  }
+
+  /**
+   * compute the frequency of the box to visit the leaf node
+   * @param box
+   */
+  def visitleafForBox(box:Box):Unit=
+  {
+    visitleafForBox(box,this.root)
+  }
+
+  /**
+   *
+   * @param box
+   * @param node
+   */
+  private def visitleafForBox(box:Box, node:Node):Unit=
+  {
+
+    if (!node.getbox.intersects(box)) {
+      return
+    }
+
+    node match {
+      case l: leafwithcount =>
+
+        if (l.getbox.intersects(box))
+        {
+          l.visitcount+=1
+        }
+
+      case b: Branch => {
+        //println("brach is "+b.getbox)
+        b.findChildNodes(box).foreach(child=>visitleafForBox(box,child))
       }
     }
 
@@ -145,14 +216,6 @@ class QtreeForPartion() extends Serializable{
 
       }
 
-     /* front = front + 1
-
-      if (front > end) {
-        depth = depth + 1
-        front = 1
-        end = queue.length
-      }*/
-
     }//for bfs
 
     tmp.foreach(l=>l.id=pid)
@@ -215,6 +278,111 @@ class QtreeForPartion() extends Serializable{
     tmp.foreach(l=>l.id=pid)
 
     pid+1
+
+  }
+
+  /**
+   * annotate those leaf node based on the query distribution
+   */
+  def computePIDBasedQueries(total:Int,map:Map[Int,Int]):Int={
+
+    def recomputePidForSkew(list:ArrayBuffer[leafwithcount], startpid:Int, partitionnumber:Int):Int=
+    {
+        var total=0
+        list.foreach(l=> total=total+l.visitcount)
+
+        val threshold=total/partitionnumber
+
+        list.sortWith(_.visitcount>_.visitcount)
+
+        val tmp=new ArrayBuffer[leafwithcount]
+
+        var pid=startpid
+        var tmpsum=0
+
+        list.foreach{
+          l=>
+            if(l.visitcount>threshold)
+            {
+              l.id=pid
+              pid+=1
+            }else
+            {
+              tmpsum+=l.visitcount
+              if(tmpsum>threshold)
+              {
+                tmp.foreach(l=>l.id=pid)
+                pid+=1
+                tmp.clear()
+                tmpsum=0
+              }else
+              {
+                tmp.+=(l)
+              }
+            }
+        }
+      pid
+    }
+
+    val queue = new scala.collection.mutable.Queue[Node]
+
+    queue += this.root
+
+    val tmp=new ArrayBuffer[leafwithcount]()
+    val nonskew=new ArrayBuffer[leafwithcount]()
+
+    var currentpid=0
+
+    var startpid=0
+    while (!queue.isEmpty) {
+
+      val pnode = queue.dequeue()
+
+      pnode match {
+
+        case l: leafwithcount =>
+
+          if(map.contains(l.id))
+          {
+            if(tmp.length==0)
+            {
+              currentpid=l.id
+              tmp.+=(l)
+            }else
+            {
+              if(currentpid!=l.id)
+              {
+                //already go through all those leaf node with the same pid
+                //excute the new function
+                startpid=recomputePidForSkew(tmp,startpid,map.get(currentpid).get)
+                //clear the tmp
+                tmp.clear()
+                currentpid=l.id
+                tmp.+=(l)
+              }else
+              {
+                tmp.+=(l)
+              }
+            }
+
+          }else
+          {
+            //for those non-skew pid
+            //change their pid to the 0
+            nonskew.+=(l)
+          }
+
+        case b: Branch =>
+          queue.enqueue(b.nw)
+          queue.enqueue(b.ne)
+          queue.enqueue(b.se)
+          queue.enqueue(b.sw)
+      }
+
+    }//for bfs
+    nonskew.foreach(e=>e.id=startpid)
+
+    startpid+1
 
   }
 

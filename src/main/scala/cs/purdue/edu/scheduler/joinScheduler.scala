@@ -1,7 +1,7 @@
 package cs.purdue.edu.scheduler
 
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
-import cs.purdue.edu.spatialindex.rtree.Box
+import cs.purdue.edu.spatialindex.rtree.{Point, Box}
 import cs.purdue.edu.spatialrdd.{SpatialRDDPartition, SpatialRDD}
 import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
 import org.apache.spark.rdd.{RDD}
@@ -98,64 +98,13 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
    */
   private def findSkewPartition(stat:IndexedSeq[(Int,Int,Int)]):Map[Int,Int]=
   {
-
     /**
      * option1: get the topk partitions based on the query size
      */
     val threshold=0.5
     val topk=(stat.size*threshold).toInt
     stat.sortWith(_._3>_._3).slice(0,topk).map(elem=>(elem._1,elem._2)).toMap
-
-    /**
-     * option2: herusitic and cost based partitions.
-     * step1: get the half partition, run and get the execution time
-     * step2:
-     * step3:
-     */
-
   }
-
-  /*private def findSkewPartition(stat:IndexedSeq[(Int,Int,Int)], maxPartition:Int):Map[Int,Int]=
-  {
-
-    /**
-     * option2: herusitic and cost based partitions.
-     * step1: get the half partition, run and get the execution time
-     * step2:
-     * step3:
-     */
-
-    //find the partition with very few number of queries
-    //for example, number of queries in that partition<100
-    var available=stat.size
-
-    val withoutempty=stat.filter(e=>e._3!=0)
-
-    //val maxability=
-    val n=withoutempty.size
-    val N=maxPartition+(available-withoutempty.size)
-
-    //find those skew partitions,
-    val sortlist=withoutempty.sortBy(r => (r._3*r._2))
-
-    var prefixsum= (sortlist(0)._2)*(sortlist(0)._3)
-    var prefixquery=(sortlist(0)._3)
-    var prefixdata=(sortlist(0)._2)
-
-    var latermax=0
-
-    for( i <- 1 to sortlist.size-1)
-    {
-
-      prefixquery=prefixquery+(sortlist(i)._3)
-      prefixdata=prefixdata+(sortlist(0)._2)
-      //assum the averag is the max here?
-      val average=(prefixquery+prefixdata)/(i+1)
-
-    }
-
-  }*/
-
 
 
   /**
@@ -207,11 +156,16 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     val nonskew_datardd =this.datardd
     /***************************************************************/
     /***********************execute join****************************/
+
+    /**
+     * below the the option 1, build the spatialrdd for the nonskew, then do the join
+     */
+
     val skewindexrdd=SpatialRDD(skew_datardd)
-    //val skewindexrdd=SpatialRDD.buildSPRDDwithPartitionNumber(skew_datardd,100)
     val part1=skewindexrdd.sjoins[U](skew_queryrdd)((k, id) => id)
 
 
+    /*************************************************************/
 
     val part2=nonskew_datardd.sjoins(nonskew_queryrdd)((k, id) => id)
     /***************************************************************/
@@ -288,3 +242,31 @@ def nonskew_join():SpatialRDD[K,V]={
       }
   }
 }*/
+
+/**
+ * option2: do not build index, just use the rdd join function to execute the spatial join
+ */
+/* val quadtreePartitioner=new QtreePartitioner(skew_datardd.partitions.length,0.01f,skew_datardd)
+
+ val indexed = skew_datardd.map{
+   case(point,v)=>
+     (quadtreePartitioner.getPartition(point),(point,v))
+ }
+
+ val queryboxRDD= skew_queryrdd.map{case(point, box)=>box}.distinct().flatMap {
+   case (box) => {
+     quadtreePartitioner.quadtree.getPIDforBox(box.asInstanceOf[Box]).map(pid => (pid, box))
+   }
+ }
+
+ val part1=indexed.join(queryboxRDD).filter
+ {
+   case(pid,((po:Point,value),b:Box))=>
+     b.contains(po)
+ }.map
+ {
+   case(pid,((po,value),b:Box))=>
+     (po,value)
+ }*/
+
+//val spart1=SpatialRDD(part1)
