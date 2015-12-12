@@ -1,6 +1,7 @@
 package cs.purdue.edu.spatialrdd
 
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
+import cs.purdue.edu.spatialindex.quatree.QtreeForPartion
 import cs.purdue.edu.spatialrdd.impl._
 import cs.purdue.edu.spatialindex.rtree._
 import org.apache.spark.{SparkContext, SparkConf}
@@ -67,7 +68,7 @@ object testDataPartitioners {
       case _=>null
     }.filter(_!=null)
 
-    val qtreepartioner=new QtreePartitioner(locationRDD.partitions.length,0.05f,locationRDD)
+    val qtreepartioner=new QtreePartitioner(6,0.05f,locationRDD)
 
     val point=Point(30.40094f,-86.8612f)
 
@@ -81,7 +82,38 @@ object testDataPartitioners {
     println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     qtreepartioner.quadtree.getPIDforBox(box).foreach(println)
 
+    val otherroot=qtreepartioner.quadtree.coloneTree()
 
+    val qtreepartition=new QtreeForPartion(100)
+
+    qtreepartition.root=otherroot
+
+    val queryrdd=locationRDD.sample(false,0.7)
+
+    val queryboxes=locationRDD.map{
+      case (p:Point,v)=>
+        val r=qtreeUtil.getRandomUniformPoint(3,3)
+        (Box(p.x,p.y,p.x+r.x,p.y+r.y))
+    }
+
+    queryboxes.collect().foreach(box=>qtreepartition.visitleafForBox(box))
+
+    //boxes.foreach()
+
+    qtreepartition.printTreeStructure()
+
+    val map=Map(0->2,3->4)
+
+    val partitionnumberfromQueries=qtreepartition.computePIDBasedQueries(map)
+    qtreepartition.printTreeStructure()
+
+    //qtreepartition.getPIDforBox(box).foreach(println)
+
+    val partitioner=new QtreePartitionerBasedQueries(partitionnumberfromQueries,qtreepartition)
+
+    val pid2=partitioner.getPartition(point)
+    println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    println(pid2)
 
     /*def sumfunction[V](iterator: Iterator[V])=
     {

@@ -81,7 +81,7 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
     //in case the sample data size is too small,expand the sample ratio 50 times.
     if(sampledata.length<10000)
     {
-      sampledata=rdd.map(_._1).sample(false,fraction*100).collect()
+      sampledata=rdd.map(_._1).sample(false,0.2).collect()
     }
 
     var leafbound=sampledata.length/partitions
@@ -91,7 +91,7 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
       leafbound=qtreeUtil.leafbound
     }
 
-    val qtree=new QtreeForPartion(leafbound.toInt)
+    val qtree=new QtreeForPartion(leafbound)
 
     sampledata.foreach{
       case p:Point=>
@@ -146,6 +146,51 @@ class QtreePartitioner[K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
 
 }
 
+
+class QtreePartitionerBasedQueries[K: ClassTag,V:ClassTag](partitions:Int,quadtree:QtreeForPartion) extends Partitioner{
+
+  // We allow partitions = 0, which happens when sorting an empty RDD under the default settings.
+  require(partitions >= 0, s"Number of partitions cannot be negative but found $partitions.")
+
+  def numPartitions: Int = partitions
+
+  def getPartition(key: Any): Int = key match {
+    case p:Point =>
+      this.quadtree.getPID(p)
+  }
+
+  /**
+   * get the overlap region for the input box
+   * @param box
+   * @return
+   */
+  def getPartitionForBox(box:Any):HashSet[Int]=
+  {
+    box match {
+      case box: Box =>
+        this.quadtree.getPIDforBox(box)
+
+      case _ =>
+        println("do not support other data type now")
+        null
+    }
+  }
+
+  def getPointsForSJoin(box:Any):HashSet[Point]={
+
+    box match {
+      case box: Box =>
+        this.quadtree.getPointForRangeQuery(box)
+
+      case _ =>
+        println("do not support other data type now")
+        null
+    }
+  }
+
+  override def hashCode: Int = partitions
+
+}
 
 /*private[spark] object QuadtreePartitioner {
 

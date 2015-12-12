@@ -1,11 +1,11 @@
 package cs.purdue.edu.scheduler
 
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
-import cs.purdue.edu.spatialindex.rtree.{Point, Box}
-import cs.purdue.edu.spatialrdd.{SpatialRDDPartition, SpatialRDD}
-import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
+import cs.purdue.edu.spatialindex.quatree.QtreeForPartion
+import cs.purdue.edu.spatialindex.rtree.{Box}
+import cs.purdue.edu.spatialrdd.{SpatialRDD}
+import cs.purdue.edu.spatialrdd.impl.{QtreePartitionerBasedQueries, Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
 import org.apache.spark.rdd.{RDD}
-import scala.collection.immutable.HashMap
 import scala.reflect.ClassTag
 
 /**
@@ -89,23 +89,6 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
 
   }
 
-  /**
-   * the algorithm is used to find the skewpartition based on the
-   * pid, datasize, querysize
-   * 1, 299,233
-   * @param stat
-   * @return
-   */
-  private def findSkewPartition(stat:IndexedSeq[(Int,Int,Int)]):Map[Int,Int]=
-  {
-    /**
-     * option1: get the topk partitions based on the query size
-     */
-    val threshold=0.5
-    val topk=(stat.size*threshold).toInt
-    stat.sortWith(_._3>_._3).slice(0,topk).map(elem=>(elem._1,elem._2)).toMap
-  }
-
 
   /**
    * this scheduler work as following
@@ -121,7 +104,7 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     val stat=analysis(this.datardd,transformQueryrdd)
 
     //the core part for this scheduler
-    val topKpartitions=findSkewPartition(stat)
+    val topKpartitions=skewAnalysis.findSkewPartition(stat,0.25)
 
     val broadcastVar = this.datardd.context.broadcast(topKpartitions)
 
@@ -156,24 +139,69 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     val nonskew_datardd =this.datardd
     /***************************************************************/
     /***********************execute join****************************/
-
     /**
      * below the the option 1, build the spatialrdd for the nonskew, then do the join
      */
+    //val skewindexrdd=SpatialRDD(skew_datardd)
+    //val part1=skewindexrdd.sjoins[U](skew_queryrdd)((k, id) => id)
 
-    val skewindexrdd=SpatialRDD(skew_datardd)
+    /**
+     * below the the option 2, get the new data partitioner based on the query, then do the join
+     */
+
+    val newpartitioner=getPartitionerbasedQuery(topKpartitions,skew_queryrdd)
+    val skewindexrdd=SpatialRDD.buildSRDDwithgivenPartitioner(skew_datardd,newpartitioner)
+    println(skewindexrdd.count())
+
     val part1=skewindexrdd.sjoins[U](skew_queryrdd)((k, id) => id)
 
-
+    println(part1.count())
+    /********************finish  skew join************************/
     /*************************************************************/
-
     val part2=nonskew_datardd.sjoins(nonskew_queryrdd)((k, id) => id)
     /***************************************************************/
 
-    //part2
     part1.union(part2)
-
     //Array(skew_queryrdd,skew_datardd,nonskew_queryrdd,nonskew_datardd)
+  }
+
+  /**
+   * get the partitioner based on the query distribution
+   * @param topKpartitions
+   */
+  private def getPartitionerbasedQuery(topKpartitions:Map[Int,Int], skewQuery:RDD[(K,U)]): QtreePartitionerBasedQueries[Int,QtreeForPartion] =
+  {
+    //default nubmer of queries
+    //al samplequeries=this.queryrdd.sample(false,0.05f).collect()
+    val samplequeries=skewQuery.sample(false,0.02f).map{case(point, box)=>box}.distinct().collect()
+
+    //get the quadtree partionner from this data rdd, and colone that quadtree
+    val qtreepartition=new QtreeForPartion(100)
+    this.datardd.partitioner.getOrElse(None) match {
+      case qtreepter: QtreePartitioner[K, V] =>
+        val newrootnode=qtreepter.quadtree.coloneTree()
+
+        qtreepter.quadtree.printTreeStructure()
+
+        qtreepartition.root=newrootnode
+    }
+
+    //run those queries over the old data partitioner
+    samplequeries.foreach
+    {
+      case box:Box=>qtreepartition.visitleafForBox(box)
+    }
+
+    //topKpartitions.foreach(println)
+
+    //get the new partitionid based on those queries
+    val partitionnumberfromQueries= qtreepartition.computePIDBasedQueries(topKpartitions)
+
+    //qtreepartition.printTreeStructure()
+    //println("partitionnumber"+partitionnumberfromQueries)
+
+    new QtreePartitionerBasedQueries(partitionnumberfromQueries,qtreepartition)
+
   }
 
 }

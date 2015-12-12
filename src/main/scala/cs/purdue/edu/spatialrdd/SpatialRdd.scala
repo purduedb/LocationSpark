@@ -5,7 +5,7 @@ import cs.purdue.edu.spatialindex.rtree._
 import cs.purdue.edu.spatialrdd.impl._
 import org.apache.spark.annotation.DeveloperApi
 import org.apache.spark.storage.StorageLevel
-import org.apache.spark.{TaskContext, Partition, OneToOneDependency}
+import org.apache.spark.{Partitioner, TaskContext, Partition, OneToOneDependency}
 import org.apache.spark.rdd.RDD
 import scala.collection.mutable
 import scala.reflect.ClassTag
@@ -399,6 +399,7 @@ object SpatialRDD {
    * @tparam V
    * @return
    */
+  @DeveloperApi
   def buildSPRDDwithPartitionNumber[K: ClassTag, V: ClassTag]
   (elems: RDD[(K, V)], numpartition:Int): SpatialRDD[K, V] = {
 
@@ -417,6 +418,34 @@ object SpatialRDD {
 
     build[K, V, V](elems, numpartition, (id, a) => a, (id, a, b) => b)
 
+  }
+
+  /**
+   * Constructs an updatable SpatialRDD from an RDD of pairs,
+   * build with the specific number of partitions
+   * @param elems
+   * @param partitoner data
+   * @tparam K
+   * @tparam V
+   * @return
+   */
+  @DeveloperApi
+  def buildSRDDwithgivenPartitioner[K: ClassTag, V: ClassTag]
+  (elems: RDD[(K, V)], partitoner:Partitioner): SpatialRDD[K, V] = {
+
+    def build[K: ClassTag , U: ClassTag, V: ClassTag]
+    (elems: RDD[(K, V)], partitoner:Partitioner, z: (K, U) => V, f: (K, V, U) => V)
+    : SpatialRDD[K, V] = {
+
+      val elemsPartitioned = elems.partitionBy(partitoner)
+      val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+        iter => Iterator(QtreePartition(iter, z, f)),
+        preservesPartitioning = true
+      )
+      new SpatialRDD(partitions)
+    }
+
+    build[K, V, V](elems, partitoner, (id, a) => a, (id, a, b) => b)
   }
   /**
    * Constructs an updatable IndexedRDD from an RDD of pairs, merging duplicate keys arbitrarily.

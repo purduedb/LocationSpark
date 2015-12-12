@@ -280,66 +280,119 @@ class QtreeForPartion() extends Serializable{
     pid+1
 
   }
-
   /**
    * annotate those leaf node based on the query distribution
    */
-  def computePIDBasedQueries(total:Int,map:Map[Int,Int]):Int={
+  def computePIDBasedQueries(map:Map[Int,Int]):Int={
+
+    def averagepartition(stat:ArrayBuffer[leafwithcount],startpid:Int, partitionnumber:Int):Int={
+
+      //randomnize this array list
+      val list=util.Random.shuffle(stat)
+
+      var eachpartitionnumber=list.size/partitionnumber
+
+      if(eachpartitionnumber==0||eachpartitionnumber<=3)
+         eachpartitionnumber=5
+
+      var pid=startpid
+
+      if(list.size>1)
+      {
+        list(0).id=pid
+        for(i <-1 to list.size-1)
+        {
+          if(i%eachpartitionnumber==0)
+            pid+=1
+          list(i).id=pid
+        }
+        pid+1
+      }else if(list.size==1)
+      {
+        list(0).id=pid
+        pid
+      }else
+      {
+        pid
+      }
+
+    }
+
+    /**
+     *each partition have the similar number of visit count
+     */
+    def averagesum(stat:ArrayBuffer[leafwithcount],startpid:Int, total:Int, partitionnumber:Int):Int={
+
+      val list=stat.sortBy(l=>(l.visitcount+1)*l.count)(Ordering[Int].reverse)
+
+      val tmp=new ArrayBuffer[leafwithcount]
+      var pid=startpid
+      var tmpsum=0
+      val target=total/partitionnumber
+      var begin=0
+      var end=list.size-1
+
+      while(begin<=end)
+      {
+         //tmp.+=(list(end))
+         if(tmpsum<target)
+         {
+            if(Math.abs(target-tmpsum-(list(begin).visitcount+1)*list(begin).count)>Math.abs(target-tmpsum-(list(end).visitcount+1)*list(end).count))
+            {
+               tmpsum=tmpsum+(list(end).visitcount+1)*list(end).count
+               tmp.+=(list(end))
+               end=end-1
+            }else
+            {
+               tmp.+=(list(begin))
+               tmpsum=tmpsum+(list(begin).visitcount+1)*list(begin).count
+               begin=begin+1
+            }
+
+         }else
+         {
+            tmp.foreach(e=>e.id=pid)
+            pid+=1
+            tmp.clear()
+            tmpsum=0
+         }
+      }
+
+      if(tmp.size!=0)
+      {
+        pid=averagepartition(tmp,pid,partitionnumber-(pid-startpid))
+      }
+
+      pid
+    }
 
     def recomputePidForSkew(list:ArrayBuffer[leafwithcount], startpid:Int, partitionnumber:Int):Int=
     {
-        var total=0
-        list.foreach(l=> total=total+l.visitcount)
-
-        val threshold=total/partitionnumber
-
-        list.sortWith(_.visitcount>_.visitcount)
-
-        val tmp=new ArrayBuffer[leafwithcount]
-
-        var pid=startpid
-        var tmpsum=0
-
-        list.foreach{
-          l=>
-            if(l.visitcount>threshold)
-            {
-              l.id=pid
-              pid+=1
-            }else
-            {
-              tmpsum+=l.visitcount
-              if(tmpsum>threshold)
-              {
-                tmp.foreach(l=>l.id=pid)
-                pid+=1
-                tmp.clear()
-                tmpsum=0
-              }else
-              {
-                tmp.+=(l)
-              }
-            }
-        }
-      pid
+      var total=0
+      list.foreach(l=> total=total+((l.visitcount+1)*l.count))
+      val threshold=total/partitionnumber
+      if(total==0||threshold==0) //in case the sample is not precise
+      {
+        averagepartition(list,startpid,partitionnumber)
+      }else // we can find those partition
+      {
+        averagesum(list,startpid,total,partitionnumber)
+      }
     }
 
     val queue = new scala.collection.mutable.Queue[Node]
 
     queue += this.root
-
     val tmp=new ArrayBuffer[leafwithcount]()
     val nonskew=new ArrayBuffer[leafwithcount]()
 
     var currentpid=0
-
     var startpid=0
+
     while (!queue.isEmpty) {
 
       val pnode = queue.dequeue()
-
       pnode match {
-
         case l: leafwithcount =>
 
           if(map.contains(l.id))
@@ -352,10 +405,7 @@ class QtreeForPartion() extends Serializable{
             {
               if(currentpid!=l.id)
               {
-                //already go through all those leaf node with the same pid
-                //excute the new function
                 startpid=recomputePidForSkew(tmp,startpid,map.get(currentpid).get)
-                //clear the tmp
                 tmp.clear()
                 currentpid=l.id
                 tmp.+=(l)
@@ -367,8 +417,12 @@ class QtreeForPartion() extends Serializable{
 
           }else
           {
-            //for those non-skew pid
-            //change their pid to the 0
+            if(tmp.size!=0)
+            {
+              startpid=recomputePidForSkew(tmp,startpid,map.get(currentpid).get)
+              tmp.clear()
+            }
+            currentpid=l.id
             nonskew.+=(l)
           }
 
@@ -380,10 +434,25 @@ class QtreeForPartion() extends Serializable{
       }
 
     }//for bfs
-    nonskew.foreach(e=>e.id=startpid)
+
+    if(tmp.size!=0)
+    {
+      val partitionnumber=map.get(tmp(0).id).getOrElse(5)
+      startpid=recomputePidForSkew(tmp,startpid,partitionnumber)
+      tmp.clear()
+    }
+
+    //in order to reduce the possiblity of the sampling approach is precise
+    if(nonskew.size>50)
+    {
+      startpid=averagepartition(nonskew,startpid+1,10)
+    }
+    else
+    {
+      nonskew.foreach(e=>e.id=startpid+1)
+    }
 
     startpid+1
-
   }
 
   /**
@@ -535,7 +604,7 @@ class QtreeForPartion() extends Serializable{
 
       pnode match {
         case l: leafwithcount =>
-          print(" L(id: " + l.id+" c:"+l.count + ") ")
+          print(" L(id: " + l.id+" c:"+l.visitcount + ") ")
           numofleaf = numofleaf + 1
 
         case b: Branch =>
