@@ -127,7 +127,7 @@ object skewAnalysis {
     val map=mutable.HashMap.empty[Int,Int]
 
     //find those skew partitions,
-    val sortlist=stat.sortBy(r => (r._3*r._2))(Ordering[Int].reverse)
+    val sortlist=stat.sortBy(r => (r._3))(Ordering[Int].reverse)
 
     var topk=(stat.size*threshold).toInt
     var ratio=(sortlist(0)._2*sortlist(0)._3)/(sortlist(topk)._3*sortlist(topk)._2)
@@ -137,7 +137,6 @@ object skewAnalysis {
     if(ratio>3) //find the correct point
     {
       tmplist=sortlist.slice(0,topk)
-
     }else //go to the median
     {
       topk=sortlist.size/2
@@ -159,6 +158,49 @@ object skewAnalysis {
     map.toMap
   }
 
+
+  /**
+   * find the skew partition, and find the partition approach for those skew partition
+   * @param stat
+   * @param threshold
+   * @return
+   */
+  def findSkewPartitionQuery(stat:IndexedSeq[(Int,Int,Int)], threshold:Double):Map[Int,Int]=
+  {
+
+    //if we find this point, we find the rule to partition the skewpart
+    val map=mutable.HashMap.empty[Int,Int]
+
+    //find those skew partitions,
+    val sortlist=stat.sortBy(r => (r._3))(Ordering[Int].reverse)
+
+    var topk=(stat.size*threshold).toInt
+    var ratio=(sortlist(0)._3)/(sortlist(topk)._3)
+
+    var tmplist=IndexedSeq.empty[(Int,Int,Int)]
+
+    if(ratio>3) //find the correct point
+    {
+      tmplist=sortlist.slice(0,topk)
+    }else //go to the median
+    {
+      topk=sortlist.size/2
+      ratio=(sortlist(0)._3)/(sortlist(topk)._3)
+      tmplist=sortlist.slice(0,topk)
+    }
+
+    val base=(sortlist(topk)._3)
+
+    tmplist.foreach
+    {
+      element=>
+        if((element._3)/base>=3)
+        {
+          map.+=(element._1->((element._3)/base))
+        }
+    }
+    map.toMap
+  }
 
 
 }

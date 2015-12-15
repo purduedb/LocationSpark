@@ -177,6 +177,12 @@ case class Box(x: Float, y: Float, x2: Float, y2: Float) extends Geom {
 
   }
 
+  def intesectBox(other:Box):Box={
+
+    Box(Math.max(this.x,other.x),Math.max(this.y,other.y), Math.min(this.x2,other.x2),Math.min(this.y2,other.y2))
+
+  }
+
 }
 
 object Box {

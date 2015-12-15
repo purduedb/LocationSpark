@@ -1,7 +1,9 @@
 package cs.purdue.edu.spatialindex.rtree
 
+import java.util
+
+import scala.collection.mutable.HashSet
 import scala.collection.mutable.{ArrayBuffer, PriorityQueue}
-import scala.math.{min, max}
 import scala.util.Try
 
 object RTree {
@@ -128,6 +130,247 @@ case class RTree[V](root: Node[V], size: Int) {
    */
   def search(space: Box): Seq[Entry[V]] =
     root.search(space, _ => true)
+
+  /**
+   * this is the dual tree join algorithm,
+   * this one the data tree, and stree is the query tree.
+   * @param stree
+   * @return
+   */
+  def join(stree:RTree[V]):Seq[Entry[V]] =
+  {
+    val buf = HashSet.empty[Entry[V]]
+
+    //this changed to generic search
+    //recursive
+    //case 3: the data tree is leaf, but the query tree is branch
+    def recur(node: Node[V], entry:Entry[V]): Unit =
+      node match {
+      case Leaf(children, box) =>
+        children.foreach { c =>
+          if (c.geom.contains(entry.geom))
+             buf.add(entry)
+        }
+      case Branch(children, box) =>
+        children.foreach { c =>
+          if (c.box.intersects(entry.geom)) recur(c,entry)
+        }
+    }
+
+    //this changed to generic search
+    //recursive to the leaf node, which contain the data itself
+    //case 4: the data tree is branch, but the query tree is leaf
+    def recur2(node: Node[V], querybox:Geom): Unit =
+      node match {
+        case Leaf(children, box) =>
+          children.foreach { c =>
+            if (querybox.contains(c.geom))
+              buf.add(c)
+          }
+        case Branch(children, box) =>
+          children.foreach { c =>
+            if (querybox.intersects(c.geom)) recur2(c,querybox)
+          }
+      }
+
+    //use the line swipe based approach to find the intersection of two rectangle sets
+    def intersection(r:Vector[Node[V]],s:Vector[Node[V]]):Seq[(Node[V],Node[V])]=
+    {
+      val rsort=r.sortBy(e=>e.geom.x)
+      val ssort=s.sortBy(e=>e.geom.x)
+
+      val buf = ArrayBuffer.empty[(Node[V], Node[V])]
+
+      def internalloop(entry:Node[V], marked:Int, s:Vector[Node[V]]): Unit =
+      {
+        var i=marked
+        while(i<s.size&&s(i).geom.x<=entry.geom.x2)
+        {
+          if(entry.geom.y<=s(i).geom.y2&&entry.geom.y2>=s(i).geom.y)
+          {
+             buf.+=(entry->s(i))
+          }
+          i+=1
+        }
+      }
+
+      var i=0
+      var j=0
+
+      while(i<rsort.size&&j<ssort.size)
+      {
+           if(rsort(i).geom.x<ssort(j).geom.x)
+           {
+             internalloop(rsort(i),j,ssort)
+             i+=1
+           }else
+           {
+             internalloop(ssort(j),i,ssort)
+             j+=1
+           }
+      }
+      buf
+    }
+
+    //use the line swipe based approach to find the intersection of two rectangle sets
+    def intersectionForleaf(r:Vector[Entry[V]],s:Vector[Entry[V]]):Seq[(Entry[V],Entry[V])]=
+    {
+      val rsort=r.sortBy(e=>e.geom.x)
+      val ssort=s.sortBy(e=>e.geom.x)
+
+      val buf = ArrayBuffer.empty[(Entry[V], Entry[V])]
+
+      def internalloop(entry:Entry[V], marked:Int, s:Vector[Entry[V]]): Unit =
+      {
+        var i=marked
+        while(i<s.size&&s(i).geom.x<=entry.geom.x2)
+        {
+          if(entry.geom.y<=s(i).geom.y2&&entry.geom.y2>=s(i).geom.y)
+          {
+            buf.+=(entry->s(i))
+          }
+          i+=1
+        }
+      }
+
+      var i=0
+      var j=0
+
+      while(i<rsort.size&&j<ssort.size)
+      {
+        if(rsort(i).geom.x<ssort(j).geom.x)
+        {
+          internalloop(rsort(i),j,ssort)
+          i+=1
+        }else
+        {
+          internalloop(ssort(j),i,ssort)
+          j+=1
+        }
+      }
+      buf
+    }
+
+    //this is used for spatial join
+    def sjoin(rnode:Node[V],snode:Node[V]):Unit={
+
+      if(rnode.box.intersects(snode.box))
+      {
+         val intesectionbox=rnode.box.intesectBox(snode.box)
+
+        rnode match {
+
+          case Leaf(children_r, box_r) =>
+
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
+
+                children_r.foreach{
+                  cr=>
+                    children_s.foreach {
+                      cs =>
+                        if (cs.geom.contains(cr.geom))
+                          buf.add(cr) //return the results
+                    }
+                }
+
+                /*intersectionForleaf(children_s,children_s).foreach {
+                  case (cr, cs) =>
+                    if(cs.geom.contains(cr.geom))
+                    buf.append(cr) //return the results
+                }*/
+
+
+              case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
+              {
+                val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
+                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+                r.foreach{
+                  cr=>
+                    s.foreach {
+                      cs =>
+                        recur(cs,cr)
+                    }
+                }
+
+              }
+            }
+
+          case Branch(children_r, box_r) =>
+
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
+
+                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
+
+                r.foreach{
+                  cr=>
+                    s.foreach {
+                      cs =>
+                        recur2(cr,cs.geom)
+                    }
+                }
+
+              case Branch(children_s, box_s)=> //case 1: both of two tree are branch
+              {
+                  val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                  val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+                //nest loop to recursive on those dataset
+
+                //use the sorted based approach for the intersection aprt
+                //by this way, the nest-loop is changed to o(n)+k
+
+                /*intersection(r,s).foreach
+                {
+                  case(rc,sc)=>
+                    sjoin(rc,sc)
+                }*/
+
+                  r.foreach {
+                    rc =>
+                    s.foreach{
+                      sc=>
+                        if(rc.box.intersects(sc.box))
+                          sjoin(rc,sc)
+                    }
+                  }
+
+                //next step to test on sort and plan sweep approach
+              }
+            }
+        }
+      }
+
+    }
+
+    sjoin(this.root,stree.root)
+
+    buf.toSeq
+  }
+
+
+  def cleanTree()=
+  {
+    def recur(node:Node[V]):Unit= {
+
+      node match {
+        case Leaf(children, box) =>
+          children.drop(children.size - 1)
+        case Branch(children, box) =>
+
+          children.foreach { c =>
+            recur(c)
+          }
+          children.drop(children.size - 1)
+      }
+    }
+
+      recur(this.root)
+  }
 
   /**
    * Return a sequence of all entries found in the given search space.

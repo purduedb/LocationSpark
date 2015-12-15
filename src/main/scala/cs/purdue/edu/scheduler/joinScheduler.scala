@@ -104,8 +104,9 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     val stat=analysis(this.datardd,transformQueryrdd)
 
     //the core part for this scheduler
-    val topKpartitions=skewAnalysis.findSkewPartition(stat,0.25)
+    //val topKpartitions=skewAnalysis.findSkewPartition(stat,0.5)
 
+    val topKpartitions=skewAnalysis.findSkewPartitionQuery(stat,0.5)
     val broadcastVar = this.datardd.context.broadcast(topKpartitions)
 
     //transform the skew and query rdd
@@ -148,20 +149,15 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     /**
      * below the the option 2, get the new data partitioner based on the query, then do the join
      */
-
     val newpartitioner=getPartitionerbasedQuery(topKpartitions,skew_queryrdd)
     val skewindexrdd=SpatialRDD.buildSRDDwithgivenPartitioner(skew_datardd,newpartitioner)
-    println(skewindexrdd.count())
-
     val part1=skewindexrdd.sjoins[U](skew_queryrdd)((k, id) => id)
 
-    println(part1.count())
-    /********************finish  skew join************************/
     /*************************************************************/
     val part2=nonskew_datardd.sjoins(nonskew_queryrdd)((k, id) => id)
     /***************************************************************/
-
-    part1.union(part2)
+    // part2
+     part1.union(part2)
     //Array(skew_queryrdd,skew_datardd,nonskew_queryrdd,nonskew_datardd)
   }
 
@@ -180,9 +176,7 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     this.datardd.partitioner.getOrElse(None) match {
       case qtreepter: QtreePartitioner[K, V] =>
         val newrootnode=qtreepter.quadtree.coloneTree()
-
-        qtreepter.quadtree.printTreeStructure()
-
+        //qtreepter.quadtree.printTreeStructure()
         qtreepartition.root=newrootnode
     }
 

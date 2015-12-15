@@ -52,8 +52,8 @@ object SpatialRDDMain {
 
     val indexed = SpatialRDD(locationRDD).cache()
     /************************************************************************************/
-    /*
-    val numPartition=indexed.partitions.length
+
+   /* val numPartition=indexed.partitions.length
 
     val boxes=Array(Box(17.10094f,-86.8612f, 18.41f, -80.222f), Box(13.10094f,-87.8612f, 14.41f, -83.222f),
       Box(17.10094f,-87.8612f, 18.41f, -84.222f),Box(13.10094f,-87.8612f, 28.41f, -85.222f),
@@ -61,9 +61,9 @@ object SpatialRDDMain {
 
     val queryBoxeRDD=spark.parallelize(boxes,numPartition)
     val joinresultRdd2=indexed.sjoin(queryBoxeRDD)((k,id)=>id)
+
     println("join for small data result")
-    println(joinresultRdd2.count())
-    */
+    println(joinresultRdd2.count())*/
 
     /************************************************************************************/
     val queryrdd=locationRDD.sample(false,ratio)

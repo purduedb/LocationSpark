@@ -439,7 +439,9 @@ object SpatialRDD {
 
       val elemsPartitioned = elems.partitionBy(partitoner)
       val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
-        iter => Iterator(QtreePartition(iter, z, f)),
+        //iter => Iterator(QtreePartition(iter, z, f)),
+        //iter => Iterator(SMapPartition(iter, z, f)),
+        iter => Iterator(RtreePartition(iter, z, f)),
         preservesPartitioning = true
       )
       new SpatialRDD(partitions)
@@ -465,9 +467,9 @@ object SpatialRDD {
       elems.partitionBy(new QtreePartitioner(500,0.01f,elems))
 
     val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
-       //iter => Iterator(RtreePartition(iter, z, f)),
+       iter => Iterator(RtreePartition(iter, z, f)),
       //iter => Iterator(SMapPartition(iter, z, f)),
-      iter => Iterator(QtreePartition(iter, z, f)),
+      //iter => Iterator(QtreePartition(iter, z, f)),
       preservesPartitioning = true
     )
     new SpatialRDD(partitions)

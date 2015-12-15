@@ -174,7 +174,8 @@ class RtreePartition[K, V]
      */
     var retmap=new HashMap[K,V]
 
-    other.foreach{
+    //option 1: nest loop approach
+   /* other.foreach{
       case(point,b:Box)=>
         val ret = newMap.search(b, _ => true)
         ret.foreach {
@@ -182,10 +183,31 @@ class RtreePartition[K, V]
             if(!retmap.contains(e.geom.asInstanceOf[K]))
               retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
         }
+    }*/
+
+
+    //option2: build the tree for the query box approach
+    val value=1
+    val boxes=other.map
+    {
+      case(point,b:Box)=>Entry(b,value.asInstanceOf[V])
     }
 
-    new SMapPartition(retmap)
+    val boxtree=RTree(boxes)
 
+    newMap.join(boxtree).map(
+      e=>
+      retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
+    )
+
+    boxtree.cleanTree()
+    /*newMap.join(boxtree).foreach {
+      case (e: Entry[V]) =>
+        if(!retmap.contains(e.geom.asInstanceOf[K]))
+          retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
+    }*/
+
+    new SMapPartition(retmap)
 
     /*for (ku <- other)
     {
