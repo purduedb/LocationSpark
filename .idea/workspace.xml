@@ -193,16 +193,36 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/streams/test/managedClasspath/$global/streams/export" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/streams/test/unmanagedClasspath/$global/streams/export" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/streams/test/unmanagedJars/$global/streams/export" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Point.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Point.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$$eq$eq$eq$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$$eq$eq$eq$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$10.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$10.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$11.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$11.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$12.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$12.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$13.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$13.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$14.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$14.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$6.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$7.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$7.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$8.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$8.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$9.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$9.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$2$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$2$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1$$anonfun$apply$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2$$anonfun$apply$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2$$anonfun$apply$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3$$anonfun$apply$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3$$anonfun$apply$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4$$anonfun$apply$6.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4$$anonfun$apply$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$insertAll$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$insertAll$1.class" />
@@ -215,42 +235,28 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$values$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$values$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$14.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$14.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$15.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$15.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$16.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$16.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$10.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$10.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$11.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$11.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$12.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$12.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$13.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$13.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$14.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$14.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$8.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$8.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$9.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$9.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$getPartitionerbasedQuery$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$getPartitionerbasedQuery$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis$$anonfun$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis$$anonfun$findSkewPartition$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis$$anonfun$findSkewPartition$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/skewAnalysis.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper$$anonfun$apply$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$JoinZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$JoinZipper.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$MultiputZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$MultiputZipper.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$OtherJoinZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$OtherJoinZipper.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/skewAnalysis.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/skewAnalysis.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" afterPath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -295,97 +301,10 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="356" column="3" selection-start-line="356" selection-start-column="3" selection-end-line="356" selection-end-column="3" />
+              <caret line="412" column="18" selection-start-line="412" selection-start-column="18" selection-end-line="412" selection-end-column="18" />
               <folding>
                 <element signature="e#42#58#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Vector.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/immutable/Vector.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="168" column="8" selection-start-line="168" selection-start-column="8" selection-end-line="168" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SetLike.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/SetLike.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="146" column="15" selection-start-line="146" selection-start-column="15" selection-end-line="146" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HashSet.java" pinned="false" current-in-tab="false">
-        <entry file="jar:///usr/lib/jvm/jdk1.7/src.zip!/java/util/HashSet.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="214" column="7" selection-start-line="214" selection-start-column="7" selection-end-line="214" selection-end-column="7" />
-              <folding>
-                <element signature="e#7993#7994#0" expanded="true" />
-                <element signature="e#8041#8042#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testRtree.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-              <folding>
-                <element signature="e#36#85#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RtreePartition.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.63901347">
-              <caret line="200" column="5" selection-start-line="200" selection-start-column="5" selection-end-line="200" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="skewAnalysis.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/skewAnalysis.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="136" column="37" selection-start-line="136" selection-start-column="37" selection-end-line="136" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="joinScheduler.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="159" column="23" selection-start-line="159" selection-start-column="23" selection-end-line="159" selection-end-column="23" />
-              <folding>
-                <element signature="e#33#82#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpatialRDDPartition.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -394,7 +313,89 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+              <caret line="43" column="11" selection-start-line="37" selection-start-column="8" selection-end-line="43" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testQtree.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQtree.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HashMap.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/HashMap.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="75" column="23" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testRtree.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpatialRdd.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="356" column="36" selection-start-line="356" selection-start-column="36" selection-end-line="356" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RDD.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="849" column="3" selection-start-line="849" selection-start-column="3" selection-end-line="849" selection-end-column="3" />
+              <folding>
+                <element signature="e#832#855#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RtreePartition.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4753363">
+              <caret line="150" column="5" selection-start-line="150" selection-start-column="5" selection-end-line="150" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpatialRDDPartition.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="76" column="24" selection-start-line="76" selection-start-column="24" selection-end-line="76" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SMapPartition.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -467,11 +468,11 @@
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/skewAnalysis.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
       </list>
     </option>
   </component>
@@ -1060,7 +1061,7 @@
       <recent name="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.RDDcluster">
+  <component name="RunManager" selected="Application.Rtree">
     <configuration default="false" name="TestPartition" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1554,18 +1555,18 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36512667" sideWeight="0.7510981" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29061103" sideWeight="0.34699854" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29061103" sideWeight="0.35065886" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3233979" sideWeight="0.55636895" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3233979" sideWeight="0.54172766" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329429" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917318" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34333822" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28843337" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29061103" sideWeight="0.6530015" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23938507" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29061103" sideWeight="0.64934117" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26974666" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1631,28 +1632,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/Iterable.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/HashMap.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="52" column="15" selection-start-line="52" selection-start-column="15" selection-end-line="52" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.5.jar!/scala/Tuple2.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="70" selection-start-line="1" selection-start-column="70" selection-end-line="1" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialSampleRDD.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1665,14 +1644,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="557" column="54" selection-start-line="515" selection-start-column="4" selection-end-line="557" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="121" column="15" selection-start-line="121" selection-start-column="15" selection-end-line="121" selection-end-column="15" />
           <folding />
         </state>
       </provider>
@@ -1699,14 +1670,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="2031" column="3" selection-start-line="2031" selection-start-column="3" selection-end-line="2031" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/MapPartitionsRDD.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="24" selection-start-line="30" selection-start-column="24" selection-end-line="30" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1753,14 +1716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/PairRDDFunctions.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="508" column="6" selection-start-line="508" selection-start-column="6" selection-end-line="508" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/scheduler/DAGScheduler.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1800,16 +1755,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="33" column="45" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="45" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.290323">
-          <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="15" />
-          <folding>
-            <element signature="e#832#855#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1889,14 +1834,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQtree.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="34" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialbloomfilter/binnaryopt.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1937,14 +1874,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1957,14 +1886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="489" column="24" selection-start-line="489" selection-start-column="24" selection-end-line="489" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="472" column="34" selection-start-line="472" selection-start-column="34" selection-end-line="472" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -1987,39 +1908,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/jdk1.7/src.zip!/java/util/HashSet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="214" column="7" selection-start-line="214" selection-start-column="7" selection-end-line="214" selection-end-column="7" />
           <folding>
-            <element signature="e#7993#7994#0" expanded="true" />
-            <element signature="e#8041#8042#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding>
-            <element signature="e#36#85#0" expanded="true" />
+            <element signature="e#7993#7994#0" expanded="false" />
+            <element signature="e#8041#8042#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2040,20 +1935,126 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/PairRDDFunctions.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="101" column="5" selection-start-line="101" selection-start-column="5" selection-end-line="101" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/MapPartitionsRDD.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="77" selection-start-line="36" selection-start-column="77" selection-end-line="36" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Node.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="492" column="11" selection-start-line="492" selection-start-column="11" selection-end-line="492" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/BufferLike.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="128" column="3" selection-start-line="128" selection-start-column="3" selection-end-line="128" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/HashTable.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.451613">
+          <caret line="447" column="31" selection-start-line="447" selection-start-column="28" selection-end-line="447" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar!/scala/collection/mutable/HashMap.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="75" column="23" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQtree.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="43" column="11" selection-start-line="37" selection-start-column="8" selection-end-line="43" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="356" column="3" selection-start-line="356" selection-start-column="3" selection-end-line="356" selection-end-column="3" />
+          <caret line="412" column="18" selection-start-line="412" selection-start-column="18" selection-end-line="412" selection-end-column="18" />
           <folding>
             <element signature="e#42#58#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="849" column="3" selection-start-line="849" selection-start-column="3" selection-end-line="849" selection-end-column="3" />
+          <folding>
+            <element signature="e#832#855#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="356" column="36" selection-start-line="356" selection-start-column="36" selection-end-line="356" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="76" column="24" selection-start-line="76" selection-start-column="24" selection-end-line="76" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63901347">
-          <caret line="200" column="5" selection-start-line="200" selection-start-column="5" selection-end-line="200" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.4753363">
+          <caret line="150" column="5" selection-start-line="150" selection-start-column="5" selection-end-line="150" selection-end-column="5" />
           <folding />
         </state>
       </provider>

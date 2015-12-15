@@ -309,7 +309,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   }
 
 
-
   /*************************************************/
 
   /** Applies a function to corresponding partitions of `this` and a pair RDD. */
@@ -318,20 +317,8 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
       (f: OtherZipPartitionsFunction[V2, V3]):
       SpatialRDD[K, V3] = {
     val partitioned = other.partitionBy(partitioner.get)
-
-   /* def getPartitionSize[K : ClassTag](rdd: RDD[K]): (Array[(Int, Int)]) = {
-      // val classTagK = classTag[K] // to avoid serializing the entire partitioner object
-      val sketched = rdd.mapPartitionsWithIndex { (idx, iter) =>
-        Iterator((idx, iter.size))
-      }.collect()
-      sketched
-    }*/
-
-    //println("query box overlap partitions")
-    //println("*"*100)
-    //getPartitionSize(partitioned).foreach(println)
-
     val newPartitionsRDD = partitionsRDD.zipPartitions(partitioned, true)(f)
+
     new SpatialRDD(newPartitionsRDD)
   }
 

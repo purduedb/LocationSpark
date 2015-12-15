@@ -155,36 +155,9 @@ class RtreePartition[K, V]
 
     val newMap = this.tree
     /**
-     * below is build a rtree based hashmap, this will bring overhead to
-     * build a rtree for the return results
-     */
-   /* val retmap=new RTree(Node.empty[V], 0)
-
-    other.foreach{
-      case(point,b:Box)=>
-        //println("boxes:"+b)
-        val ret = newMap.search(b, _ => true)
-        retmap.insertAll(ret)
-    }
-    this.withMap(retmap)
-    */
-
-    /**
-     * below is used for hashmap based join
+     * below is dual tree based sjoin
      */
     var retmap=new HashMap[K,V]
-
-    //option 1: nest loop approach
-   /* other.foreach{
-      case(point,b:Box)=>
-        val ret = newMap.search(b, _ => true)
-        ret.foreach {
-          case (e: Entry[V]) =>
-            if(!retmap.contains(e.geom.asInstanceOf[K]))
-              retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
-        }
-    }*/
-
 
     //option2: build the tree for the query box approach
     val value=1
@@ -201,13 +174,40 @@ class RtreePartition[K, V]
     )
 
     boxtree.cleanTree()
+    new SMapPartition(retmap)
+
+    /**
+     * below is build a rtree based hashmap, this will bring overhead to
+     * build a rtree for the return results
+     */
+
+    /* val retmap=new RTree(Node.empty[V], 0)
+ other.foreach{
+   case(point,b:Box)=>
+     //println("boxes:"+b)
+     val ret = newMap.search(b, _ => true)
+     retmap.insertAll(ret)
+ }
+ this.withMap(retmap)
+ */
+
+
+    //option 1: nest loop approach
+    /* other.foreach{
+       case(point,b:Box)=>
+         val ret = newMap.search(b, _ => true)
+         ret.foreach {
+           case (e: Entry[V]) =>
+             if(!retmap.contains(e.geom.asInstanceOf[K]))
+               retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
+         }
+     }*/
+
     /*newMap.join(boxtree).foreach {
       case (e: Entry[V]) =>
         if(!retmap.contains(e.geom.asInstanceOf[K]))
           retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
     }*/
-
-    new SMapPartition(retmap)
 
     /*for (ku <- other)
     {

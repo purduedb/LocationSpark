@@ -12,8 +12,8 @@ object testRtree {
 
   def main(args: Array[String]): Unit = {
 
-    val numofqueries=10000
-    val numofpoints=1000000
+    val numofqueries=100
+    val numofpoints=1000
 
     val boxes = (1 to numofqueries).map{
       n =>
@@ -48,6 +48,9 @@ object testRtree {
     var b1=System.currentTimeMillis
 
     val boxtree=RTree(insertbox: _*)
+
+    datatree.joins(boxtree).foreach(println)
+
     val count1=datatree.join(boxtree).size
 
     println(count1)

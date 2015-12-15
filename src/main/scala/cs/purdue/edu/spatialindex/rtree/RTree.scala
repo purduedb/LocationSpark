@@ -2,6 +2,7 @@ package cs.purdue.edu.spatialindex.rtree
 
 import java.util
 
+import scala.collection.mutable
 import scala.collection.mutable.HashSet
 import scala.collection.mutable.{ArrayBuffer, PriorityQueue}
 import scala.util.Try
@@ -352,6 +353,160 @@ case class RTree[V](root: Node[V], size: Int) {
     buf.toSeq
   }
 
+
+  /**
+   * this is the dual tree join algorithm,
+   * this one the data tree, and stree is the query tree.
+   * the return is the
+   * query box w.r.t the point1, point2, point3...
+   * @param stree
+   * @return
+   */
+  def joins(stree:RTree[V]):mutable.HashMap[Geom,ArrayBuffer[Entry[V]]] =
+  {
+    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[Entry[V]]]
+
+    def updatehashmap(key:Geom, value:Entry[V])=
+    {
+      try {
+        if(buf.contains(key))
+        {
+          val tmp1=buf.get(key).get
+          tmp1.append(value)
+          buf.put(key,tmp1)
+        }else
+        {
+          val tmp1=new ArrayBuffer[Entry[V]]
+          tmp1.append(value)
+          buf.put(key,tmp1)
+        }
+
+      }catch
+        {
+          case e:Exception=>
+          println("out of memory for appending new value to the sjoin")
+        }
+    }
+    //this changed to generic search
+    //recursive
+    //case 3: the data tree is leaf, but the query tree is branch
+    def recur(node: Node[V], entry:Entry[V]): Unit =
+      node match {
+        case Leaf(children, box) =>
+          children.foreach { c =>
+            if (c.geom.contains(entry.geom))
+            {
+              updatehashmap(c.geom,entry)
+            }
+
+          }
+        case Branch(children, box) =>
+          children.foreach { c =>
+            if (c.box.intersects(entry.geom)) recur(c,entry)
+          }
+      }
+
+    //this changed to generic search
+    //recursive to the leaf node, which contain the data itself
+    //case 4: the data tree is branch, but the query tree is leaf
+    def recur2(node: Node[V], querybox:Geom): Unit =
+      node match {
+        case Leaf(children, box) =>
+          children.foreach { c =>
+            if (querybox.contains(c.geom))
+              updatehashmap(c.geom,c)
+          }
+        case Branch(children, box) =>
+          children.foreach { c =>
+            if (querybox.intersects(c.geom)) recur2(c,querybox)
+          }
+      }
+    //this is used for spatial join
+    def sjoin(rnode:Node[V],snode:Node[V]):Unit={
+
+      if(rnode.box.intersects(snode.box))
+      {
+        val intesectionbox=rnode.box.intesectBox(snode.box)
+
+        rnode match {
+
+          case Leaf(children_r, box_r) =>
+
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
+
+                children_r.foreach{
+                  cr=>
+                    children_s.foreach {
+                      cs =>
+                        if (cs.geom.contains(cr.geom))
+                        {
+                          updatehashmap(cs.geom,cr)
+                        }//if
+
+                    }
+                }
+
+              case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
+              {
+                val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
+                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+                r.foreach{
+                  cr=>
+                    s.foreach {
+                      cs =>
+                        recur(cs,cr)
+                    }
+                }
+
+              }
+            }
+
+          case Branch(children_r, box_r) =>
+
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
+
+                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
+
+                r.foreach{
+                  cr=>
+                    s.foreach {
+                      cs =>
+                        recur2(cr,cs.geom)
+                    }
+                }
+
+              case Branch(children_s, box_s)=> //case 1: both of two tree are branch
+              {
+                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+                r.foreach {
+                  rc =>
+                    s.foreach{
+                      sc=>
+                        if(rc.box.intersects(sc.box))
+                          sjoin(rc,sc)
+                    }
+                }
+
+                //next step to test on sort and plan sweep approach
+              }
+            }
+        }
+      }
+
+    }
+
+    sjoin(this.root,stree.root)
+
+    buf
+  }
 
   def cleanTree()=
   {
