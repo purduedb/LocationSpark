@@ -113,6 +113,52 @@ object testSpatialRDD
 
   }
 
+  def testForRJOIN[V](srdd:SpatialRDD[Point,V], spark:SparkContext)=
+  {
+    /**
+     * test for the spatial join
+     */
+    val numpartition=srdd.partitions.length
+
+    //val boxes=Array{(Box(0,0,100,100),1); (Box(0,100,1000,1000),2)}
+    val boxes=Array(Box(20.10094f,-86.8612f, 30.41f, -81.222f), Box(29.10094f,-83.8612f, 32.41f, -80.222f))
+
+    val queryBoxes=spark.parallelize(boxes,numpartition)
+
+    val joinresultRdd=srdd.rjoin(queryBoxes)((k,id)=>id)
+
+    println(joinresultRdd.count())
+
+    joinresultRdd.foreach{
+          case(b, result:Iterator[(Point,V)])
+          =>
+            println(b+" "+result.length)
+    }
+
+    /*val reduceresult=joinresultRdd.reduceByKey
+    {
+      case(itr1,itr2)=>
+        (itr1.++(itr2))
+    }
+
+    reduceresult.foreach{
+      case(b, result:Iterator[(Point,V)])
+      =>
+        println(b+" "+result.length)
+    }*/
+
+    /*joinresultRdd.foreach{
+      itr=>
+        itr.foreach
+        {
+          case(b, result:Iterator[(Point,V)])
+          =>
+            println(b+" "+result.length)
+        }
+    }*/
+
+  }
+
 
  /* def tranformRDDGridPartition[K,V](queriesboxes:RDD[V], numpartition:Int):RDD[(K,V)]={
 
@@ -152,7 +198,7 @@ object testSpatialRDD
       line=>
         val arry=line.split(",")
         try {
-          (Point(arry(2).toFloat, arry(3).toFloat), arry(5))
+          (Point(arry(0).toFloat, arry(1).toFloat), arry(2))
         }catch
           {
             case e:Exception=>
@@ -169,9 +215,12 @@ object testSpatialRDD
 
     println(indexed.count)
 
-    testForRangeQuery(indexed)
+    //testForRangeQuery(indexed)
 
-    testForSJOIN(indexed,spark)
+    //testForSJOIN(indexed,spark)
+
+    testForRJOIN(indexed,spark)
+
     /*val numpartition=indexed.partitions.length
 
     val boxes=Array(Box(20.10094f,-86.8612f, 32.41f, -80.222f),Box(23.10094f,-83.8612f, 32.41f, -80.222f))

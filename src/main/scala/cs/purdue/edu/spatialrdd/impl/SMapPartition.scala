@@ -7,6 +7,8 @@ import org.apache.spark.Logging
 import cs.purdue.edu.spatialindex.rtree._
 
 import scala.collection.immutable.{HashMap}
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
 
 /**
@@ -22,7 +24,7 @@ class SMapPartition[K, V]
   extends SpatialRDDPartition[K,V] with Logging
 {
 
-   val Quadfilter=new SBQTree(1000)
+   //val Quadfilter=new SBQTree(1000)
   //qtree.trainSBfilter(datapoint)
 
   override def isDefined(k: K): Boolean = {
@@ -130,7 +132,63 @@ class SMapPartition[K, V]
     new SMapPartition(ret)
   }
 
-  override def knnfilter[U](entry:U, k:Int, z:Entry[V]=>Boolean):Iterator[(K,V, Double)]=
+  override def rjoin[U: ClassTag]
+  (other: SpatialRDDPartition[K, U])
+  (f: (K, V) => V):  Iterator[(U, Iterator[(K,V)])] = rjoin(other.iterator)(f)
+
+  def rjoin[U: ClassTag]
+  (other: Iterator[(K, U)])
+  (f: (K, V) => V): Iterator[(U, Iterator[(K,V)])]= {
+
+    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
+
+    def updatehashmap(key:Geom, v2:V, k2:K)=
+    {
+      try {
+        if(buf.contains(key))
+        {
+          val tmp1=buf.get(key).get
+          tmp1.append(k2->v2)
+          buf.put(key,tmp1)
+        }else
+        {
+          val tmp1=new ArrayBuffer[(K,V)]
+          tmp1.append((k2->v2))
+          buf.put(key,tmp1)
+        }
+
+      }catch
+        {
+          case e:Exception=>
+            println("out of memory for appending new value to the sjoin")
+        }
+    }
+
+    other.foreach
+    {
+      case(pid,b:Box)=>
+      {
+        this.data.foreach
+        {
+          case(p,v)=>
+
+            if(b.contains(p.asInstanceOf[Geom]))
+            {
+              updatehashmap(b, v, p)
+            }
+        }
+      }
+
+    }
+
+    buf.toIterator.map{
+      case(g,array)=>
+        (g.asInstanceOf[U], array.toIterator)
+    }
+
+  }
+
+    override def knnfilter[U](entry:U, k:Int, z:Entry[V]=>Boolean):Iterator[(K,V, Double)]=
   {
     entry match
     {

@@ -1,11 +1,13 @@
 package cs.purdue.edu.spatialrdd.impl
 
 import cs.purdue.edu.spatialindex.quatree.QTree
-import cs.purdue.edu.spatialindex.rtree.{Point, Box, RTree, Entry}
+import cs.purdue.edu.spatialindex.rtree._
 import cs.purdue.edu.spatialrdd.SpatialRDDPartition
 import org.apache.spark.Logging
 
 import scala.collection.immutable.HashMap
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
 
 /**
@@ -76,7 +78,6 @@ class QtreePartition [K, V]
                            z: (K, U) => V,
                            f: (K, V, U) => V): SpatialRDDPartition[K, V] =
   {
-
     var newMap = this.tree
 
     for (ku <- kvs)
@@ -169,6 +170,64 @@ class QtreePartition [K, V]
 
     new SMapPartition(retmap)
   }
+
+  /**
+   * this is used for spatial join return format as u,iterator[(k,v)]
+   */
+  override def rjoin[U: ClassTag]
+  (other: SpatialRDDPartition[K, U])
+  (f: (K, V) => V):  Iterator[(U, Iterator[(K,V)])] = rjoin(other.iterator)(f)
+
+  def rjoin[U: ClassTag]
+  (other: Iterator[(K, U)])
+  (f: (K, V) => V): Iterator[(U, Iterator[(K,V)])]= {
+
+    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
+
+    def updatehashmap(key:Geom, v2:V, k2:K)=
+    {
+      try {
+        if(buf.contains(key))
+        {
+          val tmp1=buf.get(key).get
+          tmp1.append(k2->v2)
+          buf.put(key,tmp1)
+        }else
+        {
+          val tmp1=new ArrayBuffer[(K,V)]
+          tmp1.append((k2->v2))
+          buf.put(key,tmp1)
+        }
+
+      }catch
+        {
+          case e:Exception=>
+            println("out of memory for appending new value to the sjoin")
+        }
+    }
+
+    val newMap = this.tree
+
+    var retmap=new HashMap[K,V]
+
+    other.foreach{
+      case(point,b:Box)=>
+        val ret = newMap.search(b, _ => true)
+        //val ret = newMap.search(b, textfunction)
+        ret.foreach {
+          case (e: Entry[V]) =>
+          {
+            updatehashmap(b,e.value,e.geom.asInstanceOf[K])
+          }
+        }
+    }
+
+    buf.toIterator.map{
+      case(g,array)=>
+        (g.asInstanceOf[U], array.toIterator)
+    }
+  }
+
 }
 private[spatialrdd] object QtreePartition {
 

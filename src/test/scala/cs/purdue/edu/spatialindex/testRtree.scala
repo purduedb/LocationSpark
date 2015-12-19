@@ -13,12 +13,12 @@ object testRtree {
   def main(args: Array[String]): Unit = {
 
     val numofqueries=100
-    val numofpoints=1000
+    val numofpoints=5000
 
     val boxes = (1 to numofqueries).map{
       n =>
         val p1=qtreeUtil.getRandomUniformPoint(-(qtreeUtil.rangx/2),-qtreeUtil.rangy/2, (qtreeUtil.rangx/2),qtreeUtil.rangy/2)
-        val p2=qtreeUtil.getRandomUniformPoint(1,1, 3,3)
+        val p2=qtreeUtil.getRandomUniformPoint(1,1, 6,6)
         Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
     }
 
@@ -49,7 +49,14 @@ object testRtree {
 
     val boxtree=RTree(insertbox: _*)
 
-    datatree.joins(boxtree).foreach(println)
+    val tmp=datatree.joins(boxtree)
+
+    tmp.foreach{
+      case(g,entry)=>
+        print(g)
+        entry.foreach(print)
+        println
+    }
 
     val count1=datatree.join(boxtree).size
 

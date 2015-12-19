@@ -168,6 +168,9 @@ class RtreePartition[K, V]
 
     val boxtree=RTree(boxes)
 
+    //Todo: return the output as the (box,entry) type, then do the reduce to merge the result
+    //newMap.joins(boxtree)
+
     newMap.join(boxtree).map(
       e=>
       retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
@@ -240,6 +243,49 @@ class RtreePartition[K, V]
         */
 
     //println(retmap.size)
+
+  }
+
+  /**
+   * range join operators
+   * @param other
+   * @param f
+   * @tparam U
+   * @return
+   */
+  override def rjoin[U: ClassTag]
+  (other: SpatialRDDPartition[K, U])
+  (f: (K, V) => V):  Iterator[(U, Iterator[(K,V)])] = rjoin(other.iterator)(f)
+
+
+  def rjoin[U: ClassTag]
+  (other: Iterator[(K, U)])
+  (f: (K, V) => V): Iterator[(U, Iterator[(K,V)])]=
+  {
+
+    val newMap = this.tree
+    /**
+     * below is dual tree based sjoin
+     */
+    var retmap=new HashMap[K,V]
+
+    //option2: build the tree for the query box approach
+    val value=1
+    val boxes=other.map
+    {
+      case(point,b:Box)=>Entry(b,value.asInstanceOf[V])
+    }
+
+    val boxtree=RTree(boxes)
+
+    val ret=newMap.joins[Geom](boxtree).toIterator
+
+    boxtree.cleanTree()
+
+    ret.map{
+      case(k,its)=>
+        (k.asInstanceOf[U], its.map{case(k,v)=>(k.asInstanceOf[K],v)})
+    }
 
   }
 

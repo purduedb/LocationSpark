@@ -74,12 +74,22 @@ object SpatialRDDMain {
         (Box(p.x,p.y,p.x+r.x,p.y+r.y))
     }
 
-    val scheduler=new joinScheduler(indexed,queryboxes)
+    /*val scheduler=new joinScheduler(indexed,queryboxes)
     val joinresultRdd=scheduler.scheduleJoin()
 
     //val joinresultRdd=indexed.sjoin(queryboxes)((k,id)=>id)
     println("join for big data result")
+    println(joinresultRdd.count())*/
+
+    val joinresultRdd=indexed.rjoin(queryboxes)((k,id)=>id)
     println(joinresultRdd.count())
+
+    /*joinresultRdd.sample(false,0.01).foreach
+    {
+      case(b, result:Iterator[(Point,Any)])
+      =>
+        println(b+" "+result.length)
+    }*/
     /************************************************************************************/
 
     spark.stop()

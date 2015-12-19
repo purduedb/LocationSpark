@@ -1,10 +1,9 @@
 package cs.purdue.edu.spatialindex.rtree
 
-import java.util
-
 import scala.collection.mutable
 import scala.collection.mutable.HashSet
 import scala.collection.mutable.{ArrayBuffer, PriorityQueue}
+import scala.reflect.ClassTag
 import scala.util.Try
 
 object RTree {
@@ -362,9 +361,9 @@ case class RTree[V](root: Node[V], size: Int) {
    * @param stree
    * @return
    */
-  def joins(stree:RTree[V]):mutable.HashMap[Geom,ArrayBuffer[Entry[V]]] =
+  def joins[K: ClassTag](stree:RTree[V]):mutable.HashMap[Geom,Iterator[(K,V)]] =
   {
-    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[Entry[V]]]
+    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
 
     def updatehashmap(key:Geom, value:Entry[V])=
     {
@@ -372,12 +371,12 @@ case class RTree[V](root: Node[V], size: Int) {
         if(buf.contains(key))
         {
           val tmp1=buf.get(key).get
-          tmp1.append(value)
+          tmp1.append((value.geom.asInstanceOf[K]->value.value))
           buf.put(key,tmp1)
         }else
         {
-          val tmp1=new ArrayBuffer[Entry[V]]
-          tmp1.append(value)
+          val tmp1=new ArrayBuffer[(K,V)]
+          tmp1.append((value.geom.asInstanceOf[K]->value.value))
           buf.put(key,tmp1)
         }
 
@@ -414,7 +413,7 @@ case class RTree[V](root: Node[V], size: Int) {
         case Leaf(children, box) =>
           children.foreach { c =>
             if (querybox.contains(c.geom))
-              updatehashmap(c.geom,c)
+              updatehashmap(querybox,c)
           }
         case Branch(children, box) =>
           children.foreach { c =>
@@ -505,7 +504,9 @@ case class RTree[V](root: Node[V], size: Int) {
 
     sjoin(this.root,stree.root)
 
-    buf
+    buf.map{
+      case(g,entry)=>(g,entry.toIterator)
+    }
   }
 
   def cleanTree()=
