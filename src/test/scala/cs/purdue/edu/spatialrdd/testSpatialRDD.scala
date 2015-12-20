@@ -121,19 +121,29 @@ object testSpatialRDD
     val numpartition=srdd.partitions.length
 
     //val boxes=Array{(Box(0,0,100,100),1); (Box(0,100,1000,1000),2)}
-    val boxes=Array(Box(20.10094f,-86.8612f, 30.41f, -81.222f), Box(29.10094f,-83.8612f, 32.41f, -80.222f))
+    val boxes=Array(
+      Box(20.10094f,-81.8612f, 30.41f, -84.222f), Box(29.10094f,-83.8612f, 32.41f, -80.222f),
+      Box(20.10094f,-86.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 32.41f, -83.222f),
+      Box(20.10094f,-96.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 34.41f, -82.222f),
+      Box(20.10094f,-86.8612f, 40.41f, -81.222f), Box(10.10094f,-83.8612f, 43.41f, -84.222f))
 
     val queryBoxes=spark.parallelize(boxes,numpartition)
 
-    val joinresultRdd=srdd.rjoin(queryBoxes)((k,id)=>id)
+    def aggfunction1[K](itr:Iterator[(K,V)]):Int=
+    {
+      itr.size
+    }
+
+    def aggfunction2(v1:Int, v2:Int):Int=
+    {
+      v1+v2
+    }
+
+    val joinresultRdd=srdd.rjoin(queryBoxes)(aggfunction1,aggfunction2)
 
     println(joinresultRdd.count())
 
-    joinresultRdd.foreach{
-          case(b, result:Iterator[(Point,V)])
-          =>
-            println(b+" "+result.length)
-    }
+    joinresultRdd.foreach{println}
 
     /*val reduceresult=joinresultRdd.reduceByKey
     {

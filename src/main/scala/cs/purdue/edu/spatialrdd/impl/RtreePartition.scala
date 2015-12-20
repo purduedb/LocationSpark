@@ -178,72 +178,6 @@ class RtreePartition[K, V]
 
     boxtree.cleanTree()
     new SMapPartition(retmap)
-
-    /**
-     * below is build a rtree based hashmap, this will bring overhead to
-     * build a rtree for the return results
-     */
-
-    /* val retmap=new RTree(Node.empty[V], 0)
- other.foreach{
-   case(point,b:Box)=>
-     //println("boxes:"+b)
-     val ret = newMap.search(b, _ => true)
-     retmap.insertAll(ret)
- }
- this.withMap(retmap)
- */
-
-
-    //option 1: nest loop approach
-    /* other.foreach{
-       case(point,b:Box)=>
-         val ret = newMap.search(b, _ => true)
-         ret.foreach {
-           case (e: Entry[V]) =>
-             if(!retmap.contains(e.geom.asInstanceOf[K]))
-               retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
-         }
-     }*/
-
-    /*newMap.join(boxtree).foreach {
-      case (e: Entry[V]) =>
-        if(!retmap.contains(e.geom.asInstanceOf[K]))
-          retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
-    }*/
-
-    /*for (ku <- other)
-    {
-      //val kBytes = kSer.toBytes(ku._1)
-      ku._2 match
-      {
-        case b:Box=> {
-
-
-          //println("ret size"+ret.length)
-
-          if(ret!=null)
-          {
-            ret.foreach{
-              element=>
-                val newV=f(element.geom.asInstanceOf[K],element.value)
-                //avoide insert the duplicate items
-                if(!retmap.contains(element))
-                {
-                  retmap=retmap.insert(element.geom.asInstanceOf[Point], newV)
-                }
-
-            }
-          }
-        }
-        case _=>
-          println("wrong for range query type")
-      }
-        }
-        */
-
-    //println(retmap.size)
-
   }
 
   /**
@@ -253,14 +187,16 @@ class RtreePartition[K, V]
    * @tparam U
    * @return
    */
-  override def rjoin[U: ClassTag]
+  override def rjoin[U: ClassTag, U2:ClassTag]
   (other: SpatialRDDPartition[K, U])
-  (f: (K, V) => V):  Iterator[(U, Iterator[(K,V)])] = rjoin(other.iterator)(f)
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2):  Iterator[(U, U2)] = rjoin(other.iterator)(f,f2)
 
 
-  def rjoin[U: ClassTag]
+  def rjoin[U: ClassTag, U2:ClassTag]
   (other: Iterator[(K, U)])
-  (f: (K, V) => V): Iterator[(U, Iterator[(K,V)])]=
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2):  Iterator[(U, U2)]=
   {
 
     val newMap = this.tree
@@ -278,14 +214,11 @@ class RtreePartition[K, V]
 
     val boxtree=RTree(boxes)
 
-    val ret=newMap.joins[Geom](boxtree).toIterator
+    val ret=newMap.joins[K,U,U2](boxtree)(f,f2).toIterator
 
     boxtree.cleanTree()
 
-    ret.map{
-      case(k,its)=>
-        (k.asInstanceOf[U], its.map{case(k,v)=>(k.asInstanceOf[K],v)})
-    }
+    ret
 
   }
 

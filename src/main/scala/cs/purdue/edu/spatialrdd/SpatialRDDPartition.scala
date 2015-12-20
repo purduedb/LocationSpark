@@ -84,10 +84,11 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
     * the key is the location of the range query box, and value is the range query box
   * the f function apply to the value of the filter condition
     */
-  def rjoin[U: ClassTag]
+  def rjoin[U: ClassTag,U2:ClassTag]
   (other: SpatialRDDPartition[K, U])
-  (f: (K, V) => V)
-  : Iterator[(U, Iterator[(K,V)])]
+  (f1: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2)
+  : Iterator[(U, U2)]
 
   /**
    * the iterator is a key and value paris,
@@ -95,9 +96,10 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
    * the key is the location of the range query box, and value is the range query box
    * the f function apply to the value of the filter condition
    */
-  def rjoin[U: ClassTag]
+  def rjoin[U: ClassTag, U2:ClassTag]
   (other: Iterator[(K, U)])
-  (f: (K, V) => V): Iterator[(U, Iterator[(K,V)])]
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2): Iterator[(U, U2)]
 
   /**
    * Creates a new partition with values from `elems` that may share an index with `this`,

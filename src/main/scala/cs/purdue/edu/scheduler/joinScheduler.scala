@@ -162,6 +162,68 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
   }
 
   /**
+   * this scheduler work as following
+   * (1) get the statistic information for each partition
+   * (2) partition the query and data rdd, based on statistic information
+   * (3) execute the join for the newly generated rdd
+   * @return RDD
+   */
+  def scheduleRJoin[U2:ClassTag](f1:(Iterator[(K,V)]) => U2, f2:(U2,U2)=>U2):
+  RDD[(U,U2)]={
+
+    val transformQueryrdd=transformQueryRDD()
+
+    val stat=analysis(this.datardd,transformQueryrdd)
+
+    val topKpartitions=skewAnalysis.findSkewPartitionQuery(stat,0.5)
+    val broadcastVar = this.datardd.context.broadcast(topKpartitions)
+
+    //transform the skew and query rdd
+    val skew_queryrdd = transformQueryrdd.mapPartitionsWithIndex{
+      (pid,iter)=>
+        broadcastVar.value.contains(pid) match
+        {
+          case true=> iter
+          case false=> Iterator.empty
+        }
+    }
+
+    val skew_datardd= this.datardd.mapPartitionsWithIndex(
+      (pid,iter)=> broadcastVar.value.contains(pid) match
+      {
+        case true=>iter
+        case false=>Iterator.empty
+      },true
+    )
+
+    val nonskew_queryrdd = transformQueryrdd.mapPartitionsWithIndex{
+      (pid,iter)=>
+        broadcastVar.value.contains(pid) match
+        {
+          case false=> iter
+          case true=> Iterator.empty
+        }
+    }
+
+    //the simplist way to implement here
+    val nonskew_datardd =this.datardd
+    /**
+     * below the the option 2, get the new data partitioner based on the query, then do the join
+     */
+    val newpartitioner=getPartitionerbasedQuery(topKpartitions,skew_queryrdd)
+    val skewindexrdd=SpatialRDD.buildSRDDwithgivenPartitioner(skew_datardd,newpartitioner)
+
+    val tmp1=skewindexrdd.rjoins[U,U2](skew_queryrdd)(f1,f2)
+    val part1=tmp1.reduceByKey(f2, tmp1.partitions.length/2)
+
+    /*************************************************************/
+    val tmp2=nonskew_datardd.rjoins[U,U2](nonskew_queryrdd)(f1,f2)
+    val part2=tmp2.reduceByKey(f2,tmp2.partitions.length/2)
+    /***************************************************************/
+     part1.union(part2)
+    //Array(skew_queryrdd,skew_datardd,nonskew_queryrdd,nonskew_datardd)
+  }
+  /**
    * get the partitioner based on the query distribution
    * @param topKpartitions
    */

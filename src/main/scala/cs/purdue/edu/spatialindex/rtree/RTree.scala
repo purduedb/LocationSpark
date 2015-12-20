@@ -361,9 +361,13 @@ case class RTree[V](root: Node[V], size: Int) {
    * @param stree
    * @return
    */
-  def joins[K: ClassTag](stree:RTree[V]):mutable.HashMap[Geom,Iterator[(K,V)]] =
+  def joins[K: ClassTag, U:ClassTag, U2: ClassTag](stree:RTree[V])(
+    f: (Iterator[(K,V)]) => U2,f2:(U2,U2)=>U2):
+  mutable.HashMap[U,U2] =
   {
     val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
+
+    val tmpresult = mutable.HashMap.empty[Geom,U2]
 
     def updatehashmap(key:Geom, value:Entry[V])=
     {
@@ -371,6 +375,23 @@ case class RTree[V](root: Node[V], size: Int) {
         if(buf.contains(key))
         {
           val tmp1=buf.get(key).get
+
+          //this is used in case the tmp buffer is too big
+          if(tmp1.size>10)
+          {
+             val result=f(tmp1.toIterator)
+             tmp1.clear()
+             if(tmpresult.contains(key))
+             {
+               val result2=tmpresult.get(key).get
+               //aggregate the internal result
+               tmpresult.put(key,f2(result2,result))
+             }else
+             {
+               tmpresult.put(key,result)
+             }
+          }
+
           tmp1.append((value.geom.asInstanceOf[K]->value.value))
           buf.put(key,tmp1)
         }else
@@ -379,6 +400,7 @@ case class RTree[V](root: Node[V], size: Int) {
           tmp1.append((value.geom.asInstanceOf[K]->value.value))
           buf.put(key,tmp1)
         }
+
 
       }catch
         {
@@ -505,8 +527,16 @@ case class RTree[V](root: Node[V], size: Int) {
     sjoin(this.root,stree.root)
 
     buf.map{
-      case(g,entry)=>(g,entry.toIterator)
+      case(geom,itr)=>
+        val t1=f(itr.toIterator)
+        val t2=tmpresult.get(geom).getOrElse(None)
+        t2 match
+        {
+          case t:U2=> (geom.asInstanceOf[U],f2(t1,t))
+          case _=>(geom.asInstanceOf[U],t1)
+        }
     }
+
   }
 
   def cleanTree()=

@@ -132,13 +132,15 @@ class SMapPartition[K, V]
     new SMapPartition(ret)
   }
 
-  override def rjoin[U: ClassTag]
+  override def rjoin[U: ClassTag, U2:ClassTag]
   (other: SpatialRDDPartition[K, U])
-  (f: (K, V) => V):  Iterator[(U, Iterator[(K,V)])] = rjoin(other.iterator)(f)
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2):  Iterator[(U, U2)] = rjoin(other.iterator)(f,f2)
 
-  def rjoin[U: ClassTag]
+  def rjoin[U: ClassTag,U2:ClassTag]
   (other: Iterator[(K, U)])
-  (f: (K, V) => V): Iterator[(U, Iterator[(K,V)])]= {
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2):  Iterator[(U, U2)]= {
 
     val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
 
@@ -183,7 +185,9 @@ class SMapPartition[K, V]
 
     buf.toIterator.map{
       case(g,array)=>
-        (g.asInstanceOf[U], array.toIterator)
+        val agg=f(array.toIterator)
+        array.clear()
+        (g.asInstanceOf[U], agg)
     }
 
   }

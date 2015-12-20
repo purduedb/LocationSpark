@@ -12,6 +12,14 @@ object testRtree {
 
   def main(args: Array[String]): Unit = {
 
+    val b=Box(18.41f, 80.322f,11f,12f)
+    val a=Box(18.41f, 80.322f,11f,13f)
+
+    println(a==b)
+
+    println(b.hashCode)
+    println(a.hashCode)
+
     val numofqueries=100
     val numofpoints=5000
 
@@ -28,6 +36,8 @@ object testRtree {
       ).map{
       box=>Entry(box,1)
     }
+
+
 
     //val boxtree=RTree(boxes: _*)
 
@@ -49,14 +59,7 @@ object testRtree {
 
     val boxtree=RTree(insertbox: _*)
 
-    val tmp=datatree.joins(boxtree)
-
-    tmp.foreach{
-      case(g,entry)=>
-        print(g)
-        entry.foreach(print)
-        println
-    }
+    //val tmp=datatree.joins(boxtree)
 
     val count1=datatree.join(boxtree).size
 

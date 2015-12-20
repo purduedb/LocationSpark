@@ -282,29 +282,25 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
    * @tparam U
    * @return
    */
-  def rjoin[U: ClassTag]
-  //(other: RDD[U])(f: (K, V) => V):  RDD[Iterator[(U, Iterator[(K,V)])]] = {
-  (other: RDD[U])(f: (K, V) => V):  RDD[(U, Iterator[(K,V)])] = {
+  def rjoin[U: ClassTag, U2:ClassTag]
+  (other: RDD[U])
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2):
+  RDD[(U, U2)] = {
     this.partitioner.getOrElse(None) match {
 
       case qtree: QtreePartitioner[K, V] =>
 
         val queriesRDD = tranformRDDQuadtreePartition[K, U](other, this.partitioner)
-        val tmp1=rjoins(queriesRDD)(f)
-        tmp1.reduceByKey
-        {
-          case(itr1,itr2)=>
-            (itr1.++(itr2))
-        }
+        val tmp1=rjoins(queriesRDD)(f,f2)
+        //notice, if the number of partition does not change, some tuples can not merge together
+        tmp1.reduceByKey(f2,tmp1.partitions.length/2)
+
       case grid: Grid2DPartitioner =>
 
         val queriesRDD = tranformRDDGridPartition[K, U](other, this.partitions.length)
-        val tmp1=rjoins(queriesRDD)(f)
-        tmp1.reduceByKey
-        {
-          case(itr1,itr2)=>
-            (itr1.++(itr2))
-        }
+        val tmp1=rjoins(queriesRDD)(f,f2)
+        tmp1.reduceByKey(f2,tmp1.partitions.length/2)
     }
 
   }
@@ -318,11 +314,12 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
    * @tparam U
    * @return
    */
-  def rjoins[U: ClassTag]
+  def rjoins[U: ClassTag, U2:ClassTag]
   (other: RDD[(K, U)])
-  (f: (K, V) => V):
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2):
   //RDD[Iterator[(U, Iterator[(K,V)])]]={
-    RDD[(U, Iterator[(K,V)])]={
+    RDD[(U, U2)]={
     other match {
       case other: SpatialRDD[K, U] if partitioner == other.partitioner =>
         val newPartitionsRDD=partitionsRDD.zipPartitions(
@@ -331,7 +328,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
           (thisIter, otherIter) =>
             val thisPart = thisIter.next()
             val otherPart = otherIter.next()
-            thisPart.rjoin(otherPart)(f)
+            thisPart.rjoin(otherPart)(f,f2)
         }
         newPartitionsRDD
       case _ =>
@@ -340,7 +337,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
         {
           (thisIter, otherIter) =>
             val thisPart = thisIter.next()
-            thisPart.rjoin(otherIter)(f)
+            thisPart.rjoin(otherIter)(f,f2)
         }
         newPartitionsRDD
     }

@@ -174,13 +174,15 @@ class QtreePartition [K, V]
   /**
    * this is used for spatial join return format as u,iterator[(k,v)]
    */
-  override def rjoin[U: ClassTag]
+  override def rjoin[U: ClassTag, U2:ClassTag]
   (other: SpatialRDDPartition[K, U])
-  (f: (K, V) => V):  Iterator[(U, Iterator[(K,V)])] = rjoin(other.iterator)(f)
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2):  Iterator[(U, U2)] = rjoin(other.iterator)(f,f2)
 
-  def rjoin[U: ClassTag]
+  def rjoin[U: ClassTag, U2:ClassTag]
   (other: Iterator[(K, U)])
-  (f: (K, V) => V): Iterator[(U, Iterator[(K,V)])]= {
+  (f: (Iterator[(K,V)]) => U2,
+   f2:(U2,U2)=>U2): Iterator[(U, U2)]= {
 
     val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
 
@@ -224,7 +226,9 @@ class QtreePartition [K, V]
 
     buf.toIterator.map{
       case(g,array)=>
-        (g.asInstanceOf[U], array.toIterator)
+        val aggresult=f(array.toIterator)
+        array.clear()
+        (g.asInstanceOf[U], aggresult)
     }
   }
 

@@ -101,8 +101,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-spatialspark_2.11-test-internal.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-spatialspark_2.11-test.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$13$$anonfun$apply$3.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$15.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$16.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$findSkewPartition$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$findSkewPartition$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialbloomfilter/SBFilter$$anonfun$apply$3.class" afterPath="" />
@@ -119,24 +117,30 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree/QTree$$anonfun$cs$purdue$edu$spatialindex$quatree$QTree$$queryBoxWithP$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree/QTree$tmpBox$.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/quatree/QTree$tmpBox.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$18.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/NaiveRDD$$anonfun$main$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpaRDD.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$16.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$applywithPartitionNumber$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$applywithPartitionNumber$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$rjoin$1$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$rjoin$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$rjoin$2$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$rjoin$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDGridPartition$1$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDGridPartition$1$$anonfun$apply$4.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDGridPartition$1$1$$anonfun$apply$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDGridPartition$1$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$$anonfun$13.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$$anonfun$apply$3.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$1$$anonfun$12.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$1$$anonfun$apply$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$zipPartitionsWithOther$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper$$anonfun$apply$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper$$anonfun$apply$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper$$anonfun$apply$5.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$5$$anonfun$apply$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$6.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$7.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$main$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/Grid2DPartitionerForBox$$anonfun$getPartitions$1$$anonfun$apply$mcVI$sp$1.class" afterPath="" />
@@ -144,7 +148,9 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$apply$3.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QuadtreePartitioner.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$rjoin$1$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$rjoin$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1$$anonfun$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1$$anonfun$apply$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$apply$3.class" afterPath="" />
@@ -158,6 +164,8 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/sbfilter/testSbfilter$$anonfun$main$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/sbfilter/testSbfilter$$anonfun$main$3.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/sbfilter/testSbfilter$$anonfun$main$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$1$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialrdd/TestPartition$$anonfun$10.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialrdd/TestPartition$$anonfun$4.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialrdd/TestPartition$$anonfun$5.class" afterPath="" />
@@ -170,7 +178,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$11.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$3$$anonfun$apply$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$4$$anonfun$apply$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$9.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$main$1.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$main$2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$main$3.class" afterPath="" />
@@ -196,58 +203,34 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/streams/test/managedClasspath/$global/streams/export" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/streams/test/unmanagedClasspath/$global/streams/export" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/streams/test/unmanagedJars/$global/streams/export" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Box.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Geom$class.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Geom$class.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Geom.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Geom.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Point$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Point$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Point.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/Point.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$apply$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$apply$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$filter$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$filter$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$iterator$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$iterator$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$knnfilter$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$knnfilter$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$multiget$1$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$multiget$1$$anonfun$apply$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$multiget$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$multiget$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$multiput$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$multiput$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$sjoin$1$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$sjoin$1$$anonfun$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$sjoin$1$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$sjoin$1$$anonfun$apply$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$sjoin$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$sjoin$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$apply$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$apply$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$1$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$1$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$1$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$1$$anonfun$apply$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$$anonfun$rjoin$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/QtreePartition.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$$eq$eq$eq$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$$eq$eq$eq$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$10.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$10.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$11.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$11.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$12.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$12.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$13.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$13.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$14.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$14.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$15.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$15.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$16.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$16.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$17.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$17.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$18.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$18.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$19.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$19.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$20.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$20.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$6.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$6.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$7.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$7.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$8.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$8.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$9.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$9.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$apply$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$1$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$2$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$2$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$2$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$2$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$3$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur$3$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$1$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$2$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$2$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$2$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$recur2$2$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1$$anonfun$apply$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2$$anonfun$apply$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2$$anonfun$apply$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3$$anonfun$apply$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3$$anonfun$apply$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4$$anonfun$apply$6.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4$$anonfun$apply$6.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$1$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$1$$anonfun$apply$7.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$1$$anonfun$apply$7.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$2$$anonfun$apply$8.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$2$$anonfun$apply$8.class" />
@@ -256,73 +239,88 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$4$$anonfun$apply$10.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$4$$anonfun$apply$10.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$cs$purdue$edu$spatialindex$rtree$RTree$$sjoin$2$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$equals$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$insertAll$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$insertAll$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$joins$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$joins$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$nearest$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$nearest$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$remove$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$remove$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$remove$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$remove$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$removeAll$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$removeAll$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$search$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$search$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$searchIntersection$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$searchIntersection$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$values$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$$anonfun$values$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialindex/rtree/RTree.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$apply$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$$anonfun$sjoin$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/RtreePartition.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$apply$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$apply$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$apply$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$apply$5.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$apply$6.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$apply$6.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$delete$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$delete$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$filter$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$filter$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$knnfilter$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$knnfilter$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$multiget$1$$anonfun$apply$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$multiget$1$$anonfun$apply$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$multiget$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$multiget$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$multiput$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$multiput$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$sjoin$1$$anonfun$apply$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$sjoin$1$$anonfun$apply$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$sjoin$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$sjoin$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$rjoin$1$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$rjoin$1$$anonfun$apply$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$rjoin$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$rjoin$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$rjoin$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$$anonfun$rjoin$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/impl/SMapPartition.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$12.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$12.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$13.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$13.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$14.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$14.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$15.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$15.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$17.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$17.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$18.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$18.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$19.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$19.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSPRDDwithPartitionNumber$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$buildSRDDwithgivenPartitioner$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDGridPartition$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDGridPartition$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$$anonfun$16.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1$$anonfun$16.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$tranformRDDQuadtreePartition$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$$anonfun$updatable$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper$$anonfun$apply$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper$$anonfun$apply$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$DeleteZipper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$JoinZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$JoinZipper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$MultiputZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$MultiputZipper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$OtherJoinZipper.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD$OtherJoinZipper.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$6.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$6.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$main$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$$anonfun$main$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDMain.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDPartition.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/spatialrdd/SpatialRDDPartition.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/SumFunction$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/SumFunction$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$13.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$13.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$14.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$14.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$15.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$15.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$16.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$16.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$getPartitionerbasedQuery$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler$$anonfun$getPartitionerbasedQuery$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler.class" afterPath="$PROJECT_DIR$/target/scala-2.10/classes/cs/purdue/edu/scheduler/joinScheduler.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$$anonfun$main$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/cs/purdue/edu/spatialindex/testRtree.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$3.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$4.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$5.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$5.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$6.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$6.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$7.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$7.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$8.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$8.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$9.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$9.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$testForRJOIN$1.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$$anonfun$testForRJOIN$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD$.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD.class" afterPath="$PROJECT_DIR$/target/scala-2.10/test-classes/test/testSpatialRDD.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QtreePartition.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QtreePartition.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
@@ -330,6 +328,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala" afterPath="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" afterPath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala" afterPath="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -371,77 +370,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SpatialRdd.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
+      <file leaf-file-name="Geom.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.7419355">
-              <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="91" column="4" selection-start-line="91" selection-start-column="4" selection-end-line="91" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SpatialRDDPartition.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
+      <file leaf-file-name="MessageDigest.java" pinned="false" current-in-tab="false">
+        <entry file="jar:///usr/lib/jvm/jdk1.7/src.zip!/java/security/MessageDigest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="98" column="27" selection-start-line="98" selection-start-column="27" selection-end-line="98" selection-end-column="27" />
-              <folding>
-                <element signature="e#337#366#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="QtreePartition.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QtreePartition.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="181" column="27" selection-start-line="181" selection-start-column="27" selection-end-line="181" selection-end-column="27" />
-              <folding>
-                <element signature="e#39#86#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RDD.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="60.548386">
-              <caret line="982" column="33" selection-start-line="982" selection-start-column="33" selection-end-line="982" selection-end-column="33" />
-              <folding>
-                <element signature="e#832#855#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ZippedPartitionsRDD.scala" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/ZippedPartitionsRDD.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="88" column="21" selection-start-line="88" selection-start-column="21" selection-end-line="88" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RtreePartition.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="291" column="0" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testSpatialRDD.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="134" column="40" selection-start-line="132" selection-start-column="9" selection-end-line="134" selection-end-column="40" />
+              <caret line="399" column="5" selection-start-line="399" selection-start-column="5" selection-end-line="399" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -451,7 +394,37 @@
         <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="58" column="5" selection-start-line="53" selection-start-column="3" selection-end-line="58" selection-end-column="5" />
+              <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testQtree.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQtree.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpatialRdd.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="10.83871">
+              <caret line="303" column="5" selection-start-line="303" selection-start-column="5" selection-end-line="303" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PairRDDFunctions.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/PairRDDFunctions.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="269" column="6" selection-start-line="269" selection-start-column="6" selection-end-line="269" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -460,19 +433,41 @@
       <file leaf-file-name="SpatialRDDMain.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.6929133">
-              <caret line="81" column="36" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.5894988">
+              <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SMapPartition.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala">
+      <file leaf-file-name="testQuadtreeS.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQuadtreeS.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+              <caret line="172" column="44" selection-start-line="172" selection-start-column="44" selection-end-line="172" selection-end-column="44" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testSpatialRDD.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="123" column="3" selection-start-line="123" selection-start-column="3" selection-end-line="129" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="joinScheduler.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="216" column="60" selection-start-line="216" selection-start-column="60" selection-end-line="216" selection-end-column="60" />
+              <folding>
+                <element signature="e#33#82#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -538,16 +533,16 @@
         <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testDataPartitioners.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/quatree/QtreePartionner.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/skewAnalysis.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QtreePartition.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QtreePartition.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala" />
       </list>
     </option>
@@ -1138,10 +1133,6 @@
               <option name="myItemId" value="rtree" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RTree.scala" />
-              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1175,6 +1166,10 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="rtree" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Geom.scala" />
+              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -1656,7 +1651,7 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="cs.purdue.edu.spatialrdd.SpatialRDDMain" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/../001.txt 0.1" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/../001.txt 0.2" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
@@ -1805,10 +1800,10 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36512667" sideWeight="0.7467057" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38748136" sideWeight="0.38360175" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2846498" sideWeight="0.56661785" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20417288" sideWeight="0.46852124" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2846498" sideWeight="0.43338212" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329429" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917318" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34333822" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1816,7 +1811,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23938507" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38748136" sideWeight="0.6163982" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38748136" sideWeight="0.60175693" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26974666" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1882,14 +1877,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/ShuffledRDD.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2056,14 +2043,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQuadtreeS.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="162" column="32" selection-start-line="162" selection-start-column="32" selection-end-line="162" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/sbfilter/testCacheLRU.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2123,14 +2102,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/PairRDDFunctions.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="101" column="5" selection-start-line="101" selection-start-column="5" selection-end-line="101" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/MapPartitionsRDD.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2171,30 +2142,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQtree.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SpatialPartitioner.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
           <folding>
             <element signature="e#39#88#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="20" selection-start-line="67" selection-start-column="20" selection-end-line="67" selection-end-column="20" />
-          <folding>
-            <element signature="e#33#82#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2207,24 +2160,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="181" column="4" selection-start-line="181" selection-start-column="4" selection-end-line="181" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="367" column="48" selection-start-line="367" selection-start-column="48" selection-end-line="367" selection-end-column="48" />
-          <folding>
-            <element signature="e#42#73#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/ZippedPartitionsRDD.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2233,56 +2168,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QtreePartition.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="181" column="27" selection-start-line="181" selection-start-column="27" selection-end-line="181" selection-end-column="27" />
-          <folding>
-            <element signature="e#39#86#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="291" column="0" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDPartition.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="98" column="27" selection-start-line="98" selection-start-column="27" selection-end-line="98" selection-end-column="27" />
+          <caret line="89" column="17" selection-start-line="89" selection-start-column="3" selection-end-line="89" selection-end-column="17" />
           <folding>
             <element signature="e#337#366#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/QtreePartition.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="179" column="68" selection-start-line="179" selection-start-column="68" selection-end-line="179" selection-end-column="68" />
+          <folding>
+            <element signature="e#39#86#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/SMapPartition.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="102" column="29" selection-start-line="102" selection-start-column="29" selection-end-line="102" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/impl/RtreePartition.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="216" column="21" selection-start-line="216" selection-start-column="21" selection-end-line="216" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/RTree.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="418" column="13" selection-start-line="418" selection-start-column="13" selection-end-line="418" selection-end-column="13" />
+          <folding>
+            <element signature="e#42#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/RDD.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="60.548386">
-          <caret line="982" column="33" selection-start-line="982" selection-start-column="33" selection-end-line="982" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="472" column="17" selection-start-line="472" selection-start-column="17" selection-end-line="472" selection-end-column="17" />
           <folding>
             <element signature="e#832#855#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala">
+    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQtree.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="58" column="5" selection-start-line="53" selection-start-column="3" selection-end-line="58" selection-end-column="5" />
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testQuadtreeS.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="172" column="44" selection-start-line="172" selection-start-column="44" selection-end-line="172" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk1.7/src.zip!/java/security/MessageDigest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="399" column="5" selection-start-line="399" selection-start-column="5" selection-end-line="399" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -2290,23 +2251,57 @@
     <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialrdd/testSpatialRDD.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="134" column="40" selection-start-line="132" selection-start-column="9" selection-end-line="134" selection-end-column="40" />
+          <caret line="123" column="3" selection-start-line="123" selection-start-column="3" selection-end-line="129" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialindex/rtree/Geom.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="91" column="4" selection-start-line="91" selection-start-column="4" selection-end-line="91" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/cs/purdue/edu/spatialindex/testRtree.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.apache.spark/spark-core_2.10/srcs/spark-core_2.10-1.5.1-sources.jar!/org/apache/spark/rdd/PairRDDFunctions.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="269" column="6" selection-start-line="269" selection-start-column="6" selection-end-line="269" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRdd.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.7419355">
-          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+        <state vertical-scroll-proportion="10.83871">
+          <caret line="303" column="5" selection-start-line="303" selection-start-column="5" selection-end-line="303" selection-end-column="5" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/scheduler/joinScheduler.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="216" column="60" selection-start-line="216" selection-start-column="60" selection-end-line="216" selection-end-column="60" />
+          <folding>
+            <element signature="e#33#82#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cs/purdue/edu/spatialrdd/SpatialRDDMain.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.6929133">
-          <caret line="81" column="36" selection-start-line="81" selection-start-column="36" selection-end-line="81" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.5894988">
+          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
           <folding />
         </state>
       </provider>

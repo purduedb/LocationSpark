@@ -19,9 +19,9 @@ object SpatialRDDMain {
 
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
 
     val spark = new SparkContext(conf)
 
@@ -49,7 +49,6 @@ object SpatialRDDMain {
       case _=>null
     }.filter(_!=null)
 
-
     val indexed = SpatialRDD(locationRDD).cache()
     /************************************************************************************/
 
@@ -74,15 +73,44 @@ object SpatialRDDMain {
         (Box(p.x,p.y,p.x+r.x,p.y+r.y))
     }
 
-    /*val scheduler=new joinScheduler(indexed,queryboxes)
-    val joinresultRdd=scheduler.scheduleJoin()
+    val numPartition=locationRDD.partitions.size
 
-    //val joinresultRdd=indexed.sjoin(queryboxes)((k,id)=>id)
-    println("join for big data result")
+    def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
+    {
+      itr.size
+    }
+
+    def aggfunction2(v1:Int, v2:Int):Int=
+    {
+      v1+v2
+    }
+
+    /*val boxes=Array(
+      Box(20.10094f,-81.8612f, 30.41f, -84.222f), Box(29.10094f,-83.8612f, 32.41f, -80.222f),
+      Box(20.10094f,-86.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 32.41f, -83.222f),
+      Box(20.10094f,-96.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 34.41f, -82.222f),
+      Box(20.10094f,-86.8612f, 40.41f, -81.222f), Box(10.10094f,-83.8612f, 43.41f, -84.222f))
+
+    val queryBoxes=spark.parallelize(boxes,numPartition)*/
+
+
+    val scheduler=new joinScheduler(indexed,queryboxes)
+    val joinresultRdd=scheduler.scheduleRJoin(aggfunction1, aggfunction2)
+
+    //val joinresultRdd=indexed.rjoin(queryboxes)(aggfunction1,aggfunction2)
+    println("join result size "+joinresultRdd.count())
+    println("*"*100)
+    println("query box size: " +queryboxes.count())
+
+    println("*"*100)
+    joinresultRdd.foreach(println)
+
+    //joinresultRdd.takeSample(false,10).foreach(println)
+
+    /*val joinresultRdd=indexed.rjoin(queryboxes)(aggfunction1,aggfunction2)
     println(joinresultRdd.count())*/
 
-    val joinresultRdd=indexed.rjoin(queryboxes)((k,id)=>id)
-    println(joinresultRdd.count())
+    //
 
     /*joinresultRdd.sample(false,0.01).foreach
     {

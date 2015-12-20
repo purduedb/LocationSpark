@@ -120,6 +120,23 @@ sealed trait Geom {
     Box(px1, py1, px2, py2)
   }
 
+  override def hashCode:Int = {
+    /*import java.security.MessageDigest
+    val digest = MessageDigest.getInstance("MD5")
+    val b1=this.x.toByte
+    val b2=this.y2.toByte
+    val b3=this.x2.toByte
+    val b4=this.y.toByte
+    val bytes=Array(b1,b2,b3,b4)
+    val md5hash1 = digest.digest(bytes).hashCode()*/
+
+    val t1=this.x*this.y
+    val b2=this.y2*this.x2
+
+    val ret2=((this.x+this.y+this.x2+this.y2+t1*1000+b2*100000)%1000000).toInt
+
+    return ret2
+  }
   /**
    * Return the given geometry's area outside this geometry.
    *
@@ -133,6 +150,8 @@ sealed trait Geom {
     val a = (py2 - py1) * (px2 - px1)
     a - area
   }
+
+
 }
 
 case class Point(x: Float, y: Float) extends Geom {
