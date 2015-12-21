@@ -236,6 +236,8 @@ private[spatialrdd] object RtreePartition {
   : SpatialRDDPartition[K, V] =
   {
     val map = RTree(iter.map{ case(k, v) => Util.toEntry(k,v)})
+    //this is optional for the spatial join
+    map.sortInternalnode()
     new RtreePartition(map)
   }
 

@@ -16,7 +16,7 @@ import scala.reflect.ClassTag
 
 class SpatialRDD[K: ClassTag, V: ClassTag]
   (
-    private val partitionsRDD: RDD[SpatialRDDPartition[K, V]]
+     val partitionsRDD: RDD[SpatialRDDPartition[K, V]]
   )
   extends RDD[(K, V)](partitionsRDD.context, List(new OneToOneDependency(partitionsRDD)))
 {
@@ -233,6 +233,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
    * (1)the rdd.sjoin(other)!=other.sjoin(rdd)
    * (2)the other rdd have key and box paris
    */
+  @DeveloperApi
   def sjoins[U: ClassTag]
   (other: RDD[(K, U)])(f: (K, V) => V): SpatialRDD[K, V] =
     other match {
@@ -248,8 +249,10 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
    * this spatial range query rdd, with key is the location of the query box, the value is the range query box
    * Notice:
    * (1)the rdd.sjoin(other)!=other.sjoin(rdd)
-   * (2)the other rdd(box)
+   * (2)input format: points=rdd(k,v), boxes=rdd(u)
+   * (3)output format: rdd(k,v)
    */
+  @DeveloperApi
   def sjoin[U: ClassTag]
   (other: RDD[U])(f: (K, V) => V): SpatialRDD[K, V] = {
     //transform this rdd(box) into a RDD(point, box)
@@ -275,8 +278,10 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
   /**
    * this is spatial range join
-   * input: datardd[k,v], queryrdd[u]
-   * output: iterator[u, iterator[k,v]]
+   * input: points=datardd[k,v], boxes=queryrdd[u]
+   * output: iterator[u, u2], where u2 is the agrreaget function result by function f and f2.
+   * notice: function f is used to aggregate the [box, iterator(points)]=> [box, u2],
+   * notice: function f2: is the reduce function for reduce the agrregate result by the function f.
    * @param other
    * @param f
    * @tparam U
@@ -284,9 +289,17 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
    */
   def rjoin[U: ClassTag, U2:ClassTag]
   (other: RDD[U])
-  (f: (Iterator[(K,V)]) => U2,
-   f2:(U2,U2)=>U2):
+  (f: (Iterator[(K,V)]) => U2, f2:(U2,U2)=>U2):
   RDD[(U, U2)] = {
+
+    ///todo: combine the rjoin and scheduler join together
+    //how to choose traditional rjoin and schedular join
+    //herusitic: query variance is too big, or query data size is too big
+    //(1)find the number of query box
+    //(2)find the distribution of the query boxes
+    //(3)if both of them are too big i.e., querysize>100k or the query distribution variance is too big
+
+
     this.partitioner.getOrElse(None) match {
 
       case qtree: QtreePartitioner[K, V] =>
@@ -308,17 +321,12 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   /**
    * this is spatial range join
    * input: datardd[k,v], queryrdd[k,u]
-   * output: iterator[u, iterator[k,v]]
-   * @param other
-   * @param f
-   * @tparam U
-   * @return
+   * output: iterator[u, u2]
    */
   def rjoins[U: ClassTag, U2:ClassTag]
   (other: RDD[(K, U)])
   (f: (Iterator[(K,V)]) => U2,
    f2:(U2,U2)=>U2):
-  //RDD[Iterator[(U, Iterator[(K,V)])]]={
     RDD[(U, U2)]={
     other match {
       case other: SpatialRDD[K, U] if partitioner == other.partitioner =>

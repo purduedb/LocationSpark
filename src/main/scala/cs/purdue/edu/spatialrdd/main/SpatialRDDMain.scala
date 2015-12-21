@@ -1,27 +1,22 @@
-package cs.purdue.edu.spatialrdd
+package cs.purdue.edu.spatialrdd.main
 
 import cs.purdue.edu.scheduler.joinScheduler
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
-import cs.purdue.edu.spatialindex.rtree.{Entry, Box, Point}
-import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
-import org.apache.spark.rdd.RDD
-import org.apache.spark.util.random.SamplingUtils
-import org.apache.spark.{SparkContext, SparkConf}
-
-import scala.reflect.ClassTag
-import scala.util.hashing._
+import cs.purdue.edu.spatialindex.rtree.{Box, Point}
+import cs.purdue.edu.spatialrdd.SpatialRDD
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * Created by merlin on 11/16/15.
  */
 object SpatialRDDMain {
 
-
+//this class is mainly used for testing the spatial range join performance
   def main(args: Array[String]) {
 
     //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD Sjoin")
 
     val spark = new SparkContext(conf)
 
@@ -52,18 +47,6 @@ object SpatialRDDMain {
     val indexed = SpatialRDD(locationRDD).cache()
     /************************************************************************************/
 
-   /* val numPartition=indexed.partitions.length
-
-    val boxes=Array(Box(17.10094f,-86.8612f, 18.41f, -80.222f), Box(13.10094f,-87.8612f, 14.41f, -83.222f),
-      Box(17.10094f,-87.8612f, 18.41f, -84.222f),Box(13.10094f,-87.8612f, 28.41f, -85.222f),
-      Box(16.10094f,-88.8612f, 19.41f, -87.222f), Box(23.10094f,-81.8612f, 23.41f, -82.222f))
-
-    val queryBoxeRDD=spark.parallelize(boxes,numPartition)
-    val joinresultRdd2=indexed.sjoin(queryBoxeRDD)((k,id)=>id)
-
-    println("join for small data result")
-    println(joinresultRdd2.count())*/
-
     /************************************************************************************/
     val queryrdd=locationRDD.sample(false,ratio)
 
@@ -85,45 +68,28 @@ object SpatialRDDMain {
       v1+v2
     }
 
-    /*val boxes=Array(
-      Box(20.10094f,-81.8612f, 30.41f, -84.222f), Box(29.10094f,-83.8612f, 32.41f, -80.222f),
-      Box(20.10094f,-86.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 32.41f, -83.222f),
-      Box(20.10094f,-96.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 34.41f, -82.222f),
-      Box(20.10094f,-86.8612f, 40.41f, -81.222f), Box(10.10094f,-83.8612f, 43.41f, -84.222f))
-
-    val queryBoxes=spark.parallelize(boxes,numPartition)*/
-
 
     val scheduler=new joinScheduler(indexed,queryboxes)
     val joinresultRdd=scheduler.scheduleRJoin(aggfunction1, aggfunction2)
 
     //val joinresultRdd=indexed.rjoin(queryboxes)(aggfunction1,aggfunction2)
     println("join result size "+joinresultRdd.count())
-    println("*"*100)
-    println("query box size: " +queryboxes.count())
-
-    println("*"*100)
-    joinresultRdd.foreach(println)
-
-    //joinresultRdd.takeSample(false,10).foreach(println)
-
-    /*val joinresultRdd=indexed.rjoin(queryboxes)(aggfunction1,aggfunction2)
-    println(joinresultRdd.count())*/
-
-    //
-
-    /*joinresultRdd.sample(false,0.01).foreach
-    {
-      case(b, result:Iterator[(Point,Any)])
-      =>
-        println(b+" "+result.length)
-    }*/
-    /************************************************************************************/
 
     spark.stop()
 
   }
 }
+
+//println("*"*100)
+//println("query box size: " +queryboxes.count())
+
+/*val boxes=Array(
+  Box(20.10094f,-81.8612f, 30.41f, -84.222f), Box(29.10094f,-83.8612f, 32.41f, -80.222f),
+  Box(20.10094f,-86.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 32.41f, -83.222f),
+  Box(20.10094f,-96.8612f, 30.41f, -81.222f), Box(19.10094f,-83.8612f, 34.41f, -82.222f),
+  Box(20.10094f,-86.8612f, 40.41f, -81.222f), Box(10.10094f,-83.8612f, 43.41f, -84.222f))
+
+val queryBoxes=spark.parallelize(boxes,numPartition)*/
 
 /**
  *  println("partition summary for data")
@@ -136,6 +102,20 @@ object SpatialRDDMain {
       sketched
     }
  */
+
+
+/* val numPartition=indexed.partitions.length
+
+ val boxes=Array(Box(17.10094f,-86.8612f, 18.41f, -80.222f), Box(13.10094f,-87.8612f, 14.41f, -83.222f),
+   Box(17.10094f,-87.8612f, 18.41f, -84.222f),Box(13.10094f,-87.8612f, 28.41f, -85.222f),
+   Box(16.10094f,-88.8612f, 19.41f, -87.222f), Box(23.10094f,-81.8612f, 23.41f, -82.222f))
+
+ val queryBoxeRDD=spark.parallelize(boxes,numPartition)
+ val joinresultRdd2=indexed.sjoin(queryBoxeRDD)((k,id)=>id)
+
+ println("join for small data result")
+ println(joinresultRdd2.count())*/
+
 
 //val joinresultRdd=indexed.sjoin(queryboxes)((k,id)=>id)
 

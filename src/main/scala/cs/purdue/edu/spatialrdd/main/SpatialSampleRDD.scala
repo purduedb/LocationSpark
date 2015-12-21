@@ -1,10 +1,12 @@
-package cs.purdue.edu.spatialrdd
+package cs.purdue.edu.spatialrdd.main
 
-import cs.purdue.edu.spatialindex.rtree.Point
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * Created by merlin on 11/16/15.
+ */
+/**
+ * this class is used for sampling the spatial data
  */
 object SpatialSampleRDD {
 
@@ -45,16 +47,6 @@ object SpatialSampleRDD {
     println(samplerdd.count())
 
     samplerdd.saveAsTextFile(outputfile)
-
-    //samplerdd.foreach(println)
-
-    /*val indexed = SpatialRDD(locationRDD).cache()
-
-    val searchbox=Box(20.10094f,-86.8612f, 32.41f, -80.222f)
-
-    val rangesearchresult=indexed.rangeFilter(searchbox,(id)=>true)
-
-    rangesearchresult.foreach(println)*/
 
     spark.stop()
 

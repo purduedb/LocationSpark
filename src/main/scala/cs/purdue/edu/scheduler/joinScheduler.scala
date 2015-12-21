@@ -5,6 +5,7 @@ import cs.purdue.edu.spatialindex.quatree.QtreeForPartion
 import cs.purdue.edu.spatialindex.rtree.{Box}
 import cs.purdue.edu.spatialrdd.{SpatialRDD}
 import cs.purdue.edu.spatialrdd.impl.{QtreePartitionerBasedQueries, Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
+import org.apache.spark.annotation.DeveloperApi
 import org.apache.spark.rdd.{RDD}
 import scala.reflect.ClassTag
 
@@ -97,6 +98,7 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
    * (3) execute the join for the newly generated rdd
    * @return RDD
    */
+  @DeveloperApi
   def scheduleJoin():RDD[(K,V)]={
 
     val transformQueryrdd=transformQueryRDD()
@@ -220,7 +222,8 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     val tmp2=nonskew_datardd.rjoins[U,U2](nonskew_queryrdd)(f1,f2)
     val part2=tmp2.reduceByKey(f2,tmp2.partitions.length/2)
     /***************************************************************/
-     part1.union(part2)
+     val tmp3=part1.union(part2)
+    tmp3.reduceByKey(f2,tmp3.partitions.length/2)
     //Array(skew_queryrdd,skew_datardd,nonskew_queryrdd,nonskew_datardd)
   }
   /**

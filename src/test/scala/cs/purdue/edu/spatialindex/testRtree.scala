@@ -12,16 +12,8 @@ object testRtree {
 
   def main(args: Array[String]): Unit = {
 
-    val b=Box(18.41f, 80.322f,11f,12f)
-    val a=Box(18.41f, 80.322f,11f,13f)
-
-    println(a==b)
-
-    println(b.hashCode)
-    println(a.hashCode)
-
-    val numofqueries=100
-    val numofpoints=5000
+    val numofqueries=900000
+    val numofpoints=1000000
 
     val boxes = (1 to numofqueries).map{
       n =>
@@ -30,57 +22,58 @@ object testRtree {
         Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
     }
 
-    val boxes2=Array(
-      Box(-17.10094f,-86.8612f, 18.41f, 80.222f),
-      Box(-13.10094f,-87.8612f, 14.41f, 83.222f)
-      ).map{
-      box=>Entry(box,1)
-    }
-
-
-
-    //val boxtree=RTree(boxes: _*)
-
-
     val mean1=Array(6.0,6.0)
     val es = (1 to numofpoints).map(n => Entry(qtreeUtil.getGaussianPoint(mean1), n))
     val datatree=RTree(es: _*)
-
-    //datatree.search(Box(-180,-180,180,180)).foreach(println)
-
-    //boxtree.search(Box(-180,-180,180,180)).foreach(println)
 
     val insertbox=boxes.map{
       box=>Entry(box,1)
     }
 
-    println("*"*100)
-    var b1=System.currentTimeMillis
+    def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
+    {
+      itr.size
+    }
+
+    def aggfunction2(v1:Int, v2:Int):Int=
+    {
+      v1+v2
+    }
 
     val boxtree=RTree(insertbox: _*)
 
-    //val tmp=datatree.joins(boxtree)
+    println("*"*100)
+    var b1=System.currentTimeMillis
 
-    val count1=datatree.join(boxtree).size
+    val tmp=datatree.joins_withoutsort(boxtree)(aggfunction1,aggfunction2)
 
-    println(count1)
+    println(tmp.size)
 
     println("dual tree based for the sjoin time: "+(System.currentTimeMillis-b1) +" ms")
+
+    datatree.sortInternalnode()
+    boxtree.sortInternalnode()
 
     println("*"*100)
     b1=System.currentTimeMillis
 
-    val buf = ArrayBuffer.empty[Entry[Int]]
+    val tmp2=datatree.joins(boxtree)(aggfunction1,aggfunction2)
+    println(tmp.size)
+    println("dual tree with soring based for the sjoin time: "+(System.currentTimeMillis-b1) +" ms")
 
-    boxes.foreach(box=>buf.appendAll(datatree.search(box)))
-
-    val count2=buf.size
-
-    println(count2)
-    println("single tree based for the sjoin time: "+(System.currentTimeMillis-b1) +" ms")
     //boxtree.search(Box(-180,-180,180,180)).foreach(println)
 
     //boxtree.searchIntersection(Box(-50,-50,50,50)).foreach(println)
   }
 
 }
+
+/**
+ *    val boxes2=Array(
+      Box(-17.10094f,-86.8612f, 18.41f, 80.222f),
+      Box(-13.10094f,-87.8612f, 14.41f, 83.222f)
+      ).map{
+      box=>Entry(box,1)
+    }
+
+ */

@@ -1,12 +1,9 @@
-package cs.purdue.edu.spatialrdd
+package cs.purdue.edu.spatialrdd.main
 
 import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree.{Box, Point}
-import cs.purdue.edu.spatialrdd.impl.{QtreePartitioner, Grid2DPartitionerForBox, Grid2DPartitioner}
-import org.apache.spark.rdd.RDD
-import org.apache.spark.{Partition, TaskContext, SparkContext, SparkConf}
-
-import scala.reflect.ClassTag
+import cs.purdue.edu.spatialrdd.impl.QtreePartitioner
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * Created by merlin on 11/17/15.
