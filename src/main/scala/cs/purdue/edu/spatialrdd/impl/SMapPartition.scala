@@ -239,6 +239,55 @@ class SMapPartition[K, V]
     new SMapPartition(newMap)
   }
 
+  override def knnjoin_[U: ClassTag]
+  (other: SpatialRDDPartition[K, U], f1:(K)=>Boolean,
+   f2:(V)=>Boolean )
+  : Iterator[(K, Double, Iterator[(K,V)])] = knnjoin_(other.iterator, f1,f2)
+
+  def knnjoin_[U: ClassTag]
+  (other: Iterator[(K, U)],f1:(K)=>Boolean,
+   f2:(V)=>Boolean ):  Iterator[(K, Double, Iterator[(K,V)])]=
+  {
+    val newMap = this.data
+
+    val buff=ArrayBuffer.empty[(K,Double, Iterator[(K,V)])]
+
+    //nest loop knn search
+    other.foreach{
+      case(p1:Point,k:Int)=>
+       val ret=this.data.map
+      {
+        case(point:Point,v)=>
+          (point,v, p1.distanceSquared(point))
+      }
+
+        val tmp2=ret.toList.sortWith( _._3<_._3).take(k)
+        val distance=tmp2(k-1)._3
+
+        val tmp3=tmp2.map{e=>(e._1.asInstanceOf[K],e._2)}.toIterator
+
+        buff.append((p1.asInstanceOf[K], distance, tmp3))
+    }
+
+    buff.toIterator
+  }
+
+  /**
+   * @todo add this function in future
+   * @param other
+   * @return
+   */
+  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
+                      f2:(V)=>Boolean): Iterator[(K, Iterator[(K,V)])]=
+  {
+
+    other.map{
+      case(locationpoint,(querypoint,itr))
+      =>
+        (querypoint,itr)
+    }
+  }
+
 }
 
 private[spatialrdd] object SMapPartition

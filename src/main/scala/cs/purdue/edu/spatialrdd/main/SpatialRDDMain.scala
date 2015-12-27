@@ -14,9 +14,9 @@ object SpatialRDDMain {
 //this class is mainly used for testing the spatial range join performance
   def main(args: Array[String]) {
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD Sjoin")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD Sjoin")
 
     val spark = new SparkContext(conf)
 
@@ -56,7 +56,6 @@ object SpatialRDDMain {
         (Box(p.x,p.y,p.x+r.x,p.y+r.y))
     }
 
-    val numPartition=locationRDD.partitions.size
 
     def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
     {

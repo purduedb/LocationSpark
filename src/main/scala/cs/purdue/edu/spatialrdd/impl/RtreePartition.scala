@@ -6,6 +6,8 @@ import cs.purdue.edu.spatialrdd._
 import org.apache.spark.Logging
 
 import scala.collection.immutable.HashMap
+import scala.collection.mutable
+import scala.collection.mutable.{PriorityQueue, ArrayBuffer}
 
 
 /**
@@ -219,6 +221,85 @@ class RtreePartition[K, V]
     boxtree.cleanTree()
 
     ret
+
+  }
+
+  override def knnjoin_[U: ClassTag]
+  (other: SpatialRDDPartition[K, U], f1:(K)=>Boolean,
+   f2:(V)=>Boolean )
+  : Iterator[(K, Double, Iterator[(K,V)])] = knnjoin_(other.iterator, f1,f2)
+
+  def knnjoin_[U: ClassTag]
+  (other: Iterator[(K, U)], f1:(K)=>Boolean,
+   f2:(V)=>Boolean ):  Iterator[(K, Double, Iterator[(K,V)])]=
+  {
+    val newMap = this.tree
+
+    val ret=ArrayBuffer.empty[(K, Double, Iterator[(K,V)])]
+
+    //nest loop knn search
+    other.foreach{
+      case(p:Point,k:Int)=>
+
+        var max=0.0
+        val tmp=newMap.nearestK(p,k,id=>true).
+          map{
+          case(distance,entry)=>
+            max=Math.max(max,distance)
+            (entry.geom.asInstanceOf[K],entry.value)
+        }.filter{
+          case(k,v)=>f1(k)&&f2(v)
+        }.toIterator
+
+        ret.append((p.asInstanceOf[K],max, tmp))
+    }
+
+    ret.toIterator
+  }
+
+  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],
+    f1:(K)=>Boolean,
+  f2:(V)=>Boolean): Iterator[(K, Iterator[(K,V)])]=
+  {
+      //get box point hashmap
+
+    val hashMap=mutable.HashMap.empty[Geom,(K,Double,mutable.PriorityQueue[(Double, (K,V))])]
+
+    val boxpointmap=other.map{
+
+      case(partitionpoint,(querypoint,itr))=>
+
+        val p=querypoint.asInstanceOf[Geom]
+        var max=0.0
+
+        implicit val ord = Ordering.by[(Double, (K,V)), Double](_._1)
+        val pq = PriorityQueue.empty[(Double, (K,V))]
+
+        itr.foreach
+        {
+          case (p1,value)=>
+            val distance=p.distance(p1.asInstanceOf[Point])
+
+            if(distance>max)
+              max=distance
+
+            pq += ((distance, (p1,value)))
+        }
+        val qbox=Box((p.x-max).toFloat,(p.y-max).toFloat,(p.x+max).toFloat,(p.y+max).toFloat)
+
+        hashMap.put(qbox,(querypoint,max,pq))
+        (qbox)
+    }
+
+    val value=1
+    val boxes=boxpointmap.map
+    {
+      case(b)=>Entry(b,value.asInstanceOf[V])
+    }
+
+    val boxtree=RTree(boxes)
+
+    this.tree.rjoinforknn(boxtree,hashMap,f1,f2)
 
   }
 

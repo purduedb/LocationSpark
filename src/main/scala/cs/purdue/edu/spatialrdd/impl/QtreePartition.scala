@@ -232,6 +232,57 @@ class QtreePartition [K, V]
     }
   }
 
+  override def knnjoin_[U: ClassTag]
+  (other: SpatialRDDPartition[K, U], f1:(K)=>Boolean,
+   f2:(V)=>Boolean )
+  : Iterator[(K, Double, Iterator[(K,V)])]=knnjoin_(other.iterator, f1,f2)
+
+  /** knn join operation
+    * the other rdd is query rdd.
+    * the key is the location of the query point, and value is k
+    */
+  override def knnjoin_[U: ClassTag]
+  (other: Iterator[(K, U)],
+   f1:(K)=>Boolean,
+   f2:(V)=>Boolean ): Iterator[(K, Double, Iterator[(K,V)])]={
+
+    val newMap = this.tree
+
+    val ret=ArrayBuffer.empty[(K,Double,Iterator[(K,V)])]
+
+    //nest loop knn search
+    other.foreach{
+      case(p:Point,k:Int)=>
+        var max=0.0
+        val tmp=newMap.nearestKwithDistance(p,k,id=>true).map{
+          case(distance,entry)=>
+            max=Math.max(max,distance)
+            (entry.geom.asInstanceOf[K],entry.value)
+        }.toIterator
+
+        ret.append((p.asInstanceOf[K],max, tmp))
+    }
+
+    ret.toIterator
+  }
+
+  /**
+   * @todo add this function for the quadtree next
+   * @param other
+   * @tparam U
+   * @return
+   */
+  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
+                      f2:(V)=>Boolean): Iterator[(K, Iterator[(K,V)])]=
+  {
+
+    other.map{
+      case(locationpoint,(querypoint,itr))
+        =>
+        (querypoint,itr)
+    }
+  }
+
 }
 private[spatialrdd] object QtreePartition {
 

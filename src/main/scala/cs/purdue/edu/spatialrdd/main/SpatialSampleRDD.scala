@@ -2,6 +2,8 @@ package cs.purdue.edu.spatialrdd.main
 
 import org.apache.spark.{SparkConf, SparkContext}
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
  * Created by merlin on 11/16/15.
  */
@@ -12,9 +14,9 @@ object SpatialSampleRDD {
 
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+   // val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+    val conf = new SparkConf().setAppName("Sample the open street map data")
 
     val spark = new SparkContext(conf)
 
@@ -25,6 +27,47 @@ object SpatialSampleRDD {
     val fraction=args(2)
 
     val datardd=spark.textFile(inputfile)
+
+    datardd.foreach(println)
+
+    /**
+     * this is for the open street map data
+     */
+    val locationRDD=datardd.map{
+      line=>
+
+        try {
+
+          val s=line.split("\\s+")
+          (s(1),s(2),s(0))
+        }catch
+          {
+            case e:Exception=>
+            //println("input format error")
+          }
+    }.filter(_!=null)
+
+
+    //locationRDD.foreach(println)
+
+    println("data size")
+    println(locationRDD.count())
+
+    val samplerdd=locationRDD.sample(false,fraction.toDouble)
+
+    println("sample data size")
+    println(samplerdd.count())
+
+    samplerdd.saveAsTextFile(outputfile)
+
+    spark.stop()
+
+  }
+}
+
+/**
+ * //this is for twitter data
+val datardd=spark.textFile(inputfile)
 
     val locationRDD=datardd.map{
       line=>
@@ -45,10 +88,4 @@ object SpatialSampleRDD {
 
     println("sample data size")
     println(samplerdd.count())
-
-    samplerdd.saveAsTextFile(outputfile)
-
-    spark.stop()
-
-  }
-}
+*/

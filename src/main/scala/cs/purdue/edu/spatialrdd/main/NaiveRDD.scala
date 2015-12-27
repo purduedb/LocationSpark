@@ -14,14 +14,14 @@ object NaiveRDD {
 
     //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
+   val conf = new SparkConf().setAppName("Test for Spark SpatialRDD")
 
     val spark = new SparkContext(conf)
 
     require(args.length==2)
 
     val inputfile=args(0)
-    val outputfile=args(1)
+    val sample=args(1).toFloat
 
     val datardd=spark.textFile(inputfile)
 
@@ -43,16 +43,15 @@ object NaiveRDD {
     }.filter(_!=null)
 
 
-    val quadtreePartitioner=new QtreePartitioner(locationRDD.partitions.length,0.001f,locationRDD)
+    val quadtreePartitioner=new QtreePartitioner(500,0.01f,locationRDD)
 
     val indexed = locationRDD.map{
       case(point,v)=>
         (quadtreePartitioner.getPartition(point),(point,v))
     }
 
-    val queryrdd=locationRDD.sample(false,0.0001)
+    val queryrdd=locationRDD.sample(false,sample)
 
-    println(queryrdd.count)
 
     val queryboxes=queryrdd.map{
       case (p:Point,v)=>
@@ -66,38 +65,36 @@ object NaiveRDD {
       }
     }
 
-    val result=indexed.join(queryboxRDD).filter
+    val sjoinresult2=indexed.join(queryboxRDD).filter
     {
-      case(pid,((po:Point,value),b:Box))=>
+      case(partitionid,((po:Point,value),b:Box))=>
         b.contains(po)
-      case _=>false
-    }
-
-    println(result.count)
-    //indexed.partitions.foreach{case(p:Partition)=>}
-
-    /*def sumfunction[V](iterator: Iterator[V])=
+    }.map
     {
-      println(iterator.size)
-    }
+      case(partitionid,((po:Point,value),b:Box))=>
+        (b,(po,value))
+    }.aggregateByKey(0,indexed.partitions.length/2) (
+      (k,v) => 1, (v,k) => k+v
+    )
 
-    println("data in each partition")
-    indexed.foreachPartition(sumfunction)
+    println(sjoinresult2.count)
 
-    val box=Box(20.10094f,-86.8612f,32.41f, -80.222f)
-
-    val rangeresult=indexed.filter{
-      case((p:Point,value))=>
-        box.contains(p)
-      case _=>true
-    }
-
-    println("*"*10)
-    println(rangeresult.count())*/
-    //indexed.filterByRange(Point(20.10094f,-86.8612f), Point(32.41f, -80.222f))
 
     spark.stop()
 
   }
 
 }
+
+/*val sjoinresult=indexed.join(queryboxRDD).filter
+{
+  case(partitionid,((po:Point,value),b:Box))=>
+    b.contains(po)
+}.map
+{
+  case(partitionid,((po:Point,value),b:Box))=>
+    (b,(po,value))
+}.groupByKey(indexed.partitions.length/2).
+  map{
+  case(b,itr:Iterable[(Point,Any)])=>(b,itr.size)
+}.reduceByKey(_+_)*/

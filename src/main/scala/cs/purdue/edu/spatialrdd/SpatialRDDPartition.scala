@@ -64,6 +64,7 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
    * the key is the location of the range query box, and value is the range query box
    * the f function apply to the value of the filter condition
    */
+  @Deprecated
   def sjoin[U: ClassTag]
   (other: SpatialRDDPartition[K, U])
   (f: (K, V) => V): SpatialRDDPartition[K, V]
@@ -74,6 +75,7 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
    * the key is the location of the range query box, and value is the range query box
    * the f function apply to the value of the filter condition
    */
+  @Deprecated
   def sjoin[U: ClassTag]
   (other: Iterator[(K, U)])
   (f: (K, V) => V): SpatialRDDPartition[K, V]
@@ -100,6 +102,34 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
   (other: Iterator[(K, U)])
   (f: (Iterator[(K,V)]) => U2,
    f2:(U2,U2)=>U2): Iterator[(U, U2)]
+
+
+  /** knn join operation
+    * the other rdd is query rdd.
+    * the key is the location of the query point, and value is k
+    */
+  def knnjoin_[U: ClassTag]
+  (other: SpatialRDDPartition[K, U], f1:(K)=>Boolean,
+   f2:(V)=>Boolean )
+  : Iterator[(K, Double, Iterator[(K,V)])]
+
+  /** knn join operation
+    * the other rdd is query rdd.
+    * the key is the location of the query point, and value is k
+    */
+  def knnjoin_[U: ClassTag]
+  (other: Iterator[(K, U)],
+   f1:(K)=>Boolean,
+   f2:(V)=>Boolean ): Iterator[(K, Double, Iterator[(K,V)])]
+
+
+  /**
+   * this range join is used for knn join
+   * @param other
+   * @return
+   */
+  def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
+             f2:(V)=>Boolean): Iterator[(K, Iterator[(K,V)])]
 
   /**
    * Creates a new partition with values from `elems` that may share an index with `this`,

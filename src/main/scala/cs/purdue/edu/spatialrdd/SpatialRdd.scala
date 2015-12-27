@@ -290,7 +290,8 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   def rjoin[U: ClassTag, U2:ClassTag]
   (other: RDD[U])
   (f: (Iterator[(K,V)]) => U2, f2:(U2,U2)=>U2):
-  RDD[(U, U2)] = {
+  RDD[(U, U2)] =
+  {
 
     ///todo: combine the rjoin and scheduler join together
     //how to choose traditional rjoin and schedular join
@@ -298,7 +299,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
     //(1)find the number of query box
     //(2)find the distribution of the query boxes
     //(3)if both of them are too big i.e., querysize>100k or the query distribution variance is too big
-
 
     this.partitioner.getOrElse(None) match {
 
@@ -352,6 +352,23 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
   }
 
+  /**
+   *
+   * @param queryrdd
+   * @param knn
+   * @param f1 : return key filter condition like the point distance coidtion
+   * @param f2 : return value filter condition like text contain boolean
+   * @return
+   */
+def knnjoin(queryrdd:RDD[(K)],
+            knn:Int,
+            f1:(K)=>Boolean,
+            f2:(V)=>Boolean):
+  RDD[(K, Iterator[(K,V)])]=
+{
+  val knnjoin=new knnJoinRDD(this,queryrdd,knn, f1, f2)
+  knnjoin.rangebasedKnnjoin()
+}
 
 
  private def tranformRDDQuadtreePartition[K: ClassTag, U: ClassTag](boxRDD: RDD[U], partionner: Option[org.apache.spark.Partitioner]):
