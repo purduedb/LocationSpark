@@ -1028,6 +1028,7 @@ case class RTree[V](root: Node[V], size: Int) {
       val pq = PriorityQueue.empty[(Double, Entry[V])]
       root.nearestK(pt, k, Double.PositiveInfinity, z, pq)
 
+     // pq.toList
       val arr = new Array[(Double, Entry[V])](pq.size)
       var i = arr.length - 1
       while (i >= 0) {
@@ -1038,6 +1039,7 @@ case class RTree[V](root: Node[V], size: Int) {
       arr
     }
   }
+
 
   /**
    * Return a count of all entries found in the given search space.

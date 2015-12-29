@@ -35,11 +35,10 @@ object SpatialSampleRDD {
      */
     val locationRDD=datardd.map{
       line=>
-
         try {
-
           val s=line.split("\\s+")
-          (s(1),s(2),s(0))
+          //(s(1),s(2))
+          (s(2)+","+s(1)+","+s(0))
         }catch
           {
             case e:Exception=>
@@ -49,14 +48,13 @@ object SpatialSampleRDD {
 
 
     //locationRDD.foreach(println)
+    //println("data size")
+    //println(locationRDD.count())
 
-    println("data size")
-    println(locationRDD.count())
+    val samplerdd=locationRDD.sample(false,fraction.toDouble).repartition(350)
 
-    val samplerdd=locationRDD.sample(false,fraction.toDouble)
-
-    println("sample data size")
-    println(samplerdd.count())
+    //println("sample data size")
+    //println(samplerdd.count())
 
     samplerdd.saveAsTextFile(outputfile)
 
@@ -89,3 +87,19 @@ val datardd=spark.textFile(inputfile)
     println("sample data size")
     println(samplerdd.count())
 */
+
+//for the openstreetmap
+/**
+val locationRDD=datardd.map{
+      line=>
+        try {
+          val s=line.split("\\s+")
+          //(s(1),s(2))
+          (s(1)+","+s(2))
+        }catch
+          {
+            case e:Exception=>
+            //println("input format error")
+          }
+    }.filter(_!=null)
+  */

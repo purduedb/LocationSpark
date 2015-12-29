@@ -16,6 +16,8 @@ class QtreeForPartion() extends Serializable{
 
   var leafbound=10
 
+  var maxpartitionid=0
+
   def this(leafbound:Int) {
     this
     this.leafbound=leafbound
@@ -172,6 +174,7 @@ class QtreeForPartion() extends Serializable{
   def computePIDofLeaf(total:Int,numPartition:Int):Int={
 
     //val queue:Queue[Node]=new Queue()
+    //this.printTreeStructure()
 
     val queue = new scala.collection.mutable.Queue[Node]
 
@@ -219,6 +222,8 @@ class QtreeForPartion() extends Serializable{
     }//for bfs
 
     tmp.foreach(l=>l.id=pid)
+
+    this.maxpartitionid=pid+1
 
     pid+1
 
@@ -558,6 +563,7 @@ class QtreeForPartion() extends Serializable{
            l.id
         }else
         {
+          throw new IllegalStateException("data point is not correct location format")
           0
         }
 
@@ -572,6 +578,7 @@ class QtreeForPartion() extends Serializable{
           getPID(child,p)
         }else
         {
+          throw new IllegalStateException("data point is not correct location format")
           0
         }
 
@@ -604,7 +611,7 @@ class QtreeForPartion() extends Serializable{
 
       pnode match {
         case l: leafwithcount =>
-          print(" L(id: " + l.id+" c:"+l.visitcount + ") ")
+          print(" L(id: " + l.id+" vc:"+l.visitcount +" count:" +l.count+") ")
           numofleaf = numofleaf + 1
 
         case b: Branch =>

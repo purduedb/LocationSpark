@@ -12,7 +12,7 @@ import scala.reflect.ClassTag
  */
 /**
  * because knn join is more complex than range join,
- * this class is specifically design for knn join of spatial rdd
+ * this class is specifically design for knn join function for spatial rdd
  */
 
 /**
@@ -28,13 +28,28 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
     ) extends Serializable
 {
 
+  private def getPartitionSize[T](rdd: RDD[T]): (Array[(Int, Int)]) = {
+    val sketched = rdd.mapPartitionsWithIndex { (idx, iter) =>
+      Iterator((idx, iter.size))
+    }.collect()
+    sketched
+  }
+
   def rangebasedKnnjoin():RDD[(K, Iterator[(K,V)])]=
   {
+
+    //val stat_datardd=getPartitionSize(this.datardd).sortBy(_._1)
+    //println("data distribution")
+    //stat_datardd.foreach(println)
 
     val knn=this.knn
     //step1: partition the queryrdd if the partitioner of query and data rdd is different
     val tmpqueryrdd=queryrdd.map(key=>(key,knn))
+
     val partitionedRDD =tmpqueryrdd.partitionBy(datardd.partitioner.get)
+
+    //println("query distribution")
+    //getPartitionSize(partitionedRDD).sortBy(_._1).foreach(println)
 
     //localKnnJoinRDD with this format: RDD[p, iterator[(k,v)]]
     val localKnnJoinRDD = datardd.partitionsRDD.zipPartitions(partitionedRDD, true) {
