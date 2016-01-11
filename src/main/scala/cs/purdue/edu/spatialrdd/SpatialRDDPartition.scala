@@ -109,7 +109,7 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
     * the key is the location of the query point, and value is k
     */
   def knnjoin_[U: ClassTag]
-  (other: SpatialRDDPartition[K, U], f1:(K)=>Boolean,
+  (other: SpatialRDDPartition[K, U],  knn:Int, f1:(K)=>Boolean,
    f2:(V)=>Boolean )
   : Iterator[(K, Double, Iterator[(K,V)])]
 
@@ -119,6 +119,7 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
     */
   def knnjoin_[U: ClassTag]
   (other: Iterator[(K, U)],
+   knn:Int,
    f1:(K)=>Boolean,
    f2:(V)=>Boolean ): Iterator[(K, Double, Iterator[(K,V)])]
 
@@ -129,7 +130,7 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
    * @return
    */
   def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
-             f2:(V)=>Boolean): Iterator[(K, Iterator[(K,V)])]
+             f2:(V)=>Boolean): Iterator[(K, Array[(K,V)])]
 
   /**
    * Creates a new partition with values from `elems` that may share an index with `this`,

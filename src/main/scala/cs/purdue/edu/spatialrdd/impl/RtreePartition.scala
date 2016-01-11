@@ -225,25 +225,25 @@ class RtreePartition[K, V]
   }
 
   override def knnjoin_[U: ClassTag]
-  (other: SpatialRDDPartition[K, U], f1:(K)=>Boolean,
+  (other: SpatialRDDPartition[K, U], knn:Int, f1:(K)=>Boolean,
    f2:(V)=>Boolean )
-  : Iterator[(K, Double, Iterator[(K,V)])] = knnjoin_(other.iterator, f1,f2)
+  : Iterator[(K, Double, Iterator[(K,V)])] = knnjoin_(other.iterator, knn, f1,f2)
 
   def knnjoin_[U: ClassTag]
-  (other: Iterator[(K, U)], f1:(K)=>Boolean,
+  (other: Iterator[(K, U)],
+   knn:Int,
+   f1:(K)=>Boolean,
    f2:(V)=>Boolean ):  Iterator[(K, Double, Iterator[(K,V)])]=
   {
     val newMap = this.tree
 
-    val ret=ArrayBuffer.empty[(K, Double, Iterator[(K,V)])]
-
     //nest loop knn search
+    val ret=ArrayBuffer.empty[(K, Double, Iterator[(K,V)])]
     other.foreach{
-      case(p:Point,k:Int)=>
+      case(p:Point,k)=>
 
         var max=0.0
-        val tmp=newMap.nearestK(p,k,id=>true).
-          map{
+        val tmp=newMap.nearestK(p,knn,id=>true).map{
           case(distance,entry)=>
             max=Math.max(max,distance)
             (entry.geom.asInstanceOf[K],entry.value)
@@ -253,13 +253,27 @@ class RtreePartition[K, V]
 
         ret.append((p.asInstanceOf[K],max, tmp))
     }
-
     ret.toIterator
+
+    //below is using dula tree approach
+    /*val k=other.toArray.last._2.asInstanceOf[Int]
+
+    val querypoints=other.map
+    {
+      case(point:Point,value)=>
+        Entry(point,value.asInstanceOf[V])
+    }
+
+    Constants.MaxEntries=2500
+    val querytree=RTree(querypoints)
+
+    newMap.knnjoin(querytree,knn)(f1,f2)*/
+
   }
 
   override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],
     f1:(K)=>Boolean,
-  f2:(V)=>Boolean): Iterator[(K, Iterator[(K,V)])]=
+  f2:(V)=>Boolean): Iterator[(K, Array[(K,V)])]=
   {
       //get box point hashmap
 

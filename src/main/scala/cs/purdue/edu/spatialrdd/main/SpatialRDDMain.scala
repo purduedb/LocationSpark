@@ -14,9 +14,9 @@ object SpatialRDDMain {
 //this class is mainly used for testing the spatial range join performance
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD Sjoin")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD Sjoin")
 
     val spark = new SparkContext(conf)
 
@@ -68,10 +68,10 @@ object SpatialRDDMain {
     }
 
 
-    val scheduler=new joinScheduler(indexed,queryboxes)
-    val joinresultRdd=scheduler.scheduleRJoin(aggfunction1, aggfunction2)
+    //val scheduler=new joinScheduler(indexed,queryboxes)
+    //val joinresultRdd=scheduler.scheduleRJoin(aggfunction1, aggfunction2)
 
-    //val joinresultRdd=indexed.rjoin(queryboxes)(aggfunction1,aggfunction2)
+    val joinresultRdd=indexed.rjoin(queryboxes)(aggfunction1,aggfunction2)
     println("join result size "+joinresultRdd.count())
 
     spark.stop()

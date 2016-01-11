@@ -8,7 +8,8 @@ import scala.math.{min, max}
  */
 object Constants {
   // $COVERAGE-OFF$
-  @inline final val MaxEntries = 50
+  //@inline final val MaxEntries = 200
+  @inline var MaxEntries = 2000
   // $COVERAGE-ON$
 }
 
@@ -38,6 +39,14 @@ sealed abstract class Node[V] extends HasGeom { self =>
   def geom: Geom = box
 
   def children: Vector[HasGeom]
+
+  var knnboundary=Double.MaxValue
+
+  def updatebound(newbound:Double)=
+  {
+    if(newbound<knnboundary)
+      knnboundary=newbound
+  }
 
   /**
    * Put all the entries this node contains (directly or indirectly)
@@ -430,6 +439,7 @@ sealed abstract class Node[V] extends HasGeom { self =>
 }
 
 case class Branch[V](children: Vector[Node[V]], box: Box) extends Node[V] {
+
 
   def remove(entry: Entry[V]): Option[(Joined[Entry[V]], Option[Node[V]])] = {
     def loop(i: Int): Option[(Joined[Entry[V]], Option[Node[V]])] =

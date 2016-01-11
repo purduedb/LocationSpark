@@ -35,12 +35,9 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
     sketched
   }
 
+
   def rangebasedKnnjoin():RDD[(K, Iterator[(K,V)])]=
   {
-
-    //val stat_datardd=getPartitionSize(this.datardd).sortBy(_._1)
-    //println("data distribution")
-    //stat_datardd.foreach(println)
 
     val knn=this.knn
     //step1: partition the queryrdd if the partitioner of query and data rdd is different
@@ -48,14 +45,11 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
 
     val partitionedRDD =tmpqueryrdd.partitionBy(datardd.partitioner.get)
 
-    //println("query distribution")
-    //getPartitionSize(partitionedRDD).sortBy(_._1).foreach(println)
-
     //localKnnJoinRDD with this format: RDD[p, iterator[(k,v)]]
     val localKnnJoinRDD = datardd.partitionsRDD.zipPartitions(partitionedRDD, true) {
           (thisIter, otherIter) =>
             val thisPart = thisIter.next()
-           thisPart.knnjoin_(otherIter, f1,f2)
+           thisPart.knnjoin_(otherIter, knn, f1,f2)
         }.cache()
 
     def distancetoBox(point:K,max:Double):Box=
@@ -115,7 +109,7 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
           }
 
 
-      newPartitionsRDD.reduceByKey((itr1,itr2)=>itr1++itr2,correctKNN.partitions.size/2).map
+     newPartitionsRDD.reduceByKey((itr1,itr2)=>itr1++itr2,correctKNN.partitions.size/2).map
       {
         case(querypoint,itr)=>
           val tmpit=itr.map
@@ -123,7 +117,7 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
             case(location,value)=>
               (querypoint.asInstanceOf[Geom].distance(location.asInstanceOf[Point]),location,value)
 
-          }.toList.sortBy(_._1).distinct.slice(0,knn).map
+          }.sortBy(_._1).distinct.slice(0,knn).map
           {
             case(distance,p,value)=>(p,value)
           }.toIterator
@@ -135,15 +129,20 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
           (querypoint,tmparray.toIterator)
       }
 
+      //newPartitionsRDD.reduceByKey((itr1,itr2)=>itr1++itr2,correctKNN.partitions.size/2)
     }
 
     val rangejoinforknnRDD=rangejoin()
 
-    correctKNN.union(rangejoinforknnRDD)
-
+    rangejoinforknnRDD
+    //correctKNN.union(rangejoinforknnRDD)
+    //correctKNN
   }
 
 
+  /**
+   * todo: add the herusitic way to search for the range knn join
+   */
   def herusticknnjoin()={
 
   }
@@ -161,3 +160,11 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
  }*/
 //println("further size "+furtherrefineRDD.count())
 //println("original size "+ localKnnJoinRDD.count())
+
+//val stat_datardd=getPartitionSize(this.datardd).sortBy(_._1)
+//println("data distribution")
+//stat_datardd.foreach(println)
+
+
+//println("query distribution")
+//getPartitionSize(partitionedRDD).sortBy(_._1).foreach(println)

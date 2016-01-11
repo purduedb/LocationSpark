@@ -202,6 +202,20 @@ case class Box(x: Float, y: Float, x2: Float, y2: Float) extends Geom {
 
   }
 
+  def mindistance(other:Box):Double=
+  {
+    if(this.intersects(other))
+    {
+      0
+    }else
+    {
+      Math.min(
+        Math.min(Math.abs(this.x2-other.x),Math.abs(this.x-other.x2)),
+        Math.min(Math.abs(this.y2-other.y),Math.abs(this.y-other.y2))
+      )
+    }
+  }
+
 }
 
 object Box {

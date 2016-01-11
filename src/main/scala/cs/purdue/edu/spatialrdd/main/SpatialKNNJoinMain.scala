@@ -72,7 +72,7 @@ object SpatialKNNJoinMain {
 
     println("knnjoinresult "+knnjoinresult.count())
 
-    /*knnjoinresult.take(10).foreach{
+    /*knnjoinresult.take(100).foreach{
       case(pt, itr)=>
         print(pt+" ")
         itr.foreach(print)

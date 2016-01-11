@@ -233,9 +233,9 @@ class QtreePartition [K, V]
   }
 
   override def knnjoin_[U: ClassTag]
-  (other: SpatialRDDPartition[K, U], f1:(K)=>Boolean,
+  (other: SpatialRDDPartition[K, U],  knn:Int, f1:(K)=>Boolean,
    f2:(V)=>Boolean )
-  : Iterator[(K, Double, Iterator[(K,V)])]=knnjoin_(other.iterator, f1,f2)
+  : Iterator[(K, Double, Iterator[(K,V)])]=knnjoin_(other.iterator, knn, f1,f2)
 
   /** knn join operation
     * the other rdd is query rdd.
@@ -243,6 +243,7 @@ class QtreePartition [K, V]
     */
   override def knnjoin_[U: ClassTag]
   (other: Iterator[(K, U)],
+   knn:Int,
    f1:(K)=>Boolean,
    f2:(V)=>Boolean ): Iterator[(K, Double, Iterator[(K,V)])]={
 
@@ -273,13 +274,13 @@ class QtreePartition [K, V]
    * @return
    */
   override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
-                      f2:(V)=>Boolean): Iterator[(K, Iterator[(K,V)])]=
+                      f2:(V)=>Boolean): Iterator[(K, Array[(K,V)])]=
   {
 
     other.map{
       case(locationpoint,(querypoint,itr))
         =>
-        (querypoint,itr)
+        (querypoint,itr.toArray)
     }
   }
 
