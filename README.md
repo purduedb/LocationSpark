@@ -3,7 +3,7 @@
 An Effecient RDD based on the spatial index i.e., immutable quadtree and R-tree
 
 ## Spatial operators 
-###Update RDD, Range Query, KNN Query, Spatial Textual Query, Spatial Join
+###Update RDD, Range Query, KNN Query, Spatial Textual Query, Spatial Join, kNN Join
 ```scala
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialindex.rtree._
@@ -63,10 +63,14 @@ import cs.purdue.edu.spatialindex.rtree._
     val spatialtextualresult=indexrdd3.rangeFilter(box,textcondition)
   
    /**
-    *spatial range join
+    *spatial join
     */
     val boxes=Array((Box(-21,30,-35,35)),(Box(-28.111,81.333,-31.33,86.333)))
     val queryBoxes=spark.parallelize(boxes,numofpartition)
     val joinresultRdd=indexed.sjoin(transfromQueryRDD)((k,id)=>id)
+    
+ 
+    
+    
     
 ....
