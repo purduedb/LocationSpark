@@ -1,8 +1,8 @@
 package cs.purdue.edu.sbfilter
 
-import cs.purdue.edu.spatialbloomfilter.SBFilter
 import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree.{Box, RTree, Entry, Point}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.SBFilter
 
 import scala.util.Random._
 

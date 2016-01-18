@@ -1,6 +1,6 @@
 package test
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialindex.rtree._
 import org.apache.spark.rdd.RDD

@@ -1,7 +1,7 @@
 package cs.purdue.edu.scheduler
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree.{Box, Point}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkContext, SparkConf}

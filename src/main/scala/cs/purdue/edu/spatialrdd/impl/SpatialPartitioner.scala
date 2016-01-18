@@ -1,7 +1,7 @@
 package cs.purdue.edu.spatialrdd.impl
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.quatree.{QtreeForPartion}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import org.apache.spark.Partitioner
 import cs.purdue.edu.spatialindex.rtree._
 import org.apache.spark.rdd.RDD

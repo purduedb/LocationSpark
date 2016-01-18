@@ -1,8 +1,8 @@
 package cs.purdue.edu.spatialindex
 
-import cs.purdue.edu.spatialbloomfilter.SBFilter
 import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree.{Geom, Box}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.SBFilter
 
 import scala.collection.immutable.HashMap
 

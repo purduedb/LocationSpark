@@ -1,7 +1,7 @@
 package cs.purdue.edu.spatialindex.quatree
 
-import cs.purdue.edu.spatialbloomfilter.{dataSBFV2, binnaryopt, dataSBF, qtreeUtil}
 import cs.purdue.edu.spatialindex.rtree.{Geom, Box}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.{qtreeUtil, binnaryopt, dataSBF, dataSBFV2}
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer

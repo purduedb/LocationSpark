@@ -1,7 +1,7 @@
 package cs.purdue.edu.spatialrdd.main
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree.{Box, Point}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.impl.QtreePartitioner
 import org.apache.spark.{SparkConf, SparkContext}
 

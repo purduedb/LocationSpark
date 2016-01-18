@@ -1,6 +1,6 @@
 package cs.purdue.edu.spatialrdd
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.impl._
 import cs.purdue.edu.spatialindex.rtree._
 

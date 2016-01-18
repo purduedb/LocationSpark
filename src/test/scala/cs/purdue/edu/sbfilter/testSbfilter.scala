@@ -1,8 +1,8 @@
 package cs.purdue.edu.sbfilter
 
-import cs.purdue.edu.spatialbloomfilter.{SBFilter, qtreeUtil}
 import cs.purdue.edu.spatialindex.quatree.{SBQTree}
 import cs.purdue.edu.spatialindex.rtree._
+import cs.purdue.edu.spatialindex.spatialbloomfilter.{qtreeUtil, SBFilter}
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random._

@@ -1,8 +1,8 @@
 package cs.purdue.edu.spatialindex
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.quatree.QTree
 import cs.purdue.edu.spatialindex.rtree._
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution
 
 import scala.collection.immutable.HashMap

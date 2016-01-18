@@ -1,8 +1,7 @@
 package cs.purdue.edu.spatialindex.quatree
 
-
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree.{Geom, Box, Entry, Point}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import scala.collection.mutable.{ArrayBuffer, PriorityQueue}
 
 /**

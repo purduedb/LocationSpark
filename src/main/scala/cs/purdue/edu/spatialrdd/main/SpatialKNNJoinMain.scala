@@ -1,8 +1,8 @@
 package cs.purdue.edu.spatialrdd.main
 
 import cs.purdue.edu.scheduler.joinScheduler
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree.{Box, Point}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialrdd.impl.knnJoinRDD
 import org.apache.spark.rdd.RDD
@@ -17,9 +17,9 @@ object SpatialKNNJoinMain {
 
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
 
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD knnjoin")
+    val conf = new SparkConf().setAppName("Test for Spark SpatialRDD knnjoin")
 
     val spark = new SparkContext(conf)
 
@@ -65,6 +65,8 @@ object SpatialKNNJoinMain {
     {
        true
     }
+
+    knnqueryRDD.checkpoint()
 
     val knnjoin=new knnJoinRDD(indexed,knnqueryRDD,knn,f1,f2)
 

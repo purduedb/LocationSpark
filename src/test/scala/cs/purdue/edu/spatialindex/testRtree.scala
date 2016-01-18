@@ -1,7 +1,7 @@
 package cs.purdue.edu.spatialindex
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.rtree._
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 
 import scala.collection.mutable
 import scala.collection.mutable.{PriorityQueue, ArrayBuffer}

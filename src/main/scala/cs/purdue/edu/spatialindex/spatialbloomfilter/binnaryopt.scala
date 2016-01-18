@@ -1,4 +1,4 @@
-package cs.purdue.edu.spatialbloomfilter
+package cs.purdue.edu.spatialindex.spatialbloomfilter
 
 import cs.purdue.edu.spatialindex.rtree.{Point, Box}
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution

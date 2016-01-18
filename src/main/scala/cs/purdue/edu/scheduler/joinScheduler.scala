@@ -1,8 +1,8 @@
 package cs.purdue.edu.scheduler
 
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialindex.quatree.QtreeForPartion
 import cs.purdue.edu.spatialindex.rtree.{Box}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import cs.purdue.edu.spatialrdd.{SpatialRDD}
 import cs.purdue.edu.spatialrdd.impl.{QtreePartitionerBasedQueries, Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
 import org.apache.spark.annotation.DeveloperApi
