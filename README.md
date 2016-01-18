@@ -2,15 +2,7 @@
 
 We present LocationSpark, a spatial data processing system built on top of Apache Spark, a widely
 used distributed data processing system. LocationSpark offers a rich set of spatial query operators 
-such as range search, $k$NN,  
-spatio-textual operation, spatial-join, and $k$NN-join. To achieve high performance, LocationSpark employs various spatial indexes for in-memory data, 
-and guarantees that immutable spatial indexes have low overhead with fault tolerance. 
-In addition, we build two new layers over Spark, namely a query scheduler and a query executor. 
-The query scheduler is responsible for mitigating skey in spatial queries, 
-while the query executor selects the best plan 
-based on the indexes and the nature of the spatial queries.
-Furthermore, to avoid unnecessary network communication overhead when processing overlapped spatial data, an efficient spatial bloom filter is embedded into the indexes of LocationSpark. Finally, LocationSpark tracks frequently accessed spatial data, and dynamically 
-flushes less frequently accessed data into disk. We evaluate LocationSpark on real workloads and demonstrate that LocationSpark achieves an order of magnitude performance gain over a baseline framework.
+such as range search, $k$NN, spatio-textual operation, spatial-join, and $k$NN-join. 
 
 ## Spatial operators 
 ###Update RDD, Range Query, KNN Query, Spatial Textual Query, Spatial Join, kNN Join
