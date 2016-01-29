@@ -18,7 +18,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../target/scala-2.10/resource_managed/test" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/resolution-cache" />
-      <excludeFolder url="file://$MODULE_DIR$/../../target/scala-2.11" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/streams" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -127,8 +126,6 @@
     <orderEntry type="library" name="SBT: org.json4s:json4s-core_2.10:3.2.10:jar" level="project" />
     <orderEntry type="library" name="SBT: org.json4s:json4s-jackson_2.10:3.2.10:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang:scala-compiler:2.10.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.10.5:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.10.4:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang:scalap:2.10.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.typesafe.akka:akka-actor_2.10:2.3.11:jar" level="project" />
     <orderEntry type="library" name="SBT: com.typesafe.akka:akka-remote_2.10:2.3.11:jar" level="project" />
@@ -144,7 +141,6 @@
     <orderEntry type="library" name="SBT: org.apache.avro:avro-ipc:1.7.7:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.avro:avro-ipc:1.7.7:tests:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.avro:avro-mapred:1.7.7:hadoop2:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.apache.commons:commons-lang3:3.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.spark:spark-core_2.10:1.5.1:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.spark:spark-launcher_2.10:1.5.1:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.spark:spark-network-common_2.10:1.5.1:jar" level="project" />
@@ -156,5 +152,12 @@
     <orderEntry type="library" name="SBT: org.tachyonproject:tachyon-client:0.7.1:jar" level="project" />
     <orderEntry type="library" name="SBT: org.tachyonproject:tachyon-underfs-hdfs:0.7.1:jar" level="project" />
     <orderEntry type="library" name="SBT: org.tachyonproject:tachyon-underfs-local:0.7.1:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.google.uzaygezen:uzaygezen-core:0.2:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.commons:commons-lang3:3.1:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.10.6:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.10.6:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scalactic:scalactic_2.10:2.2.6:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="SBT: org.scalatest:scalatest_2.10:2.2.6:jar" level="project" />
+    <orderEntry type="library" name="scala-sdk-2.10.4" level="application" />
   </component>
 </module>

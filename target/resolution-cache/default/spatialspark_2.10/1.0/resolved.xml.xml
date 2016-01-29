@@ -4,7 +4,7 @@
 		module="spatialspark_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20151116142831"
+		publication="20160126210749"
 	>
 		<description>
 		SpatialSpark
@@ -27,14 +27,15 @@
 	</configurations>
 	<publications>
 		<artifact name="spatialspark_2.10" type="pom" ext="pom" conf="pom"/>
-		<artifact name="spatialspark_2.10" type="jar" ext="jar" conf="compile"/>
-		<artifact name="spatialspark_2.10" type="src" ext="jar" conf="sources" e:classifier="sources"/>
-		<artifact name="spatialspark_2.10" type="doc" ext="jar" conf="docs" e:classifier="javadoc"/>
+		<artifact name="spatialspark_2.10" type="jar" ext="jar" conf="optional" e:classifier="download, resolveClassifiers, resolveSbtClassifiers"/>
 	</publications>
 	<dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.10.5" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.10.5" conf="scala-tool->default,optional(default);compile->default(compile)"/>
 		<dependency org="org.apache.spark" name="spark-core_2.10" rev="1.5.1" conf="compile->default(compile)"/>
 		<dependency org="org.apache.commons" name="commons-math3" rev="3.2" conf="compile->default(compile)"/>
+		<dependency org="com.google.uzaygezen" name="uzaygezen-core" rev="0.2" conf="compile->default(compile)"/>
+		<dependency org="org.scalactic" name="scalactic_2.10" rev="2.2.6" conf="compile->default(compile)"/>
+		<dependency org="org.scalatest" name="scalatest_2.10" rev="2.2.6" conf="test->default(compile)"/>
 	</dependencies>
 </ivy-module>

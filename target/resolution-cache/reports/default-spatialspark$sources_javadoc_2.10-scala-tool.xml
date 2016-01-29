@@ -7,10 +7,10 @@
 		revision="1.0"
 		conf="scala-tool"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20151111231051"/>
+		date="20160126210814"/>
 	<dependencies>
 		<module organisation="org.scala-lang" name="scala-compiler">
-			<revision name="2.10.5" status="release" pubdate="20150226205458" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="1">
+			<revision name="2.10.5" status="release" pubdate="20150226205458" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="0">
 				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
 				<metadata-artifact status="no" details="" size="2827" time="0" location="/home/merlin/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.10.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.10.5/scala-compiler-2.10.5.pom"/>
 				<caller organisation="default" name="spatialspark$sources_javadoc_2.10" conf="scala-tool" rev="2.10.5" rev-constraint-default="2.10.5" rev-constraint-dynamic="2.10.5" callerrev="1.0"/>
@@ -71,7 +71,7 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang" name="scala-library">
-			<revision name="2.10.5" status="release" pubdate="20150226205430" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.5/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="0">
+			<revision name="2.10.5" status="release" pubdate="20150226205430" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.5/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="1">
 				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html          "/>
 				<metadata-artifact status="no" details="" size="2669" time="0" location="/home/merlin/.ivy2/cache/org.scala-lang/scala-library/ivy-2.10.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.5/scala-library-2.10.5.pom"/>
 				<caller organisation="default" name="spatialspark$sources_javadoc_2.10" conf="scala-tool" rev="2.10.5" rev-constraint-default="2.10.5" rev-constraint-dynamic="2.10.5" callerrev="1.0" extra-info.apiURL="http://www.scala-lang.org/api/2.10.5/"/>
@@ -81,9 +81,6 @@
 					</artifact>
 					<artifact name="scala-library" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="1064274" time="0" location="/home/merlin/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.5-sources.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.5/scala-library-2.10.5-sources.jar"/>
-					</artifact>
-					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="7130772" time="0" location="/home/merlin/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.5.jar">
-						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.5/scala-library-2.10.5.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>

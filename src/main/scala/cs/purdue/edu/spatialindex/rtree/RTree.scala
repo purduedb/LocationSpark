@@ -22,6 +22,11 @@ object RTree {
   {
     itr.foldLeft(RTree.empty[A])(_ insert _)
   }
+
+  def apply[A](itr:Iterable[Entry[A]])=
+  {
+    itr.foldLeft(RTree.empty[A])(_ insert _)
+  }
 }
 
 /**
@@ -1119,9 +1124,12 @@ case class RTree[V](root: Node[V], size: Int) {
    * this one the data tree, and stree is the query tree.
    * the return is the
    * point, and it knearest neighbor
+   * this approach is too slow
    * @param stree
    * @return
    */
+
+  /*
   def knnjoin[K: ClassTag]
   (stree:RTree[V], k:Int)
   (f1:(K)=>Boolean, f2:(V)=>Boolean):
@@ -1538,7 +1546,7 @@ case class RTree[V](root: Node[V], size: Int) {
         (geom.asInstanceOf[K],maxdistance,arr.toIterator)
     }.toIterator
 
-  }
+  }*/
 
   /**
   //recursive to the leaf node, which contain the data itself

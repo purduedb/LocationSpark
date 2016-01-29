@@ -63,41 +63,15 @@ object testRtree {
         }
     }
 
-    Constants.MaxEntries=200
+    Constants.MaxEntries=500
     val datatree=RTree(data: _*)
 
-    val es3=data.take(100000)
+    val es3=data.take(200000)
 
-    Constants.MaxEntries=1500
-    val datatree2=RTree(es3: _*)
-
-    def f1(k:Geom):Boolean=
-    {
-      true
-    }
-
-    def f2(v:String):Boolean=
-    {
-      true
-    }
-
-    println("*"*100)
     var b1=System.currentTimeMillis
 
-    val ret=datatree.knnjoin(datatree2,100)(f1,f2)
-
-    println("dual tree based for the knnjoin time: "+(System.currentTimeMillis-b1) +" ms")
-
-    ret.take(100).foreach{
-      case(pt, distance, itr)=>
-        print(pt+" ")
-        print(itr.size)
-        itr.foreach(print)
-        println
-    }
-
     println("*"*100)
-    b1=System.currentTimeMillis
+     b1=System.currentTimeMillis
 
     es3.foreach { entry =>
       datatree.nearestK(entry.geom.asInstanceOf[Point],100)
@@ -118,6 +92,53 @@ object testRtree {
 
 }
 
+/**
+/*
+    Constants.MaxEntries=500
+    val datatree2=RTree(es3: _*)
+  */
+
+    val queryboxes=es3.map{
+      case x:Entry[String]=>
+        val p=x.geom
+        val r=qtreeUtil.getRandomUniformPoint(1,1)
+        (Box(p.x,p.y,p.x+r.x,p.y+r.y))
+    }.map{
+      box=>Entry(box,"x")
+    }
+
+    val boxtree=RTree(queryboxes: _*)
+
+    println("time to build tree of query points: "+(System.currentTimeMillis-b1) +" ms")
+
+    def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
+    {
+      itr.size
+    }
+
+    def aggfunction2(v1:Int, v2:Int):Int=
+    {
+      v1+v2
+    }
+
+    println("*"*100)
+    b1=System.currentTimeMillis
+
+    val tmp2=datatree.joins(boxtree)(aggfunction1,aggfunction2)
+    println("dual tree with soring based for the sjoin time: "+(System.currentTimeMillis-b1) +" ms")
+
+
+    def f1(k:Geom):Boolean=
+    {
+      true
+    }
+
+    def f2(v:String):Boolean=
+    {
+      true
+    }
+
+  */
 /**
  *    val boxes2=Array(
       Box(-17.10094f,-86.8612f, 18.41f, 80.222f),
@@ -142,7 +163,7 @@ val boxes = (1 to numofqueries).map{
       box=>Entry(box,1)
     }
 
-def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
+  def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
     {
       itr.size
     }
