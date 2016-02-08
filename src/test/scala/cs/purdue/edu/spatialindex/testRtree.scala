@@ -63,19 +63,60 @@ object testRtree {
         }
     }
 
-    Constants.MaxEntries=500
-    val datatree=RTree(data: _*)
+    Constants.MaxEntries=200
+    val datatree=RTree(data.take(10000))
 
-    val es3=data.take(200000)
+    val querybox1=Box(40.720116f,-77.84535f, 45.00757f,-73.55791f)
+    val querybox2=Box(40.720116f,-77.84535f, 41.00757f,-74.55791f)
+    val querybox3=Box(41.720116f,-77.84535f, 42.00757f,-75.55791f)
+    val querybox4=Box(30.720116f,-83.84535f, 31.00757f,-80.55791f)
+    val querybox5=Box(40.720116f,-77.84535f, 42.00757f,-73.55791f)
+    val querybox6=Box(20.720116f,-73.84535f, 21.00757f,-71.55791f)
+    val querybox7=Box(43.720116f,-76.84535f, 42.00757f,-75.55791f)
+    val querybox8=Box(38.720116f,-84.84535f, 39.00757f,-83.55791f)
+
+    //
+    val boxes=Array(querybox1,querybox2,querybox3,querybox4,
+                    querybox5,querybox6,querybox7,querybox8)
+
+    boxes.foreach
+    {
+      box=>
+        println("box "+box+" "+datatree.search(box).size)
+    }
+    println()
+
+    val boxes2=boxes.map
+      {
+        case(box)=>
+          Entry(box,"1")
+      }.toIterator
+
+    def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
+    {
+      itr.size
+    }
+
+    def aggfunction2(v1:Int, v2:Int):Int=
+    {
+      v1+v2
+    }
+
+    Constants.MaxEntries=2
+    val boxtree=RTree(boxes2)
+
+    datatree.joins(boxtree)(aggfunction1,aggfunction2).foreach(println)
 
     var b1=System.currentTimeMillis
 
     println("*"*100)
      b1=System.currentTimeMillis
 
+    /*val es3=data.take(200000)
     es3.foreach { entry =>
       datatree.nearestK(entry.geom.asInstanceOf[Point],100)
-    }
+    }*/
+
     println("single tree based for the knnjoin time: "+(System.currentTimeMillis-b1) +" ms")
 
 

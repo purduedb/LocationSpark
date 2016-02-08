@@ -48,6 +48,8 @@ sealed abstract class Node[V] extends HasGeom { self =>
       knnboundary=newbound
   }
 
+  def sortnode:Node[V]
+
   /**
    * Put all the entries this node contains (directly or indirectly)
    * into a vector. Obviously this could be quite large in the case of
@@ -441,6 +443,11 @@ sealed abstract class Node[V] extends HasGeom { self =>
 case class Branch[V](children: Vector[Node[V]], box: Box) extends Node[V] {
 
 
+  def sortnode:Node[V]=
+  {
+    Branch(this.children.sortBy(_.geom.x),this.box)
+  }
+
   def remove(entry: Entry[V]): Option[(Joined[Entry[V]], Option[Node[V]])] = {
     def loop(i: Int): Option[(Joined[Entry[V]], Option[Node[V]])] =
       if (i < children.length) {
@@ -475,6 +482,11 @@ case class Branch[V](children: Vector[Node[V]], box: Box) extends Node[V] {
 
 
 case class Leaf[V](children: Vector[Entry[V]], box: Box) extends Node[V] {
+
+  def sortnode:Node[V]=
+  {
+    Leaf(this.children.sortBy(_.geom.x),this.box)
+  }
 
   def remove(entry: Entry[V]): Option[(Joined[Entry[V]], Option[Node[V]])] = {
     if (!box.contains(entry.geom)) return None //scalastyle:ignore

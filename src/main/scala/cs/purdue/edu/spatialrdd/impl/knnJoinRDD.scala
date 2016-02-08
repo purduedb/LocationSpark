@@ -36,6 +36,10 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
   }
 
 
+  /**
+   *this is the rangebased knn join
+   * @return
+   */
   def rangebasedKnnjoin():RDD[(K, Iterator[(K,V)])]=
   {
 
@@ -117,7 +121,7 @@ class knnJoinRDD[K:ClassTag,V:ClassTag]
             case(location,value)=>
               (querypoint.asInstanceOf[Geom].distance(location.asInstanceOf[Point]),location,value)
 
-          }.sortBy(_._1).distinct.slice(0,knn).map
+          }.toArray.sortBy(_._1).distinct.slice(0,knn).map
           {
             case(distance,p,value)=>(p,value)
           }.toIterator

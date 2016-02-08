@@ -130,7 +130,7 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
    * @return
    */
   def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
-             f2:(V)=>Boolean): Iterator[(K, Array[(K,V)])]
+             f2:(V)=>Boolean): Iterator[(K, Iterable[(K,V)])]
 
   /**
    * Creates a new partition with values from `elems` that may share an index with `this`,

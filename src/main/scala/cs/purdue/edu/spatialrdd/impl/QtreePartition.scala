@@ -274,13 +274,13 @@ class QtreePartition [K, V]
    * @return
    */
   override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
-                      f2:(V)=>Boolean): Iterator[(K, Array[(K,V)])]=
+                      f2:(V)=>Boolean): Iterator[(K, Iterable[(K,V)])]=
   {
 
     other.map{
       case(locationpoint,(querypoint,itr))
         =>
-        (querypoint,itr.toArray)
+        (querypoint,itr.toIterable)
     }
   }
 

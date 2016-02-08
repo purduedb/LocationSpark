@@ -273,47 +273,17 @@ class RtreePartition[K, V]
 
   override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],
     f1:(K)=>Boolean,
-  f2:(V)=>Boolean): Iterator[(K, Array[(K,V)])]=
+  f2:(V)=>Boolean): Iterator[(K, Iterable[(K,V)])]=
   {
       //get box point hashmap
 
     val hashMap=mutable.HashMap.empty[Geom,(K,Double,mutable.PriorityQueue[(Double, (K,V))])]
 
-    val boxpointmap=other.map{
-
-      case(partitionpoint,(querypoint,itr))=>
-
-        val p=querypoint.asInstanceOf[Geom]
-        var max=0.0
-
-        implicit val ord = Ordering.by[(Double, (K,V)), Double](_._1)
-        val pq = PriorityQueue.empty[(Double, (K,V))]
-
-        itr.foreach
-        {
-          case (p1,value)=>
-            val distance=p.distance(p1.asInstanceOf[Point])
-
-            if(distance>max)
-              max=distance
-
-            pq += ((distance, (p1,value)))
-        }
-        val qbox=Box((p.x-max).toFloat,(p.y-max).toFloat,(p.x+max).toFloat,(p.y+max).toFloat)
-
-        hashMap.put(qbox,(querypoint,max,pq))
-        (qbox)
+    other.map{
+      case(locationpoint,(querypoint,itr))
+      =>
+        (querypoint,itr.toIterable)
     }
-
-    val value=1
-    val boxes=boxpointmap.map
-    {
-      case(b)=>Entry(b,value.asInstanceOf[V])
-    }
-
-    val boxtree=RTree(boxes)
-
-    this.tree.rjoinforknn(boxtree,hashMap,f1,f2)
 
   }
 
