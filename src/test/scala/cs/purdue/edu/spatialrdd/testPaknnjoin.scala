@@ -1,23 +1,18 @@
-package cs.purdue.edu.spatialrdd.main
+package cs.purdue.edu.spatialrdd
 
-import cs.purdue.edu.scheduler.joinScheduler
-import cs.purdue.edu.spatialindex.rtree.{Box, Point}
-import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
-import cs.purdue.edu.spatialrdd.SpatialRDD
+import cs.purdue.edu.spatialindex.rtree.Point
 import cs.purdue.edu.spatialrdd.impl.knnJoinRDD
-import org.apache.spark.rdd.RDD
-import org.apache.spark.{rdd, SparkContext, SparkConf}
+import org.apache.spark.{SparkContext, SparkConf}
+import org.scalatest.FunSuite
 
 /**
- * Created by merlin on 12/20/15.
+ * Created by merlin on 2/19/16.
  */
-object SpatialKNNJoinMain {
+class testPaknnjoin extends FunSuite {
 
-  //this class is mainly used for testing the spatial knn join
+  test("test build high dimensional r-tree index over rdd") {
 
-  def main(args: Array[String]) {
-
-    //val conf = new SparkConf().setAppName("Test for Spark SpatialRDD").setMaster("local[2]")
+    val args=Array("1","2.0","3")
 
     val conf = new SparkConf().setAppName("Test for Spark SpatialRDD knnjoin")
 
@@ -54,16 +49,16 @@ object SpatialKNNJoinMain {
 
     /************************************************************************************/
     val knnqueryRDD=locationRDD.sample(false,ratio).map{
-      case (p:Point,v)=>
-       p
+      case (p:Point,v)=> p
     }
+
     def f1(k:Point):Boolean=
     {
       true
     }
     def f2(v:Any):Boolean=
     {
-       true
+      true
     }
 
     knnqueryRDD.checkpoint()
@@ -75,6 +70,7 @@ object SpatialKNNJoinMain {
     println("knnjoinresult "+knnjoinresult.count())
 
     spark.stop()
+
 
   }
 

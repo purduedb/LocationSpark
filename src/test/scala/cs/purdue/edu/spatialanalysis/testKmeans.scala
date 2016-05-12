@@ -168,12 +168,13 @@ class testKmeans extends FunSpec with Matchers {
               maxdistance= math.max(maxdistance,l2distance(min_x,max_y, point.x,point.y))
               maxdistance= math.max(maxdistance,l2distance(max_x,min_y, point.x,point.y))
           }
-          println("knn boundary "+knnresult.last._1)
-          println("four cornner boundary "+maxdistance)
+          //println("knn boundary "+knnresult.last._1)
+         //println("four cornner boundary "+maxdistance)
 
           boundary=boundary+maxdistance/datapoints.size
           //the knn result to find the boundary for the rectangle
           (datapoints,centralpoint,maxdistance)
+
       }.filter(_._3<10).map
       {
         case(datapoint,pivot,maxdistance)=>
@@ -182,7 +183,7 @@ class testKmeans extends FunSpec with Matchers {
           (querybox, datapoint.toIterable)
       }.toMap
 
-      println(" boundary "+ boundary)
+     // println(" boundary "+ boundary)
 
       val queryboxes=knnforpivot.map
       {

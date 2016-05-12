@@ -202,5 +202,24 @@ object skewAnalysis {
     map.toMap
   }
 
+  /**
+   * find the skew partition, and find the partition approach for those skew partition
+   * @param stat
+   * @param threshold
+   * @return
+   */
+  def GreedyFindSkewPartitions(stat:IndexedSeq[(Int,Int,Int)], threshold:Double):Map[Int,Int]=
+  {
+
+    //the cost function for repartition data
+
+    //if we find this point, we find the rule to partition the skewpart
+    val map=mutable.HashMap.empty[Int,Int]
+
+
+
+    map.toMap
+  }
+
 
 }
