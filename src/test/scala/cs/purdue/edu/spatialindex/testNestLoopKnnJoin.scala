@@ -12,6 +12,8 @@ import scala.collection.mutable.ArrayBuffer
  */
 class testNestLoopKnnJoin extends FunSpec with Matchers{
 
+
+
   describe("native nest loop knn join")
   {
 
@@ -70,7 +72,8 @@ class testNestLoopKnnJoin extends FunSpec with Matchers{
     querypoints.foreach
     {
       case point=>
-        datatree.nearestK(point,k)
+        val count=datatree.nearestK(point,k).size
+        println(count)
     }
 
     println("time for get knn result based on nest loop over index "+(System.currentTimeMillis-b1) +" ms")

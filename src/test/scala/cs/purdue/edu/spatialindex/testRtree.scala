@@ -13,13 +13,6 @@ object testRtree {
 
   def main(args: Array[String]): Unit = {
 
-    /*val numofqueries=900
-    val numofpoints=50000
-    val numofpoint2=10000
-    val mean1=Array(6.0,6.0)
-    val es = (1 to numofpoints).map(n => Entry(qtreeUtil.getGaussianPoint(mean1), n))
-    val es2 = (1 to numofpoint2).map(n => Entry(qtreeUtil.getGaussianPoint(mean1), n))*/
-    /**/
 
     val data=ArrayBuffer.empty[Entry[String]]
 
@@ -84,7 +77,9 @@ object testRtree {
       box=>
         println("box "+box+" "+datatree.search(box).size)
     }
-    println()
+    println("**********************************************")
+    println("**********dual tree approach base*************")
+    println("**********************************************")
 
     val boxes2=boxes.map
       {
@@ -112,23 +107,8 @@ object testRtree {
     println("*"*100)
      b1=System.currentTimeMillis
 
-    /*val es3=data.take(200000)
-    es3.foreach { entry =>
-      datatree.nearestK(entry.geom.asInstanceOf[Point],100)
-    }*/
-
     println("single tree based for the knnjoin time: "+(System.currentTimeMillis-b1) +" ms")
 
-
-    /*ret.foreach{
-      case(pt, distance,itr)=>
-        print(pt+" "+distance+" ")
-        itr.foreach(print)
-        println
-    }*/
-    //boxtree.search(Box(-180,-180,180,180)).foreach(println)
-
-    //boxtree.searchIntersection(Box(-50,-50,50,50)).foreach(println)
   }
 
 }
@@ -312,4 +292,16 @@ val querypoint=es.take(10).map(e=>e.geom)
         itr.foreach(print)
         println
     }
+  */
+
+/**
+/*ret.foreach{
+      case(pt, distance,itr)=>
+        print(pt+" "+distance+" ")
+        itr.foreach(print)
+        println
+    }*/
+    //boxtree.search(Box(-180,-180,180,180)).foreach(println)
+
+    //boxtree.searchIntersection(Box(-50,-50,50,50)).foreach(println)
   */

@@ -690,8 +690,6 @@ case class RTree[V](root: Node[V], size: Int) {
   mutable.HashMap[U,U2] =
   {
 
-
-
     val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
 
     val tmpresult = mutable.HashMap.empty[Geom,U2]
@@ -727,7 +725,6 @@ case class RTree[V](root: Node[V], size: Int) {
           tmp1.append((value.geom.asInstanceOf[K]->value.value))
           buf.put(key,tmp1)
         }
-
 
       }catch
         {
