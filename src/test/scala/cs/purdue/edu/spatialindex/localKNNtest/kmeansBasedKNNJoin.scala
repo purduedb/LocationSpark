@@ -1,10 +1,10 @@
-package cs.purdue.edu.spatialindex
+package cs.purdue.edu.spatialindex.localKNNtest
 
 import java.io.File
 
 import cs.purdue.edu.spatialanalysis.Kmeans
 import cs.purdue.edu.spatialindex.rtree._
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.{FunSpec, Matchers}
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
@@ -61,18 +61,25 @@ class kmeansBasedKNNJoin extends FunSpec with Matchers {
     Constants.MaxEntries=200
     val datatree=RTree(data: _*)
 
-    val numberofdata=20000
-    val k=100
-    val querypoints=data.take(numberofdata).map(e=>e.geom.asInstanceOf[Point]).toIndexedSeq
+    /****************************************************************************************/
 
-    /********************************************************/
+    for(a<-1 until 15)
+    {
+
+    val numberOfQueries=10000*a
+
+    val querypoints=data.take(numberOfQueries).map(e=>e.geom.asInstanceOf[Point]).toIndexedSeq
+
+    /****************************************************************************************/
     var b1=System.currentTimeMillis
-    val sampleratio=0.22
+    val sampleratio=0.3
     val forkmeansdata=querypoints.take((querypoints.size*sampleratio).toInt)
-    val numberofcluster=100
+    val numberofcluster=200
+
     val kcluster=new Kmeans(forkmeansdata, Kmeans.euclideanDistance, 0.0001, 10, false)
     val (c1,pivots)=kcluster.run(numberofcluster,1)
     println("kmeans run time "+(System.currentTimeMillis-b1) +" ms")
+
     /*************************************************************/
 
     val buf = mutable.HashMap.empty[Geom,ArrayBuffer[Point]]
@@ -100,7 +107,7 @@ class kmeansBasedKNNJoin extends FunSpec with Matchers {
 
     /**********************************************************/
     b1=System.currentTimeMillis
-    //repartition the data based on the pivot
+
     querypoints.foreach
     {
       case point=>
@@ -125,13 +132,20 @@ class kmeansBasedKNNJoin extends FunSpec with Matchers {
       math.sqrt((x2-x1)*(x2-x1)+(y1-y2)*(y1-y2))
     }
 
-    //get the boundary for each cluster
-    //use the repartition data for the knn query
-    var boundary=0.0
-    val knnforpivot=buf.map{
+    /**
+     * change to range searching
+     */
+
+    //option1: use the max knn distance bound, and this will have limit number of rectangels, but this bring overhead
+    //for larget amount of data points in each rectangle boundary, and the overhead to get the knn for point
+    //in each boundary is too high.
+
+    var bundary=0.0
+
+    val k=10
+
+    val knnBoundary=buf.map{
       case(pivot,datapoints)=>
-        //knn searching for pivot point
-        //get the central point rather than the pivot
         var c1=0.0
         var c2=0.0
         var max_x=Float.MinValue
@@ -151,9 +165,12 @@ class kmeansBasedKNNJoin extends FunSpec with Matchers {
         }
 
         val centralpoint=Point((c1/datapoints.size).toFloat,(c2/datapoints.size).toFloat)
+        //knn searching for pivot point
         val knnresult=datatree.nearestK(centralpoint,k,(id)=>true)
-        var maxdistance=Double.MinValue
 
+        //var maxdistance=Double.MinValue
+        var maxdistance=Double.MinValue
+        //get the knn boundary
         knnresult.foreach
         {
           case(d,p)=>
@@ -163,48 +180,73 @@ class kmeansBasedKNNJoin extends FunSpec with Matchers {
             maxdistance= math.max(maxdistance,l2distance(min_x,max_y, point.x,point.y))
             maxdistance= math.max(maxdistance,l2distance(max_x,min_y, point.x,point.y))
         }
+        (datapoints,pivot,maxdistance)
 
-        (datapoints,centralpoint,maxdistance)
-
-    }.map
-      //.filter(_._3<10).map
-      {
+    }.map {
         case(datapoint,pivot,maxdistance)=>
-          val querybox=Box((pivot.x-maxdistance).toFloat,(pivot.y-maxdistance).toFloat,
-            (pivot.x+maxdistance).toFloat,(pivot.y+maxdistance).toFloat)
-          (querybox, datapoint.toIterable)
 
+          val querybox=Box(
+            (pivot.x-maxdistance).toFloat,
+            (pivot.y-maxdistance).toFloat,
+            (pivot.x+maxdistance).toFloat,
+            (pivot.y+maxdistance).toFloat
+            )
+          (querybox.asInstanceOf[Geom], datapoint.toIterable)
       }.toMap
 
-    val queryboxes=knnforpivot.map
+    val queryboxes=knnBoundary.map
     {
       case(box,pts)=>
         Entry(box,"1")
     }
 
-    b1=System.currentTimeMillis
+    Constants.MaxEntries=20
+    val qboxTree=RTree(queryboxes)
 
-    val boxtree=RTree(queryboxes)
+      b1=System.currentTimeMillis
+      val sjoinResults=datatree.joinsForKNNjoin(qboxTree, knnBoundary, k)
 
-    def filter[K,V](K:K,V:V):Boolean=
-    {
-      true
+      var returnsize=0
+      sjoinResults.foreach
+      {
+        case(p,pts)=>
+          returnsize+=pts.size
+      }
+
+      println("return data size "+ returnsize)
+      println("k "+ k+ " time for get the knn result based on kmeans: "+(System.currentTimeMillis-b1) +" ms")
+
     }
-
-    def aggfunction1[K,V](itr:Iterator[(K,V)]):Int=
-    {
-      itr.size
-    }
-
-    def aggfunction2(v1:Int, v2:Int):Int=
-    {
-      v1+v2
-    }
-
-    datatree.joins(boxtree)(aggfunction1,aggfunction2)
-
-    println("time for get the knn result "+(System.currentTimeMillis-b1) +" ms")
 
   }
 
 }
+
+
+/* var queryboxes=ArrayBuffer.empty[Box]
+
+//option 2:
+
+ buf.foreach {
+   case (pivot, querypoints) =>
+     val knnresult=datatree.nearestK(pivot.asInstanceOf[Point],k,(id)=>true)
+     querypoints.foreach
+     {
+       case q:Point=>
+         var maxdistance=0.0
+         knnresult.foreach
+         {
+           case(d, dpt)=>
+             maxdistance=Math.max(maxdistance,q.distance(dpt.geom.asInstanceOf[Point]))
+         }
+
+         val querybox=Box(
+           (q.x-maxdistance).toFloat,
+           (q.y-maxdistance).toFloat,
+           (q.x+maxdistance).toFloat,
+           (q.y+maxdistance).toFloat)
+
+         queryboxes+=querybox
+     }
+
+ }*/

@@ -1,11 +1,9 @@
-package cs.purdue.edu.spatialindex
+package cs.purdue.edu.spatialindex.localKNNtest
 
+import java.io.File
 
 import cs.purdue.edu.spatialindex.rtree._
-import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
-import org.scalatest.FunSpec
-import org.scalatest.Matchers
-import java.io.File
+import org.scalatest.{FunSpec, Matchers}
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer

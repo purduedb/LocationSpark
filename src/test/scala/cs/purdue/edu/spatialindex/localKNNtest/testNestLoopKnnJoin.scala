@@ -1,9 +1,9 @@
-package cs.purdue.edu.spatialindex
+package cs.purdue.edu.spatialindex.localKNNtest
 
 import java.io.File
 
-import cs.purdue.edu.spatialindex.rtree.{RTree, Constants, Point, Entry}
-import org.scalatest.{Matchers, FunSpec}
+import cs.purdue.edu.spatialindex.rtree.{Constants, Entry, Point, RTree}
+import org.scalatest.{FunSpec, Matchers}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -57,26 +57,35 @@ class testNestLoopKnnJoin extends FunSpec with Matchers{
         }
     }
 
+    //println("data size "+data.size)
     Constants.MaxEntries=200
     val datatree=RTree(data: _*)
 
     val numberofdata=20000
-    val numberofcluster=100
 
-    val k=100
 
     val querypoints=data.take(numberofdata).map(e=>e.geom.asInstanceOf[Point]).toIndexedSeq
 
-    val b1=System.currentTimeMillis
+   // val querypoint1=Point(40.720116f,-77.84535f)
+    //val querypoint2=Point(40.730116f,-77.85535f)
+    //val querypoints=Array(querypoint1,querypoint2)
 
-    querypoints.foreach
+    for( a <- 1 to 15)
     {
-      case point=>
-        val count=datatree.nearestK(point,k).size
-        println(count)
+
+      val b1=System.currentTimeMillis
+
+      val k=10*a
+      querypoints.foreach
+      {
+        case point=>
+          val count=datatree.nearestK(point,k).size
+        //println(count)
+      }
+
+      println("ksize "+k+" time for get knn result based on nest loop over index "+(System.currentTimeMillis-b1) +" ms")
     }
 
-    println("time for get knn result based on nest loop over index "+(System.currentTimeMillis-b1) +" ms")
 
   }
 

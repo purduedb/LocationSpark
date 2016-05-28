@@ -136,335 +136,6 @@ case class RTree[V](root: Node[V], size: Int) {
   def search(space: Box): Seq[Entry[V]] =
     root.search(space, _ => true)
 
-  /**
-   * this is the dual tree join algorithm,
-   * this one the data tree, and stree is the query tree.
-   * @param stree
-   * @return
-   */
-  def join(stree:RTree[V]):Seq[Entry[V]] =
-  {
-    val buf = HashSet.empty[Entry[V]]
-
-    //this changed to generic search
-    //recursive
-    //case 3: the data tree is leaf, but the query tree is branch
-    def recur(node: Node[V], entry:Entry[V]): Unit =
-      node match {
-      case Leaf(children, box) =>
-        children.foreach { c =>
-          if (c.geom.contains(entry.geom))
-             buf.add(entry)
-        }
-      case Branch(children, box) =>
-        children.foreach { c =>
-          if (c.box.intersects(entry.geom)) recur(c,entry)
-        }
-    }
-
-    //this changed to generic search
-    //recursive to the leaf node, which contain the data itself
-    //case 4: the data tree is branch, but the query tree is leaf
-    def recur2(node: Node[V], querybox:Geom): Unit =
-      node match {
-        case Leaf(children, box) =>
-          children.foreach { c =>
-            if (querybox.contains(c.geom))
-              buf.add(c)
-          }
-        case Branch(children, box) =>
-          children.foreach { c =>
-            if (querybox.intersects(c.geom)) recur2(c,querybox)
-          }
-      }
-
-    //this is used for spatial join
-    def sjoin(rnode:Node[V],snode:Node[V]):Unit={
-
-      if(rnode.box.intersects(snode.box))
-      {
-         val intesectionbox=rnode.box.intesectBox(snode.box)
-
-        rnode match {
-
-          case Leaf(children_r, box_r) =>
-
-            snode match
-            {
-              case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
-
-                children_r.foreach{
-                  cr=>
-                    children_s.foreach {
-                      cs =>
-                        if (cs.geom.contains(cr.geom))
-                          buf.add(cr) //return the results
-                    }
-                }
-
-                /*intersectionForleaf(children_s,children_s).foreach {
-                  case (cr, cs) =>
-                    if(cs.geom.contains(cr.geom))
-                    buf.append(cr) //return the results
-                }*/
-
-
-              case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
-              {
-                val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
-                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
-
-                r.foreach{
-                  cr=>
-                    s.foreach {
-                      cs =>
-                        recur(cs,cr)
-                    }
-                }
-
-              }
-            }
-
-          case Branch(children_r, box_r) =>
-
-            snode match
-            {
-              case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
-
-                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
-                val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
-
-                r.foreach{
-                  cr=>
-                    s.foreach {
-                      cs =>
-                        recur2(cr,cs.geom)
-                    }
-                }
-
-              case Branch(children_s, box_s)=> //case 1: both of two tree are branch
-              {
-                  val r=children_r.filter(node=>node.box.intersects(intesectionbox))
-                  val s=children_s.filter(node=>node.box.intersects(intesectionbox))
-                //nest loop to recursive on those dataset
-
-                //use the sorted based approach for the intersection aprt
-                //by this way, the nest-loop is changed to o(n)+k
-
-                /*intersection(r,s).foreach
-                {
-                  case(rc,sc)=>
-                    sjoin(rc,sc)
-                }*/
-
-                  r.foreach {
-                    rc =>
-                    s.foreach{
-                      sc=>
-                        if(rc.box.intersects(sc.box))
-                          sjoin(rc,sc)
-                    }
-                  }
-
-                //next step to test on sort and plan sweep approach
-              }
-            }
-        }
-      }
-
-    }
-
-    sjoin(this.root,stree.root)
-
-    buf.toSeq
-  }
-
-
-  /**
-   * this is the dual tree join algorithm,
-   * this one the data tree, and stree is the query tree.
-   * the return is the
-   * query box w.r.t the point1, point2, point3...
-   * @param stree
-   * @return
-   */
-  def joins_withoutsort[K: ClassTag, U:ClassTag, U2: ClassTag](stree:RTree[V])(
-    f: (Iterator[(K,V)]) => U2,f2:(U2,U2)=>U2):
-  mutable.HashMap[U,U2] =
-  {
-    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
-
-    val tmpresult = mutable.HashMap.empty[Geom,U2]
-
-    def updatehashmap(key:Geom, value:Entry[V])=
-    {
-      try {
-        if(buf.contains(key))
-        {
-          val tmp1=buf.get(key).get
-
-          //this is used in case the tmp buffer is too big
-          if(tmp1.size>10)
-          {
-             val result=f(tmp1.toIterator)
-             tmp1.clear()
-             if(tmpresult.contains(key))
-             {
-               val result2=tmpresult.get(key).get
-               //aggregate the internal result
-               tmpresult.put(key,f2(result2,result))
-             }else
-             {
-               tmpresult.put(key,result)
-             }
-          }
-
-          tmp1.append((value.geom.asInstanceOf[K]->value.value))
-          buf.put(key,tmp1)
-        }else
-        {
-          val tmp1=new ArrayBuffer[(K,V)]
-          tmp1.append((value.geom.asInstanceOf[K]->value.value))
-          buf.put(key,tmp1)
-        }
-
-
-      }catch
-        {
-          case e:Exception=>
-          println("out of memory for appending new value to the sjoin")
-        }
-    }
-    //this changed to generic search
-    //recursive
-    //case 3: the data tree is leaf, but the query tree is branch
-    def recur(node: Node[V], entry:Entry[V]): Unit =
-      node match {
-        case Leaf(children, box) =>
-          children.foreach { c =>
-            if (c.geom.contains(entry.geom))
-            {
-              updatehashmap(c.geom,entry)
-            }
-
-          }
-        case Branch(children, box) =>
-          children.foreach { c =>
-            if (c.box.intersects(entry.geom)) recur(c,entry)
-          }
-      }
-
-    //this changed to generic search
-    //recursive to the leaf node, which contain the data itself
-    //case 4: the data tree is branch, but the query tree is leaf
-    def recur2(node: Node[V], querybox:Geom): Unit =
-      node match {
-        case Leaf(children, box) =>
-          children.foreach { c =>
-            if (querybox.contains(c.geom))
-              updatehashmap(querybox,c)
-          }
-        case Branch(children, box) =>
-          children.foreach { c =>
-            if (querybox.intersects(c.geom)) recur2(c,querybox)
-          }
-      }
-    //this is used for spatial join
-    def sjoin(rnode:Node[V],snode:Node[V]):Unit={
-
-      if(rnode.box.intersects(snode.box))
-      {
-        val intesectionbox=rnode.box.intesectBox(snode.box)
-
-        rnode match {
-
-          case Leaf(children_r, box_r) =>
-
-            snode match
-            {
-              case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
-
-                children_r.foreach{
-                  cr=>
-                    children_s.foreach {
-                      cs =>
-                        if (cs.geom.contains(cr.geom))
-                        {
-                          updatehashmap(cs.geom,cr)
-                        }//if
-
-                    }
-                }
-
-              case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
-              {
-                val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
-                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
-
-                r.foreach{
-                  cr=>
-                    s.foreach {
-                      cs =>
-                        recur(cs,cr)
-                    }
-                }
-
-              }
-            }
-
-          case Branch(children_r, box_r) =>
-
-            snode match
-            {
-              case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
-
-                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
-                val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
-
-                r.foreach{
-                  cr=>
-                    s.foreach {
-                      cs =>
-                        recur2(cr,cs.geom)
-                    }
-                }
-
-              case Branch(children_s, box_s)=> //case 1: both of two tree are branch
-              {
-                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
-                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
-
-                r.foreach {
-                  rc =>
-                    s.foreach{
-                      sc=>
-                        if(rc.box.intersects(sc.box))
-                          sjoin(rc,sc)
-                    }
-                }
-
-                //next step to test on sort and plan sweep approach
-              }
-            }
-        }
-      }
-
-    }
-
-    sjoin(this.root,stree.root)
-
-    buf.map{
-      case(geom,itr)=>
-        val t1=f(itr.toIterator)
-        val t2=tmpresult.get(geom).getOrElse(None)
-        t2 match
-        {
-          case t:U2=> (geom.asInstanceOf[U],f2(t1,t))
-          case _=>(geom.asInstanceOf[U],t1)
-        }
-    }
-
-  }
 
   /**
    * sort the internal node of this RTree
@@ -505,57 +176,24 @@ case class RTree[V](root: Node[V], size: Int) {
   }
 
   /**
-   * this is the dual tree join for knn join algorithm,
-   * this one the data tree, and stree is the query tree
+   * this is the dual tree join algorithm,
+   * this one the data tree, and stree is the query tree.
+   * the return are the data points inside the boundary
    * @param stree
    * @return
    */
-  /*def rjoinforknn[K: ClassTag]
-  ( stree:RTree[V],
-    boxpointmap:mutable.HashMap[Geom,(K,Double,mutable.PriorityQueue[(Double,(K,V))])]
-    ,f1:(K)=>Boolean,
-    f2:(V)=>Boolean
-    ):
-  Iterator[(K,Array[(K,V)])]=
+  def join(stree:RTree[V]):Seq[Entry[V]] =
   {
-    stree.sortInternalnode()
-    this.sortInternalnode()
+    val buf = HashSet.empty[Entry[V]]
 
-    val buf=boxpointmap
-
-    def updatehashmap(key:Geom, value:Entry[V])=
-    {
-      try {
-
-        if(buf.contains(key))
-        {
-          val (querypoint, maxdistance, pq)=buf.get(key).get
-
-          val distance=querypoint.asInstanceOf[Geom].distance(value.geom.asInstanceOf[Point])
-
-          if(distance<maxdistance)
-          {
-            pq += ((distance,(value.geom.asInstanceOf[K],value.value)))
-            pq.dequeue
-            buf.put(key,(querypoint,distance,pq))
-          }
-        }
-
-      }catch
-        {
-          case e:Exception=>
-            println(e)
-            println("out of memory for appending new value to the sjoin")
-        }
-    }
-
+    //case 3: the data tree is leaf, but the query tree is branch
     def recur(node: Node[V], entry:Entry[V]): Unit =
       node match {
         case Leaf(children, box) =>
           children.foreach { c =>
             if (c.geom.contains(entry.geom))
             {
-              updatehashmap(c.geom,entry)
+              buf.add(entry)
             }
 
           }
@@ -565,12 +203,14 @@ case class RTree[V](root: Node[V], size: Int) {
           }
       }
 
+    //recursive to the leaf node, which contain the data itself
+    //case 4: the data tree is branch, but the query tree is leaf
     def recur2(node: Node[V], querybox:Geom): Unit =
       node match {
         case Leaf(children, box) =>
           children.foreach { c =>
             if (querybox.contains(c.geom))
-              updatehashmap(querybox,c)
+              buf.add(c)
           }
         case Branch(children, box) =>
           children.foreach { c =>
@@ -600,9 +240,8 @@ case class RTree[V](root: Node[V], size: Int) {
                 intersectionForleaf(r,s).foreach {
                   case (cr, cs) =>
                     if(cs.geom.contains(cr.geom))
-                      updatehashmap(cs.geom,cr)
+                      buf.add(cr)
                 }
-
 
               case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
               {
@@ -616,7 +255,6 @@ case class RTree[V](root: Node[V], size: Int) {
                         recur(cs,cr)
                     }
                 }
-
               }
             }
 
@@ -645,6 +283,7 @@ case class RTree[V](root: Node[V], size: Int) {
                   case(rc,sc)=>
                     sjoin(rc,sc)
                 }
+
               }
             }
         }
@@ -652,36 +291,20 @@ case class RTree[V](root: Node[V], size: Int) {
 
     }
 
+    val queries=stree.sortInternalnode()
+    val dataset=this.sortInternalnode()
+
     sjoin(this.root,stree.root)
 
-
-   buf.map
-    {
-      case(geom,(querypoint,distance, pq))=>
-        val arr = ArrayBuffer.empty[(K,V)]
-        while (!pq.isEmpty) {
-          val (d, (key,value)) = pq.dequeue
-          if(f1(key)&&f2(value))
-            try
-            {
-              arr.append((key,value))
-            }catch
-              {
-                case e:Exception=>
-                  println("out of memory for returing results exception"+e)
-              }
-        }
-        pq.clear()
-        (querypoint, arr.toArray)
-    }.toIterator
-
-  }*/
+    buf.toSeq
+  }
 
   /**
    * this is the dual tree join algorithm based on sorting and intersection of rectangles,
    * this one the data tree, and stree is the query tree.
    * the return is the
    * query box w.r.t the point1, point2, point3...
+   * the agg function is used for U2.
    * @param stree
    * @return
    */
@@ -689,9 +312,7 @@ case class RTree[V](root: Node[V], size: Int) {
     f: (Iterator[(K,V)]) => U2,f2:(U2,U2)=>U2):
   mutable.HashMap[U,U2] =
   {
-
     val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
-
     val tmpresult = mutable.HashMap.empty[Geom,U2]
 
     def updatehashmap(key:Geom, value:Entry[V])=
@@ -705,7 +326,6 @@ case class RTree[V](root: Node[V], size: Int) {
           if(tmp1.size>20)
           {
             val result=f(tmp1.toIterator)
-            tmp1.clear()
             if(tmpresult.contains(key))
             {
               val result2=tmpresult.get(key).get
@@ -806,8 +426,6 @@ case class RTree[V](root: Node[V], size: Int) {
                         recur(cs,cr)
                     }
                 }
-                //println("the case 2 loop time: "+(System.currentTimeMillis-b1) +" ms")
-                //println("!!!!!!!!!!"*100)
               }
             }
 
@@ -863,6 +481,523 @@ case class RTree[V](root: Node[V], size: Int) {
   }
 
 
+  /**
+   * this is the dual tree join algorithm based on sorting and intersection of rectangles,
+   * this one the data tree, and stree is the query tree.
+   * the return is the
+   * query box w.r.t the point1, point2, point3...
+   * the agg function is used for U2.
+   * @param stree
+   * @return
+   */
+  def joinsForKNNjoin(stree:RTree[V],
+                        BoxMapQueryPts:Map[Geom,Iterable[Point]],
+                        k:Int
+                       ):
+  Iterable[(Geom,Iterable[Entry[V]])] =
+  {
+    //val buf = mutable.HashMap.empty[Geom,ArrayBuffer[Entry[V]]]
+
+    val boxquereis=BoxMapQueryPts.map
+    {
+      case(key, points)=>
+        val maps=points.map
+        {
+          case point=>
+            implicit val ord = Ordering.by[(Double, Entry[V]), Double](_._1)
+            val pq = PriorityQueue.empty[(Double, Entry[V])]
+            (point, pq)
+        }
+        (key,maps)
+    }
+
+    def updatehashmap(key:Geom, value:Entry[V])=
+    {
+      try {
+        val result=boxquereis.get(key).get
+
+        result.foreach
+        {
+          case (pt, pq)=>
+            val d = value.geom.distance(pt)
+            if(pq.size<k)
+            {
+              pq.enqueue((d->value))
+            }else
+            {
+              val top=pq.head
+              if(top._1>d)
+              {
+                pq.dequeue()
+                pq.enqueue((d->value))
+              }
+            }
+        }
+
+      }catch
+        {
+          case e:Exception=>
+            println("out of memory for appending new value to the sjoin")
+        }
+    }
+
+
+    def recur(node: Node[V], entry:Entry[V]): Unit =
+      node match {
+        case Leaf(children, box) =>
+          children.foreach { c =>
+            if (c.geom.contains(entry.geom))
+            {
+              updatehashmap(c.geom,entry)
+            }
+
+          }
+        case Branch(children, box) =>
+          children.foreach { c =>
+            if (c.box.intersects(entry.geom)) recur(c,entry)
+          }
+      }
+
+    def recur2(node: Node[V], querybox:Geom): Unit =
+      node match {
+        case Leaf(children, box) =>
+          children.foreach { c =>
+            if (querybox.contains(c.geom))
+              updatehashmap(querybox,c)
+          }
+        case Branch(children, box) =>
+          children.foreach { c =>
+            if (querybox.intersects(c.geom)) recur2(c,querybox)
+          }
+      }
+
+
+    //this is used for spatial join
+    def sjoin(rnode:Node[V],snode:Node[V]):Unit={
+
+      if(rnode.box.intersects(snode.box))
+      {
+        val intesectionbox=rnode.box.intesectBox(snode.box)
+
+        rnode match {
+
+          case Leaf(children_r, box_r) =>
+
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
+
+                val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
+                val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
+
+                intersectionForleaf(r,s).foreach {
+                  case (cr, cs) =>
+                    if(cs.geom.contains(cr.geom))
+                      updatehashmap(cs.geom,cr)
+                }
+
+              case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
+              {
+                val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
+                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+                //var b1=System.currentTimeMillis
+
+                r.foreach{
+                  cr=>
+                    s.foreach {
+                      cs =>
+                        recur(cs,cr)
+                    }
+                }
+              }
+            }
+
+          case Branch(children_r, box_r) =>
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
+
+                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
+
+                r.foreach{
+                  cr=> s.foreach {
+                    cs => recur2(cr,cs.geom)
+                  }
+                }
+
+              case Branch(children_s, box_s)=> //case 1: both of two tree are branch
+              {
+                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+                intersection(r,s).foreach
+                {
+                  case(rc,sc)=>
+                    sjoin(rc,sc)
+                }
+
+              }
+            }
+        }
+      }
+
+    }
+
+    val queries=stree.sortInternalnode()
+    val dataset=this.sortInternalnode()
+
+    sjoin(dataset.root,queries.root)
+
+    val ret=boxquereis.map
+    {
+      case(box,maps)=>
+        val m=maps.map
+        {
+          case(point,result)=>
+            val pts=result.map
+            {
+              case(d,e)=>e
+            }
+            (point, pts)
+        }
+        m
+    }.flatten
+
+    ret
+  }
+
+  /**
+   * dual tree approach for the knn join
+   * the basic version without sorting approach
+   * @param stree
+   * @param k
+   * @param f1
+   * @param f2
+   * @tparam K
+   * @return
+   */
+  def knnjoin[K: ClassTag]
+  (stree:RTree[V], k:Int)
+  (f1:(K)=>Boolean, f2:(V)=>Boolean):
+  Iterator[(K, Double, Iterator[(K,V)])] =
+  {
+    var numbernestloop=0
+    var numberofCase4=0
+    var numberofPrune=0
+
+    val buf = mutable.HashMap.empty[Geom, mutable.PriorityQueue[(Double,Entry[V])]]
+
+    //return the max knn distance bound
+    def updatePQ(key:Geom, datapoint:Entry[V]):Double=
+    {
+      try {
+
+        if(buf.contains(key))
+        {
+          val pq=buf.get(key).get
+
+          val d = datapoint.geom.distance(key.asInstanceOf[Point])
+
+          //update the priority queue for this query point
+          if(f1(datapoint.geom.asInstanceOf[K])&&f2(datapoint.value))
+          {
+            if(pq.size>=k)
+            {
+              if (d < pq.head._1) {
+                pq += ((d, (datapoint)))
+                if (pq.size > k) {
+                  pq.dequeue
+                }
+              }
+            }else
+            {
+              pq += ((d, (datapoint)))
+            }
+          }
+
+          buf.put(key,pq)
+
+          if(pq.size>=k) {
+            pq.head._1
+          }else
+          {
+            Double.MaxValue
+          }
+
+        }else
+        {
+          implicit val ord = Ordering.by[(Double, Entry[V]), Double](_._1)
+          val pq = PriorityQueue.empty[(Double, Entry[V])]
+          val distance = datapoint.geom.distance(key.asInstanceOf[Point])
+          pq += ((distance, datapoint))
+          buf.put(key,pq)
+
+          if(pq.size==k) {
+            distance
+          }else
+          {
+            Double.MaxValue
+          }
+        }
+
+      }catch
+        {
+          case e:Exception=>
+            println("update heap exception"+e)
+            0
+        }
+    }
+
+    def getboundforPoint(key:Geom):Double=
+    {
+      var maxdist= Double.MaxValue
+
+      if(buf.contains(key))
+      {
+        val pq=buf.get(key).get
+        if(pq.size>=k)
+          maxdist= pq.head._1
+      }
+
+      maxdist
+    }
+
+
+    //case 3: the data tree is leaf, but the query tree is branch
+    //the entry is data, and node is the query point
+    //if the return is the maxvalue, then, it means those query point for this branch do not find their correct knn
+    def recur(querybranch: Node[V], datapoints:Vector[Entry[V]], dataleafbox:Box): Double =
+    {
+      querybranch match {
+        case Leaf(qchildren, box) =>
+
+          if(querybranch.box.mindistance(box)<querybranch.knnboundary)
+          {
+            var knndistanceboundFromQtoD=Double.MinValue
+
+            //childern is those query point
+            qchildren.foreach {
+              qpoint =>
+                var tmpbound=Double.MaxValue
+                datapoints.foreach
+                {
+                  dpoint=> tmpbound=updatePQ(qpoint.geom,dpoint)
+                }
+
+                knndistanceboundFromQtoD=Math.max(tmpbound,knndistanceboundFromQtoD)
+            }
+
+            querybranch.updatebound(knndistanceboundFromQtoD)
+          }
+
+          querybranch.knnboundary
+
+        case Branch(children, box) =>
+          //val cs = children.map(node => (node.box.distance(entry.geom.asInstanceOf[Point]), node)).sortBy(_._1)
+          var maxdistance=0.0
+          children.foreach
+          {
+            child=>
+              var tmpknnbound=0.0
+              if(child.box.mindistance(dataleafbox)<child.knnboundary)
+              {
+                tmpknnbound=recur(child,datapoints,dataleafbox)
+                child.updatebound(tmpknnbound)
+              }else
+              {
+                tmpknnbound=child.knnboundary
+              }
+              maxdistance=Math.max(maxdistance,tmpknnbound)
+          }
+          maxdistance
+      }
+    }
+
+
+    //recursive to the leaf node of data point tree, which contain the data itself
+    //case 4: the data tree is branch, but the query tree is leaf
+    def recur2(datanode: Node[V], querynode:Node[V]): Double ={
+      datanode match
+      {
+        //both the query and data are reaching the leaf node
+        case Leaf(datanode_child, box_data)=>
+        {
+          if(datanode.box.mindistance(querynode.box)<querynode.knnboundary)
+          {
+            var knndistanceboundFromQtoD=Double.MinValue
+            querynode match
+            {
+              case Leaf(qchildren, qbox)=>
+                //childern is those query point
+                qchildren.foreach {
+                  qpoint =>
+                    var tmpbound=Double.MaxValue
+                    datanode_child.foreach
+                    {
+                      dpoint=>
+                        tmpbound=updatePQ(qpoint.geom,dpoint)
+                    }
+
+                    knndistanceboundFromQtoD=Math.max(tmpbound,knndistanceboundFromQtoD)
+                }
+
+                querynode.updatebound(knndistanceboundFromQtoD)
+            }
+          }
+
+          querynode.knnboundary
+        }
+
+        //continue the recursive process
+        case Branch(datanode_child, box_data)=>
+
+          var knndistanceboundary=Double.MaxValue
+
+          numberofCase4=numberofCase4+datanode_child.size
+
+          val cs = datanode_child.map(node => (node.box.mindistance(querynode.box), node)).sortBy(_._1)
+          cs.foreach {
+            case (d, node) =>
+              if (d >= knndistanceboundary)
+              {
+                numberofPrune+=1
+                querynode.updatebound(knndistanceboundary)
+                return knndistanceboundary
+              }
+              knndistanceboundary = recur2(node,querynode)
+          }
+
+          knndistanceboundary
+      }
+
+    }
+
+
+
+
+    /**
+     * for one query box w.r.t array of data nodes
+     */
+    def knnForQueryBranch(datanode:Vector[Node[V]],querynode:Node[V]):Double=
+    {
+      val cs = datanode.map(node => (node.box.mindistance(querynode.box), node)).sortBy(_._1)
+
+      var knndistanceboundary=Double.MaxValue
+      cs.foreach {
+        case (d, datanode) =>
+          if (d >= knndistanceboundary)
+          {
+            numberofPrune+=1
+            querynode.updatebound(knndistanceboundary)
+            return knndistanceboundary//scalastyle:ignore
+          }
+          knndistanceboundary = knnjoin(datanode,querynode)
+      }
+
+      querynode.updatebound(knndistanceboundary)
+      knndistanceboundary
+    }
+
+    //this is used for spatial knn join
+    //return the knn distance bound from snode to rnode
+    //rnode is the data node, snode is the query knn point node
+    def knnjoin(rnode:Node[V],snode:Node[V]):Double={
+
+      if(snode.box.mindistance(rnode.box)>snode.knnboundary)
+      {
+        return snode.knnboundary
+      }
+
+      rnode match {
+        case Leaf(children_r, box_r) =>
+          snode match
+          {
+            case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
+
+              var knnmaxboundFromStoR=0.0
+
+              if(box_s.mindistance(box_r)<snode.knnboundary)
+              {
+                children_s.foreach
+                {
+                  case schild=>
+                    var tmpbound=Double.MaxValue
+
+                    children_r.foreach
+                    {
+                      case rchild=>
+                        tmpbound=updatePQ(schild.geom,rchild)
+                    }
+
+                    knnmaxboundFromStoR=Math.max(tmpbound,knnmaxboundFromStoR)
+                }
+
+                snode.updatebound(knnmaxboundFromStoR)
+              }
+
+              snode.knnboundary
+
+            case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
+            {
+              val knndistancebound=recur(snode,children_r,box_r)
+
+              snode.updatebound(knndistancebound)
+              knndistancebound
+            }
+          }
+
+        case Branch(children_r, box_r) =>
+
+          snode match
+          {
+            case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
+            {
+              recur2(rnode, snode)
+            }
+            case Branch(children_s, box_s)=> //case 1: both of two tree are branch
+            {
+              var knnboundfromStoR=Double.MaxValue
+
+              numbernestloop=numbernestloop+children_s.size*children_r.size
+
+              children_s.foreach
+              {
+                querynode=>
+                  //compute the distance from query node to each data node, and recursive to the shorteest one
+                  val knnboundForBox=knnForQueryBranch(children_r,querynode)
+                  knnboundfromStoR=math.max(knnboundfromStoR,knnboundForBox)
+              }
+              snode.updatebound(knnboundfromStoR)
+              snode.knnboundary
+            }
+          }
+      }
+    }
+
+
+    //run the knn join betwee data and query
+    knnjoin(this.root,stree.root)
+
+    println(numbernestloop)
+    println("case4 "+numberofCase4)
+    println(numberofPrune)
+
+    buf.map{
+      case(geom,pq)=>
+        val arr = new Array[(K,V)](pq.size)
+        var i = arr.length - 1
+        val maxdistance=pq.head._1
+        while (i >= 0) {
+          val (_, e) = pq.dequeue
+          arr(i) = (e.geom.asInstanceOf[K],e.value)
+          i -= 1
+        }
+        (geom.asInstanceOf[K],maxdistance,arr.toIterator)
+    }.toIterator
+
+  }
   //use the line swipe based approach to find the intersection of two rectangle sets
   private def intersection(r:Vector[Node[V]],s:Vector[Node[V]]):Seq[(Node[V],Node[V])]=
   {
@@ -1742,3 +1877,529 @@ Iterator[(K, Double, Iterator[(K,V)])] =
 
 }*/
 //println("knnmaxboundFromStoR "+knnmaxboundFromStoR)
+
+
+/*def rjoinforknn[K: ClassTag]
+( stree:RTree[V],
+  boxpointmap:mutable.HashMap[Geom,(K,Double,mutable.PriorityQueue[(Double,(K,V))])]
+  ,f1:(K)=>Boolean,
+  f2:(V)=>Boolean
+  ):
+Iterator[(K,Array[(K,V)])]=
+{
+  stree.sortInternalnode()
+  this.sortInternalnode()
+
+  val buf=boxpointmap
+
+  def updatehashmap(key:Geom, value:Entry[V])=
+  {
+    try {
+
+      if(buf.contains(key))
+      {
+        val (querypoint, maxdistance, pq)=buf.get(key).get
+
+        val distance=querypoint.asInstanceOf[Geom].distance(value.geom.asInstanceOf[Point])
+
+        if(distance<maxdistance)
+        {
+          pq += ((distance,(value.geom.asInstanceOf[K],value.value)))
+          pq.dequeue
+          buf.put(key,(querypoint,distance,pq))
+        }
+      }
+
+    }catch
+      {
+        case e:Exception=>
+          println(e)
+          println("out of memory for appending new value to the sjoin")
+      }
+  }
+
+  def recur(node: Node[V], entry:Entry[V]): Unit =
+    node match {
+      case Leaf(children, box) =>
+        children.foreach { c =>
+          if (c.geom.contains(entry.geom))
+          {
+            updatehashmap(c.geom,entry)
+          }
+
+        }
+      case Branch(children, box) =>
+        children.foreach { c =>
+          if (c.box.intersects(entry.geom)) recur(c,entry)
+        }
+    }
+
+  def recur2(node: Node[V], querybox:Geom): Unit =
+    node match {
+      case Leaf(children, box) =>
+        children.foreach { c =>
+          if (querybox.contains(c.geom))
+            updatehashmap(querybox,c)
+        }
+      case Branch(children, box) =>
+        children.foreach { c =>
+          if (querybox.intersects(c.geom)) recur2(c,querybox)
+        }
+    }
+
+
+  //this is used for spatial join
+  def sjoin(rnode:Node[V],snode:Node[V]):Unit={
+
+    if(rnode.box.intersects(snode.box))
+    {
+      val intesectionbox=rnode.box.intesectBox(snode.box)
+
+      rnode match {
+
+        case Leaf(children_r, box_r) =>
+
+          snode match
+          {
+            case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
+
+              val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
+              val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
+
+              intersectionForleaf(r,s).foreach {
+                case (cr, cs) =>
+                  if(cs.geom.contains(cr.geom))
+                    updatehashmap(cs.geom,cr)
+              }
+
+
+            case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
+            {
+              val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
+              val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+              r.foreach{
+                cr=>
+                  s.foreach {
+                    cs =>
+                      recur(cs,cr)
+                  }
+              }
+
+            }
+          }
+
+        case Branch(children_r, box_r) =>
+
+          snode match
+          {
+            case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
+
+              val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+              val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
+
+              r.foreach{
+                cr=> s.foreach {
+                  cs => recur2(cr,cs.geom)
+                }
+              }
+
+            case Branch(children_s, box_s)=> //case 1: both of two tree are branch
+            {
+              val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+              val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+              intersection(r,s).foreach
+              {
+                case(rc,sc)=>
+                  sjoin(rc,sc)
+              }
+            }
+          }
+      }
+    }
+
+  }
+
+  sjoin(this.root,stree.root)
+
+
+ buf.map
+  {
+    case(geom,(querypoint,distance, pq))=>
+      val arr = ArrayBuffer.empty[(K,V)]
+      while (!pq.isEmpty) {
+        val (d, (key,value)) = pq.dequeue
+        if(f1(key)&&f2(value))
+          try
+          {
+            arr.append((key,value))
+          }catch
+            {
+              case e:Exception=>
+                println("out of memory for returing results exception"+e)
+            }
+      }
+      pq.clear()
+      (querypoint, arr.toArray)
+  }.toIterator
+
+}*/
+
+/**
+/**
+  * this is the dual tree join algorithm,
+  * this one the data tree, and stree is the query tree.
+  * the return is the
+  * query box w.r.t the point1, point2, point3...
+  * @return
+  */
+  def joins_withoutsort[K: ClassTag, U:ClassTag, U2: ClassTag](stree:RTree[V])(
+    f: (Iterator[(K,V)]) => U2,f2:(U2,U2)=>U2):
+  mutable.HashMap[U,U2] =
+  {
+    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
+
+    val tmpresult = mutable.HashMap.empty[Geom,U2]
+
+    def updatehashmap(key:Geom, value:Entry[V])=
+    {
+      try {
+        if(buf.contains(key))
+        {
+          val tmp1=buf.get(key).get
+
+          //this is used in case the tmp buffer is too big
+          if(tmp1.size>10)
+          {
+             val result=f(tmp1.toIterator)
+             tmp1.clear()
+             if(tmpresult.contains(key))
+             {
+               val result2=tmpresult.get(key).get
+               //aggregate the internal result
+               tmpresult.put(key,f2(result2,result))
+             }else
+             {
+               tmpresult.put(key,result)
+             }
+          }
+
+          tmp1.append((value.geom.asInstanceOf[K]->value.value))
+          buf.put(key,tmp1)
+        }else
+        {
+          val tmp1=new ArrayBuffer[(K,V)]
+          tmp1.append((value.geom.asInstanceOf[K]->value.value))
+          buf.put(key,tmp1)
+        }
+
+
+      }catch
+        {
+          case e:Exception=>
+          println("out of memory for appending new value to the sjoin")
+        }
+    }
+    //this changed to generic search
+    //recursive
+    //case 3: the data tree is leaf, but the query tree is branch
+    def recur(node: Node[V], entry:Entry[V]): Unit =
+      node match {
+        case Leaf(children, box) =>
+          children.foreach { c =>
+            if (c.geom.contains(entry.geom))
+            {
+              updatehashmap(c.geom,entry)
+            }
+
+          }
+        case Branch(children, box) =>
+          children.foreach { c =>
+            if (c.box.intersects(entry.geom)) recur(c,entry)
+          }
+      }
+
+    //this changed to generic search
+    //recursive to the leaf node, which contain the data itself
+    //case 4: the data tree is branch, but the query tree is leaf
+    def recur2(node: Node[V], querybox:Geom): Unit =
+      node match {
+        case Leaf(children, box) =>
+          children.foreach { c =>
+            if (querybox.contains(c.geom))
+              updatehashmap(querybox,c)
+          }
+        case Branch(children, box) =>
+          children.foreach { c =>
+            if (querybox.intersects(c.geom)) recur2(c,querybox)
+          }
+      }
+    //this is used for spatial join
+    def sjoin(rnode:Node[V],snode:Node[V]):Unit={
+
+      if(rnode.box.intersects(snode.box))
+      {
+        val intesectionbox=rnode.box.intesectBox(snode.box)
+
+        rnode match {
+
+          case Leaf(children_r, box_r) =>
+
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
+
+                children_r.foreach{
+                  cr=>
+                    children_s.foreach {
+                      cs =>
+                        if (cs.geom.contains(cr.geom))
+                        {
+                          updatehashmap(cs.geom,cr)
+                        }//if
+
+                    }
+                }
+
+              case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
+              {
+                val r=children_r.filter(entry=>entry.geom.intersects(intesectionbox))
+                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+                r.foreach{
+                  cr=>
+                    s.foreach {
+                      cs =>
+                        recur(cs,cr)
+                    }
+                }
+
+              }
+            }
+
+          case Branch(children_r, box_r) =>
+
+            snode match
+            {
+              case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
+
+                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                val s=children_s.filter(entry=>entry.geom.intersects(intesectionbox))
+
+                r.foreach{
+                  cr=>
+                    s.foreach {
+                      cs =>
+                        recur2(cr,cs.geom)
+                    }
+                }
+
+              case Branch(children_s, box_s)=> //case 1: both of two tree are branch
+              {
+                val r=children_r.filter(node=>node.box.intersects(intesectionbox))
+                val s=children_s.filter(node=>node.box.intersects(intesectionbox))
+
+                r.foreach {
+                  rc =>
+                    s.foreach{
+                      sc=>
+                        if(rc.box.intersects(sc.box))
+                          sjoin(rc,sc)
+                    }
+                }
+
+                //next step to test on sort and plan sweep approach
+              }
+            }
+        }
+      }
+
+    }
+
+    sjoin(this.root,stree.root)
+
+    buf.map{
+      case(geom,itr)=>
+        val t1=f(itr.toIterator)
+        val t2=tmpresult.get(geom).getOrElse(None)
+        t2 match
+        {
+          case t:U2=> (geom.asInstanceOf[U],f2(t1,t))
+          case _=>(geom.asInstanceOf[U],t1)
+        }
+    }
+
+  }
+  */
+
+/**
+
+
+  */
+
+/**
+              children_r.sortBy{case(e)=>e.geom.x2}
+
+              val rcopy=ArrayBuffer.empty[(Node[V],Int)]
+              val rcopy2=ArrayBuffer.empty[(Node[V],Int)]
+
+              for(i<-0 to children_r.length-1)
+              {
+                rcopy.append((children_r(i),i))
+                rcopy2.append((children_r(i),i))
+              }
+              //rcopy is sorted by the x2 location
+              rcopy2.sortBy{case(e,i)=>e.geom.x}
+
+              val rmap=new mutable.HashMap[Node[V], ArrayBuffer[(Double, Node[V])]]
+
+              def internalloop(entry:Node[V], marked:Int, label:Boolean, s:Vector[Node[V]]): Unit =
+              {
+                //the entry is the r node
+                var i=marked
+                while(i<s.size&&s(i).geom.x<=entry.geom.x2)
+                {
+                  //if there is overlap
+                  if(entry.geom.y<=s(i).geom.y2&&entry.geom.y2>=s(i).geom.y)
+                  {
+                    knnjoin(entry,s(i))
+                  }else
+                  //not overlap
+                  {
+                    //postpone the knn join for those pairs
+                    //store the min distance for s(i)
+                    //do this knn later
+                    if(rmap.contains(s(i)))
+                    {
+                      val a=rmap.get(s(i)).get
+                      a.append((s(i).box.mindistance(entry.box),entry))
+                      rmap.put(s(i),a)
+                    }else
+                    {
+                      val a=ArrayBuffer.empty[(Double,Node[V])]
+                      a.append((s(i).box.mindistance(entry.box),entry))
+                      rmap.put(s(i),a)
+                    }
+                  }
+                  i+=1
+                }
+
+              }
+
+              //entry is the query, and s are the data nodes
+              def internalloopForS(entry:Node[V], marked:Int, label:Boolean, s:Array[(Node[V],Int)]): Unit =
+              {
+                //entry is the snode
+                var i=marked
+                while(i<s.size&&s(i)._1.geom.x<=entry.geom.x2)
+                {
+                  if(entry.geom.y<=s(i)._1.geom.y2&&entry.geom.y2>=s(i)._1.geom.y)
+                  {
+                    knnjoin(entry,s(i)._1)
+                  }else
+                  //not overlap
+                  {
+                    //postpone the knn join for those pairs
+                    //store the min distance for s(i)
+                    //do this knn later
+                    if(rmap.contains(entry))
+                    {
+                      val a=rmap.get(entry).get
+                      a.append((entry.box.mindistance(s(i)._1.box),s(i)._1))
+                      rmap.put(entry,a)
+
+                    }else
+                    {
+                      val a=ArrayBuffer.empty[(Double,Node[V])]
+                      a.append((entry.box.mindistance(s(i)._1.box),s(i)._1))
+                      rmap.put(entry,a)
+                    }
+
+                  }
+                  i+=1
+                }
+
+                var j=i
+
+                //search for the left part
+                if(i<s.size)
+                {
+                  while(i<s.size&&(entry.box.mindistance(s(i)._1.box))<=entry.knnboundary)
+                  {
+                    knnjoin(s(i)._1,entry)
+                    i+=1
+                  }
+                }
+
+                //search for the right part
+                if(j<s.size&&j>=0)
+                {
+                  val index=s(j)._2
+                  j=rcopy(index)._2
+                  while(j>=0&&(entry.box.mindistance(rcopy(j)._1.box))<=entry.knnboundary)
+                  {
+                    knnjoin(rcopy(j)._1,entry)
+                    j=j-1
+                  }
+                }
+                //search for the postpone part
+
+                val o=rmap.get(entry).getOrElse(None)
+
+                if (o.isInstanceOf[ArrayBuffer[_]])
+                { // type check
+
+                  val rest = o.asInstanceOf[ArrayBuffer[(Double,Node[V])]] // cast
+                  rest.sortBy(_._1)
+                  j=0
+                  while(j<rest.size&&rest(j)._1<=entry.knnboundary)
+                  {
+                    rest(j)._2 match
+                    {
+                      case datanode:Node[V]=>
+                        knnjoin(datanode,entry)
+                        j=j+1
+                    }
+
+                  }
+                }
+
+              }
+
+              var i=0
+              var j=0
+
+              val r=rcopy2
+              val s=children_s
+              //this cost is O(r)+O(s)+O(inter)+O(bounary)
+
+              while(i<r.size&&j<s.size)
+              {
+                if(r(i)._1.geom.x<s(j).geom.x)
+                {
+                  internalloop(r(i)._1,j,true,s)
+                  i+=1
+                }else
+                {
+                  internalloopForS(s(j),i,false,r.toArray)
+                  j+=1
+                }
+              }
+
+
+              var maxvalue=0.0
+              children_s.foreach
+              {
+                s=> {
+                  maxvalue=Math.max(maxvalue,s.knnboundary)
+                  if(maxvalue==Double.MaxValue)
+                  {
+                    snode.updatebound(maxvalue)
+                    return maxvalue
+                  }
+
+                }
+              }
+
+  */

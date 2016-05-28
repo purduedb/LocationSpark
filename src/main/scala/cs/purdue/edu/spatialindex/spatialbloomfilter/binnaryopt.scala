@@ -285,7 +285,7 @@ object qtreeUtil{
   final def errorbound=0.1
 
   //this bound is used to stop spilit the current node
-  final def leafStopBound=0.2
+  final def leafStopBound=0.005
 
   def wholespace=Box(-rangx/2,-rangy/2,rangx/2,rangy/2)
 

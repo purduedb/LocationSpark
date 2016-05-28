@@ -186,6 +186,8 @@ case class Box(x: Float, y: Float, x2: Float, y2: Float) extends Geom {
 
   override def toString:String={x+","+y+"; "+x2+","+y2}
 
+  var knndistancebound:Double=Double.MaxValue
+
   def intersectionarea(other:Box):Double=
   {
     Math.abs(
