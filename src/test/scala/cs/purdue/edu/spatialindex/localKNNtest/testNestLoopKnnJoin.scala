@@ -61,6 +61,22 @@ class testNestLoopKnnJoin extends FunSpec with Matchers{
     Constants.MaxEntries=200
     val datatree=RTree(data: _*)
 
+    val p1=Point(40.720116f,-77.84535f)
+    val p2=Point(42.720116f,-72.84535f)
+    val p3=Point(43.720116f,-74.84535f)
+    val p4=Point(44.720116f,-75.84535f)
+
+    val points=Array(p1, p2, p3,p4)
+
+    val k=20
+    points.foreach {
+      case point =>
+        val rets=datatree.nearestK(point, k)
+        rets.foreach(println)
+        println("x"*100)
+    }
+
+
     val numberofdata=20000
 
 

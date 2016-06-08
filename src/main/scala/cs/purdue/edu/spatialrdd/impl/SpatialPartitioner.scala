@@ -192,6 +192,148 @@ class QtreePartitionerBasedQueries[K: ClassTag,V:ClassTag](partitions:Int,quadtr
 
 }
 
+/**
+ * the Rtree partitioner for the input data
+ * @param partitions
+ * @param fraction
+ * @param rdd
+ * @tparam K
+ * @tparam V
+ */
+class RTreePartitioner [K: ClassTag,V:ClassTag](partitions:Int, fraction:Float,
+                                                rdd: RDD[_ <: Product2[K, V]]) extends Partitioner{
+
+  require(partitions >= 0, s"Number of partitions cannot be negative but found $partitions.")
+
+  val rtreeForPartition={
+    //sample data from big data set
+    val sampledata=rdd.map(_._1).sample(false,fraction).collect()
+
+    val numDimensions: Int = 2
+    val minNum: Int = 200
+    val maxNum: Int = sampledata.length/partitions
+
+    //insert sampledata into the rtree
+
+  }
+
+  def numPartitions: Int = {
+    partitions
+  }
+
+  /**
+   * get the related partition for each input data point
+   * @param key
+   * @return
+   */
+  def getPartition(key: Any): Int ={
+    key match
+    {
+      case k:Array[Float]=>
+         0
+      case _=>
+        1
+      //Array(k)
+    }
+  }
+
+  override def hashCode: Int = 100
+}
+
+
+/**
+ *quadtree based data partition approach
+ */
+class Grid2DPartitionerForBox(rangex: Int,rangey: Int, numParts:Int) extends Partitioner{
+
+  def numPartitions: Int = numParts
+
+  def ceilSqrtNumParts = math.ceil(math.sqrt(numParts)).toInt
+  def num_row_part=rangex/ceilSqrtNumParts
+  def num_col_part=rangey/ceilSqrtNumParts
+
+  def getPartitionIDForIndex(key: Any): Int = {
+    key match {
+      case (i: Int, j : Int) => (i * ceilSqrtNumParts + j) % numPartitions
+      case _ => throw new IllegalArgumentException(s"Unrecognized key: $key")
+    }
+  }
+
+
+  def getPartition(key:Any):Int={
+    key match
+    {
+      case point:Point=>
+
+        require(math.abs(point.x)<=rangex/2&&math.abs(point.y)<=rangey/2)
+        //if(math.abs(point.x)<=rangex/2&&math.abs(point.y)<=rangey/2)
+          val rowid=((point.x+rangex/2)/(num_col_part)).toInt
+          val columnid=((point.y+rangey/2)/(num_row_part)).toInt
+          getPartitionIDForIndex(rowid,columnid)
+    }
+
+  }
+
+
+  def getPartitionsForBox(key: Any): HashSet[Int] = key match {
+
+    case None => null
+
+    case box:Box =>
+      //val box=key.asInstanceOf[Box] //get an new entry
+      require(math.abs(box.x)<=rangex&&math.abs(box.y)<=rangey)
+      require(math.abs(box.x2)<=rangex&&math.abs(box.y2)<=rangey)
+
+      val x1=((box.x+rangex/2)/(num_col_part)).toInt
+      val y1=((box.y+rangey/2)/(num_row_part)).toInt
+
+      val x2=((box.x2+rangex/2)/(num_col_part)).toInt
+      val y2=((box.y2+rangey/2)/(num_row_part)).toInt
+
+      var pids=new HashSet[Int]
+
+      for(i<-x1 to x2) {
+        for (j <- y1 to y2) {
+            val id=getPartitionIDForIndex(i,j)
+            pids+=id
+        }
+      }
+      pids
+  }
+
+
+  def getPartitionsForRangeQuery(key: Any): HashSet[Point] = key match {
+
+    case None => null
+
+    case box:Box =>
+      //val box=key.asInstanceOf[Box] //get an new entry
+      require(math.abs(box.x)<=rangex&&math.abs(box.y)<=rangey)
+      require(math.abs(box.x2)<=rangex&&math.abs(box.y2)<=rangey)
+
+      val x1=((box.x+rangex/2)/(num_col_part)).toInt
+      val y1=((box.y+rangey/2)/(num_row_part)).toInt
+
+      val x2=((box.x2+rangex/2)/(num_col_part)).toInt
+      val y2=((box.y2+rangey/2)/(num_row_part)).toInt
+
+      var pids=new HashSet[Point]
+
+      for(i<-x1 to x2) {
+        for (j <- y1 to y2) {
+          //val id=getPartitionIDForIndex(i,j)
+          pids+=Point(i*num_row_part-rangex/2, j*num_col_part-rangey/2)
+        }
+      }
+      pids
+  }
+
+  override def hashCode: Int = numPartitions
+
+}
+
+
+
 /*private[spark] object QuadtreePartitioner {
 
   /** Fast multiplicative hash with a nice distribution.
@@ -269,115 +411,5 @@ class QtreePartitionerBasedQueries[K: ClassTag,V:ClassTag](partitions:Int,quadtr
     (numItems, sketched)
 
   }
-
-}*/
-
-/**
- *quadtree based data partition approach
- */
-class Grid2DPartitionerForBox(rangex: Int,rangey: Int, numParts:Int) extends Partitioner{
-
-  def numPartitions: Int = numParts
-
-  def ceilSqrtNumParts = math.ceil(math.sqrt(numParts)).toInt
-  def num_row_part=rangex/ceilSqrtNumParts
-  def num_col_part=rangey/ceilSqrtNumParts
-
-  def getPartitionIDForIndex(key: Any): Int = {
-    key match {
-      case (i: Int, j : Int) => (i * ceilSqrtNumParts + j) % numPartitions
-      case _ => throw new IllegalArgumentException(s"Unrecognized key: $key")
-    }
-  }
-
-
-  def getPartition(key:Any):Int={
-    key match
-    {
-      case point:Point=>
-
-        require(math.abs(point.x)<=rangex/2&&math.abs(point.y)<=rangey/2)
-        //if(math.abs(point.x)<=rangex/2&&math.abs(point.y)<=rangey/2)
-          val rowid=((point.x+rangex/2)/(num_col_part)).toInt
-          val columnid=((point.y+rangey/2)/(num_row_part)).toInt
-          getPartitionIDForIndex(rowid,columnid)
-
-    }
-
-  }
-
-
-  def getPartitionsForBox(key: Any): HashSet[Int] = key match {
-
-    case None => null
-
-    case box:Box =>
-      //val box=key.asInstanceOf[Box] //get an new entry
-      require(math.abs(box.x)<=rangex&&math.abs(box.y)<=rangey)
-      require(math.abs(box.x2)<=rangex&&math.abs(box.y2)<=rangey)
-
-      val x1=((box.x+rangex/2)/(num_col_part)).toInt
-      val y1=((box.y+rangey/2)/(num_row_part)).toInt
-
-      val x2=((box.x2+rangex/2)/(num_col_part)).toInt
-      val y2=((box.y2+rangey/2)/(num_row_part)).toInt
-
-      var pids=new HashSet[Int]
-
-      for(i<-x1 to x2) {
-        for (j <- y1 to y2) {
-            val id=getPartitionIDForIndex(i,j)
-            pids+=id
-        }
-      }
-      pids
-  }
-
-
-  def getPartitionsForRangeQuery(key: Any): HashSet[Point] = key match {
-
-    case None => null
-
-    case box:Box =>
-      //val box=key.asInstanceOf[Box] //get an new entry
-      require(math.abs(box.x)<=rangex&&math.abs(box.y)<=rangey)
-      require(math.abs(box.x2)<=rangex&&math.abs(box.y2)<=rangey)
-
-      val x1=((box.x+rangex/2)/(num_col_part)).toInt
-      val y1=((box.y+rangey/2)/(num_row_part)).toInt
-
-      val x2=((box.x2+rangex/2)/(num_col_part)).toInt
-      val y2=((box.y2+rangey/2)/(num_row_part)).toInt
-
-      var pids=new HashSet[Point]
-
-      for(i<-x1 to x2) {
-        for (j <- y1 to y2) {
-          //val id=getPartitionIDForIndex(i,j)
-          pids+=Point(i*num_row_part-rangex/2, j*num_col_part-rangey/2)
-        }
-      }
-      pids
-  }
-
-  override def hashCode: Int = numPartitions
-
-}
-
-/**
- *spatial venioam spatial partition
- */
-/*class VGramSpatialPartitioner(partitionx: Int) extends Partitioner{
-
-  def numPartitions: Int = partitionx
-
-  def getPartition(key: Any): Int = key match {
-
-    case null => 0
-
-    case _ => Utils.nonNegativeMod(key.hashCode, numPartitions)
-  }
-
-  override def hashCode: Int = numPartitions
 
 }*/

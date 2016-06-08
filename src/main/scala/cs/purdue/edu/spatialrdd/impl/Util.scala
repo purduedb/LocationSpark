@@ -17,9 +17,16 @@ object Util{
     k.asInstanceOf[Point]
   }
 
+  //number of partitions for spatialRDD
+  def numPartition=500
+
+  //the percentage of sampling for the input data, this is used for build index
+  def sampleRatio=0.01f
   //def get_spatial_rangx=1000
   //def get_spatial_rangy=1000
 
+  //this one is used for local index
+  var localIndex="RTREE"
 
 
 

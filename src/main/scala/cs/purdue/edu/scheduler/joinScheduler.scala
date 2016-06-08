@@ -153,6 +153,7 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
      */
     val newpartitioner=getPartitionerbasedQuery(topKpartitions,skew_queryrdd)
     val skewindexrdd=SpatialRDD.buildSRDDwithgivenPartitioner(skew_datardd,newpartitioner)
+
     val part1=skewindexrdd.sjoins[U](skew_queryrdd)((k, id) => id)
 
     /*************************************************************/

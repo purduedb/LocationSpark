@@ -150,13 +150,6 @@ class QtreePartition [K, V]
      */
     var retmap=new HashMap[K,V]
 
-    def textfunction(entry:Entry[V]):Boolean={
-      entry.value match
-      {
-        case s:String=>s.toLowerCase().contains("bitch")
-      }
-    }
-
     other.foreach{
       case(point,b:Box)=>
         val ret = newMap.search(b, _ => true)
@@ -184,52 +177,27 @@ class QtreePartition [K, V]
   (f: (Iterator[(K,V)]) => U2,
    f2:(U2,U2)=>U2): Iterator[(U, U2)]= {
 
-    val buf = mutable.HashMap.empty[Geom,ArrayBuffer[(K,V)]]
-
-    def updatehashmap(key:Geom, v2:V, k2:K)=
-    {
-      try {
-        if(buf.contains(key))
-        {
-          val tmp1=buf.get(key).get
-          tmp1.append(k2->v2)
-          buf.put(key,tmp1)
-        }else
-        {
-          val tmp1=new ArrayBuffer[(K,V)]
-          tmp1.append((k2->v2))
-          buf.put(key,tmp1)
-        }
-
-      }catch
-        {
-          case e:Exception=>
-            println("out of memory for appending new value to the sjoin")
-        }
-    }
-
+    val buf = mutable.HashMap.empty[U,U2]
     val newMap = this.tree
 
-    var retmap=new HashMap[K,V]
-
+    /**
+     * this is the nestloop quadtree approach
+     */
     other.foreach{
       case(point,b:Box)=>
-        val ret = newMap.search(b, _ => true)
-        //val ret = newMap.search(b, textfunction)
-        ret.foreach {
-          case (e: Entry[V]) =>
-          {
-            updatehashmap(b,e.value,e.geom.asInstanceOf[K])
-          }
-        }
+        val ret = newMap.search(b)
+
+        val tmparr=ret.map{case e=>
+          (e.geom.asInstanceOf[K],e.value)
+        }.toIterator
+
+        val aggresult=f(tmparr)
+
+        buf.+=(b.asInstanceOf[U]->aggresult)
     }
 
-    buf.toIterator.map{
-      case(g,array)=>
-        val aggresult=f(array.toIterator)
-        array.clear()
-        (g.asInstanceOf[U], aggresult)
-    }
+    buf.toIterator
+
   }
 
   override def knnjoin_[U: ClassTag]

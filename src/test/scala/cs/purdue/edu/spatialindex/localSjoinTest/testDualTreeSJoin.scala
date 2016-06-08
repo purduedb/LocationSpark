@@ -1,15 +1,38 @@
 package cs.purdue.edu.spatialindex.localSjoinTest
 
+import com.vividsolutions.jts.io.WKTReader
 import cs.purdue.edu.spatialindex.rtree._
 import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
 import org.scalatest.{Matchers, FunSpec}
 
 import scala.collection.mutable.ArrayBuffer
+import scala.util.Try
 
 /**
  * Created by merlin on 5/27/16.
  */
 class testDualTreeSJoin extends FunSpec with Matchers {
+
+  def getBoxes(address:String):Iterable[Box]=
+  {
+    val data=ArrayBuffer.empty[Box]
+    import scala.io.Source
+
+    for (line <- Source.fromFile(address).getLines())
+    {
+      if(Try(new WKTReader().read(line)).isSuccess)
+      {
+        val ploygan=new WKTReader().read(line)
+        val corrds=ploygan.getCoordinates
+        val p1=corrds(0)
+        val p2=corrds(2)
+        data.append( Box(p1.x.toFloat,p1.y.toFloat, p2.x.toFloat,p2.y.toFloat))
+      }
+    }
+
+    data.toIterable
+
+  }
 
   describe("test for nest loop rtree sjoin on twitter data")
   {
@@ -37,12 +60,12 @@ class testDualTreeSJoin extends FunSpec with Matchers {
 
             if(arry.size==3)
             {
-              val p=Entry(Point(arry(0).toFloat, arry(1).toFloat), arry(2))
+              val p=Entry(Point(arry(1).toFloat, arry(0).toFloat), arry(2))
               data.append(p)
             }
             else if (arry.size==2)
             {
-              val p=Entry(Point(arry(0).toFloat, arry(1).toFloat), "xxxx")
+              val p=Entry(Point(arry(1).toFloat, arry(0).toFloat), "xxxx")
               data.append(p)
             }
 
@@ -56,22 +79,18 @@ class testDualTreeSJoin extends FunSpec with Matchers {
     }
 
     Constants.MaxEntries=200
-    val numberofdatapoints=20000
-    val datatree=RTree(data.take(numberofdatapoints))
 
-    for(interation<- 1 to 10)
+    for(iteartion<-1 to 20)
     {
-      val numberofqueries=10000*interation
 
-      val queries=data.take(numberofqueries).map{
-        case (p:Entry[v])=>
-          val r=qtreeUtil.getRandomUniformPoint(3,3)
-          Entry((Box(p.geom.x,p.geom.y,p.geom.x+r.x,p.geom.y+r.y)), "1")
-      }
+      val numberofdatapoints=10000*iteartion
 
+      val datatree=RTree(data.take(numberofdatapoints))
+
+      val boxes=getBoxes("/home/merlin/workspacehadoop/GenerateBoxes/test.dat").map(b=>Entry(b,"1"))
       var b2=System.currentTimeMillis
 
-      val boxtree=RTree(queries)
+      val boxtree=RTree(boxes)
 
       val buildindexTime=(System.currentTimeMillis-b2)
 
@@ -87,13 +106,11 @@ class testDualTreeSJoin extends FunSpec with Matchers {
         v1+v2
       }
 
-      b2=System.currentTimeMillis
-
       datatree.joins(boxtree)(aggfunction1,aggfunction2)
 
       val queryTime=(System.currentTimeMillis-b2)
 
-      println("number of query: "+ numberofqueries)
+      println("number of query: "+ boxes.size)
       println("number of data size: " + numberofdatapoints)
       println("dual tree indexing over boxes time: "+buildindexTime +" ms")
       println("dual tree range query time: "+queryTime +" ms")

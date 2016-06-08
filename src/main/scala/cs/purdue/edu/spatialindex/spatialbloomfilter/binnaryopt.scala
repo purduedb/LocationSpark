@@ -269,8 +269,8 @@ object binnaryopt {
 
 object qtreeUtil{
 
-  final def rangx=180
-  final def rangy=360
+  final def rangx=360 //longtitude range
+  final def rangy=180 //latitude range
 
   final def leafbound=100
 

@@ -277,7 +277,7 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
 
 
   /**
-   * this is spatial range join
+   * this is spatial join (a.k.a spatial range join)
    * input: points=datardd[k,v], boxes=queryrdd[u]
    * output: iterator[u, u2], where u2 is the agrreaget function result by function f and f2.
    * notice: function f is used to aggregate the [box, iterator(points)]=> [box, u2],
@@ -294,11 +294,6 @@ class SpatialRDD[K: ClassTag, V: ClassTag]
   {
 
     ///todo: combine the rjoin and scheduler join together
-    //how to choose traditional rjoin and schedular join
-    //herusitic: query variance is too big, or query data size is too big
-    //(1)find the number of query box
-    //(2)find the distribution of the query boxes
-    //(3)if both of them are too big i.e., querysize>100k or the query distribution variance is too big
 
     this.partitioner.getOrElse(None) match {
 
@@ -487,13 +482,43 @@ object SpatialRDD {
     (elems: RDD[(K, V)], numPartition:Int, z: (K, U) => V, f: (K, V, U) => V)
     : SpatialRDD[K, V] = {
       val elemsPartitioned =
-        elems.partitionBy(new QtreePartitioner(numPartition,0.01f,elems))
+        elems.partitionBy(new QtreePartitioner(numPartition,Util.sampleRatio,elems))
 
-      val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
-        iter => Iterator(QtreePartition(iter, z, f)),
-        preservesPartitioning = true
-      )
-      new SpatialRDD(partitions)
+      Util.localIndex.toLowerCase() match
+      {
+        case "rtree"=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(RtreePartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+
+        case "qtree"=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(QtreePartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+
+        case "grid"=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(SMapPartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+
+        case "irtree"=>
+          throw new IllegalArgumentException("this index is under constricution")
+
+        case _=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(RtreePartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+
+      }
+
     }
 
     build[K, V, V](elems, numpartition, (id, a) => a, (id, a, b) => b)
@@ -518,13 +543,40 @@ object SpatialRDD {
     : SpatialRDD[K, V] = {
 
       val elemsPartitioned = elems.partitionBy(partitoner)
-      val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
-        //iter => Iterator(QtreePartition(iter, z, f)),
-        //iter => Iterator(SMapPartition(iter, z, f)),
-        iter => Iterator(RtreePartition(iter, z, f)),
-        preservesPartitioning = true
-      )
-      new SpatialRDD(partitions)
+      Util.localIndex.toLowerCase() match
+      {
+        case "rtree"=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(RtreePartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+
+        case "qtree"=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(QtreePartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+
+        case "grid"=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(SMapPartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+
+        case "irtree"=>
+          throw new IllegalArgumentException("this index is under constricution")
+
+        case _=>
+          val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+            iter => Iterator(RtreePartition(iter, z, f)),
+            preservesPartitioning = true
+          )
+          new SpatialRDD(partitions)
+      }
+
     }
 
     build[K, V, V](elems, partitoner, (id, a) => a, (id, a, b) => b)
@@ -544,15 +596,43 @@ object SpatialRDD {
   : SpatialRDD[K, V] = {
     val elemsPartitioned =
         //elems.partitionBy(new Grid2DPartitioner(qtreeUtil.rangx, qtreeUtil.rangy, elems.partitions.size))
-      elems.partitionBy(new QtreePartitioner(500,0.01f,elems))
+        elems.partitionBy(new QtreePartitioner(Util.numPartition,Util.sampleRatio,elems))
 
-    val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
-       iter => Iterator(RtreePartition(iter, z, f)),
-      //iter => Iterator(SMapPartition(iter, z, f)),
-      //iter => Iterator(QtreePartition(iter, z, f)),
-      preservesPartitioning = true
-    )
-    new SpatialRDD(partitions)
+    Util.localIndex.toLowerCase() match
+    {
+      case "rtree"=>
+        val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+          iter => Iterator(RtreePartition(iter, z, f)),
+          preservesPartitioning = true
+        )
+        new SpatialRDD(partitions)
+
+      case "qtree"=>
+        val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+          iter => Iterator(QtreePartition(iter, z, f)),
+          preservesPartitioning = true
+        )
+        new SpatialRDD(partitions)
+
+      case "grid"=>
+        val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+          iter => Iterator(SMapPartition(iter, z, f)),
+          preservesPartitioning = true
+        )
+        new SpatialRDD(partitions)
+
+      case "irtree"=>
+        throw new IllegalArgumentException("this index is under constricution")
+
+      case _=>
+        val partitions = elemsPartitioned.mapPartitions[SpatialRDDPartition[K, V]](
+          iter => Iterator(RtreePartition(iter, z, f)),
+          preservesPartitioning = true
+        )
+        new SpatialRDD(partitions)
+
+    }
+
   }
 
 }

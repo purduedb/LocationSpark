@@ -23,7 +23,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="SBT: aopalliance:aopalliance:1.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: asm:asm:3.2:jar" level="project" />
     <orderEntry type="library" name="SBT: com.clearspring.analytics:stream:2.7.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.esotericsoftware.kryo:kryo:2.21:jar" level="project" />
     <orderEntry type="library" name="SBT: com.esotericsoftware.minlog:minlog:1.2:jar" level="project" />
@@ -87,8 +86,6 @@
     <orderEntry type="library" name="SBT: org.apache.ivy:ivy:2.4.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.mesos:mesos:0.21.1:shaded-protobuf:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.zookeeper:zookeeper:3.4.5:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-jaxrs:1.8.8:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-xc:1.8.8:jar" level="project" />
     <orderEntry type="library" name="SBT: org.codehaus.jettison:jettison:1.1:jar" level="project" />
     <orderEntry type="library" name="SBT: org.eclipse.jetty.orbit:javax.servlet:3.0.0.v201112011016:jar" level="project" />
     <orderEntry type="library" name="SBT: org.mortbay.jetty:jetty-util:6.1.26:jar" level="project" />
@@ -158,6 +155,9 @@
     <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.10.6:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scalactic:scalactic_2.10:2.2.6:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="SBT: org.scalatest:scalatest_2.10:2.2.6:jar" level="project" />
-    <orderEntry type="library" name="scala-sdk-2.10.4" level="application" />
+    <orderEntry type="library" name="SBT: asm:asm:3.1:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.vividsolutions:jts:1.13:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-jaxrs:1.8.3:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-xc:1.8.3:jar" level="project" />
   </component>
 </module>

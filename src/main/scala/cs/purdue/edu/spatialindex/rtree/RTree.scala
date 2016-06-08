@@ -323,7 +323,7 @@ case class RTree[V](root: Node[V], size: Int) {
           val tmp1=buf.get(key).get
 
           //this is used in case the tmp buffer is too big
-          if(tmp1.size>20)
+          if(tmp1.size>5)
           {
             val result=f(tmp1.toIterator)
             if(tmpresult.contains(key))
@@ -338,7 +338,9 @@ case class RTree[V](root: Node[V], size: Int) {
           }
 
           tmp1.append((value.geom.asInstanceOf[K]->value.value))
+
           buf.put(key,tmp1)
+
         }else
         {
           val tmp1=new ArrayBuffer[(K,V)]
@@ -668,17 +670,8 @@ case class RTree[V](root: Node[V], size: Int) {
     ret
   }
 
-  /**
-   * dual tree approach for the knn join
-   * the basic version without sorting approach
-   * @param stree
-   * @param k
-   * @param f1
-   * @param f2
-   * @tparam K
-   * @return
-   */
-  def knnjoin[K: ClassTag]
+
+  /*def knnjoin[K: ClassTag]
   (stree:RTree[V], k:Int)
   (f1:(K)=>Boolean, f2:(V)=>Boolean):
   Iterator[(K, Double, Iterator[(K,V)])] =
@@ -997,7 +990,8 @@ case class RTree[V](root: Node[V], size: Int) {
         (geom.asInstanceOf[K],maxdistance,arr.toIterator)
     }.toIterator
 
-  }
+  }*/
+
   //use the line swipe based approach to find the intersection of two rectangle sets
   private def intersection(r:Vector[Node[V]],s:Vector[Node[V]]):Seq[(Node[V],Node[V])]=
   {

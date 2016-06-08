@@ -81,7 +81,7 @@ class DualTreeKNNJoin extends FunSpec with Matchers {
 
     var b1=System.currentTimeMillis
 
-    datatree.knnjoin(qboxTree,k)(f1, f2)
+    //datatree.knnjoin(qboxTree,k)(f1, f2)
 
     println("time for knn search based on dual tree"+(System.currentTimeMillis-b1) +" ms")
   }
