@@ -21,7 +21,7 @@ class SBFilter() {
 
   private var leaf=new Array[Int](3) //where 10 is the default size
 
-  private var budgetsize=100 //100*32
+  private var budgetsize=200 //100*32
 
   private var depth=0
 
@@ -101,6 +101,12 @@ class SBFilter() {
 
       if(point.depth!=0)
       {
+
+        if(point.depth-1>=this.widthInternalSum.length)
+        {
+          return false
+        }
+
          val pre=this.widthInternalSum(point.depth-1)
          val numberOnesTobound=binnaryopt.getSetcount(pre*qtreeUtil.binnaryUnit,point.beginBitLocation,this.internal)
          val numberZerosToBound=point.beginBitLocation-pre*qtreeUtil.binnaryUnit-numberOnesTobound

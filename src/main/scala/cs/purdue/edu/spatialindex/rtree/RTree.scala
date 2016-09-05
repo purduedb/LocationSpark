@@ -671,326 +671,6 @@ case class RTree[V](root: Node[V], size: Int) {
   }
 
 
-  /*def knnjoin[K: ClassTag]
-  (stree:RTree[V], k:Int)
-  (f1:(K)=>Boolean, f2:(V)=>Boolean):
-  Iterator[(K, Double, Iterator[(K,V)])] =
-  {
-    var numbernestloop=0
-    var numberofCase4=0
-    var numberofPrune=0
-
-    val buf = mutable.HashMap.empty[Geom, mutable.PriorityQueue[(Double,Entry[V])]]
-
-    //return the max knn distance bound
-    def updatePQ(key:Geom, datapoint:Entry[V]):Double=
-    {
-      try {
-
-        if(buf.contains(key))
-        {
-          val pq=buf.get(key).get
-
-          val d = datapoint.geom.distance(key.asInstanceOf[Point])
-
-          //update the priority queue for this query point
-          if(f1(datapoint.geom.asInstanceOf[K])&&f2(datapoint.value))
-          {
-            if(pq.size>=k)
-            {
-              if (d < pq.head._1) {
-                pq += ((d, (datapoint)))
-                if (pq.size > k) {
-                  pq.dequeue
-                }
-              }
-            }else
-            {
-              pq += ((d, (datapoint)))
-            }
-          }
-
-          buf.put(key,pq)
-
-          if(pq.size>=k) {
-            pq.head._1
-          }else
-          {
-            Double.MaxValue
-          }
-
-        }else
-        {
-          implicit val ord = Ordering.by[(Double, Entry[V]), Double](_._1)
-          val pq = PriorityQueue.empty[(Double, Entry[V])]
-          val distance = datapoint.geom.distance(key.asInstanceOf[Point])
-          pq += ((distance, datapoint))
-          buf.put(key,pq)
-
-          if(pq.size==k) {
-            distance
-          }else
-          {
-            Double.MaxValue
-          }
-        }
-
-      }catch
-        {
-          case e:Exception=>
-            println("update heap exception"+e)
-            0
-        }
-    }
-
-    def getboundforPoint(key:Geom):Double=
-    {
-      var maxdist= Double.MaxValue
-
-      if(buf.contains(key))
-      {
-        val pq=buf.get(key).get
-        if(pq.size>=k)
-          maxdist= pq.head._1
-      }
-
-      maxdist
-    }
-
-
-    //case 3: the data tree is leaf, but the query tree is branch
-    //the entry is data, and node is the query point
-    //if the return is the maxvalue, then, it means those query point for this branch do not find their correct knn
-    def recur(querybranch: Node[V], datapoints:Vector[Entry[V]], dataleafbox:Box): Double =
-    {
-      querybranch match {
-        case Leaf(qchildren, box) =>
-
-          if(querybranch.box.mindistance(box)<querybranch.knnboundary)
-          {
-            var knndistanceboundFromQtoD=Double.MinValue
-
-            //childern is those query point
-            qchildren.foreach {
-              qpoint =>
-                var tmpbound=Double.MaxValue
-                datapoints.foreach
-                {
-                  dpoint=> tmpbound=updatePQ(qpoint.geom,dpoint)
-                }
-
-                knndistanceboundFromQtoD=Math.max(tmpbound,knndistanceboundFromQtoD)
-            }
-
-            querybranch.updatebound(knndistanceboundFromQtoD)
-          }
-
-          querybranch.knnboundary
-
-        case Branch(children, box) =>
-          //val cs = children.map(node => (node.box.distance(entry.geom.asInstanceOf[Point]), node)).sortBy(_._1)
-          var maxdistance=0.0
-          children.foreach
-          {
-            child=>
-              var tmpknnbound=0.0
-              if(child.box.mindistance(dataleafbox)<child.knnboundary)
-              {
-                tmpknnbound=recur(child,datapoints,dataleafbox)
-                child.updatebound(tmpknnbound)
-              }else
-              {
-                tmpknnbound=child.knnboundary
-              }
-              maxdistance=Math.max(maxdistance,tmpknnbound)
-          }
-          maxdistance
-      }
-    }
-
-
-    //recursive to the leaf node of data point tree, which contain the data itself
-    //case 4: the data tree is branch, but the query tree is leaf
-    def recur2(datanode: Node[V], querynode:Node[V]): Double ={
-      datanode match
-      {
-        //both the query and data are reaching the leaf node
-        case Leaf(datanode_child, box_data)=>
-        {
-          if(datanode.box.mindistance(querynode.box)<querynode.knnboundary)
-          {
-            var knndistanceboundFromQtoD=Double.MinValue
-            querynode match
-            {
-              case Leaf(qchildren, qbox)=>
-                //childern is those query point
-                qchildren.foreach {
-                  qpoint =>
-                    var tmpbound=Double.MaxValue
-                    datanode_child.foreach
-                    {
-                      dpoint=>
-                        tmpbound=updatePQ(qpoint.geom,dpoint)
-                    }
-
-                    knndistanceboundFromQtoD=Math.max(tmpbound,knndistanceboundFromQtoD)
-                }
-
-                querynode.updatebound(knndistanceboundFromQtoD)
-            }
-          }
-
-          querynode.knnboundary
-        }
-
-        //continue the recursive process
-        case Branch(datanode_child, box_data)=>
-
-          var knndistanceboundary=Double.MaxValue
-
-          numberofCase4=numberofCase4+datanode_child.size
-
-          val cs = datanode_child.map(node => (node.box.mindistance(querynode.box), node)).sortBy(_._1)
-          cs.foreach {
-            case (d, node) =>
-              if (d >= knndistanceboundary)
-              {
-                numberofPrune+=1
-                querynode.updatebound(knndistanceboundary)
-                return knndistanceboundary
-              }
-              knndistanceboundary = recur2(node,querynode)
-          }
-
-          knndistanceboundary
-      }
-
-    }
-
-
-
-
-    /**
-     * for one query box w.r.t array of data nodes
-     */
-    def knnForQueryBranch(datanode:Vector[Node[V]],querynode:Node[V]):Double=
-    {
-      val cs = datanode.map(node => (node.box.mindistance(querynode.box), node)).sortBy(_._1)
-
-      var knndistanceboundary=Double.MaxValue
-      cs.foreach {
-        case (d, datanode) =>
-          if (d >= knndistanceboundary)
-          {
-            numberofPrune+=1
-            querynode.updatebound(knndistanceboundary)
-            return knndistanceboundary//scalastyle:ignore
-          }
-          knndistanceboundary = knnjoin(datanode,querynode)
-      }
-
-      querynode.updatebound(knndistanceboundary)
-      knndistanceboundary
-    }
-
-    //this is used for spatial knn join
-    //return the knn distance bound from snode to rnode
-    //rnode is the data node, snode is the query knn point node
-    def knnjoin(rnode:Node[V],snode:Node[V]):Double={
-
-      if(snode.box.mindistance(rnode.box)>snode.knnboundary)
-      {
-        return snode.knnboundary
-      }
-
-      rnode match {
-        case Leaf(children_r, box_r) =>
-          snode match
-          {
-            case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
-
-              var knnmaxboundFromStoR=0.0
-
-              if(box_s.mindistance(box_r)<snode.knnboundary)
-              {
-                children_s.foreach
-                {
-                  case schild=>
-                    var tmpbound=Double.MaxValue
-
-                    children_r.foreach
-                    {
-                      case rchild=>
-                        tmpbound=updatePQ(schild.geom,rchild)
-                    }
-
-                    knnmaxboundFromStoR=Math.max(tmpbound,knnmaxboundFromStoR)
-                }
-
-                snode.updatebound(knnmaxboundFromStoR)
-              }
-
-              snode.knnboundary
-
-            case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
-            {
-              val knndistancebound=recur(snode,children_r,box_r)
-
-              snode.updatebound(knndistancebound)
-              knndistancebound
-            }
-          }
-
-        case Branch(children_r, box_r) =>
-
-          snode match
-          {
-            case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
-            {
-              recur2(rnode, snode)
-            }
-            case Branch(children_s, box_s)=> //case 1: both of two tree are branch
-            {
-              var knnboundfromStoR=Double.MaxValue
-
-              numbernestloop=numbernestloop+children_s.size*children_r.size
-
-              children_s.foreach
-              {
-                querynode=>
-                  //compute the distance from query node to each data node, and recursive to the shorteest one
-                  val knnboundForBox=knnForQueryBranch(children_r,querynode)
-                  knnboundfromStoR=math.max(knnboundfromStoR,knnboundForBox)
-              }
-              snode.updatebound(knnboundfromStoR)
-              snode.knnboundary
-            }
-          }
-      }
-    }
-
-
-    //run the knn join betwee data and query
-    knnjoin(this.root,stree.root)
-
-    println(numbernestloop)
-    println("case4 "+numberofCase4)
-    println(numberofPrune)
-
-    buf.map{
-      case(geom,pq)=>
-        val arr = new Array[(K,V)](pq.size)
-        var i = arr.length - 1
-        val maxdistance=pq.head._1
-        while (i >= 0) {
-          val (_, e) = pq.dequeue
-          arr(i) = (e.geom.asInstanceOf[K],e.value)
-          i -= 1
-        }
-        (geom.asInstanceOf[K],maxdistance,arr.toIterator)
-    }.toIterator
-
-  }*/
 
   //use the line swipe based approach to find the intersection of two rectangle sets
   private def intersection(r:Vector[Node[V]],s:Vector[Node[V]]):Seq[(Node[V],Node[V])]=
@@ -2397,3 +2077,325 @@ Iterator[(K,Array[(K,V)])]=
               }
 
   */
+
+
+/*def knnjoin[K: ClassTag]
+(stree:RTree[V], k:Int)
+(f1:(K)=>Boolean, f2:(V)=>Boolean):
+Iterator[(K, Double, Iterator[(K,V)])] =
+{
+  var numbernestloop=0
+  var numberofCase4=0
+  var numberofPrune=0
+
+  val buf = mutable.HashMap.empty[Geom, mutable.PriorityQueue[(Double,Entry[V])]]
+
+  //return the max knn distance bound
+  def updatePQ(key:Geom, datapoint:Entry[V]):Double=
+  {
+    try {
+
+      if(buf.contains(key))
+      {
+        val pq=buf.get(key).get
+
+        val d = datapoint.geom.distance(key.asInstanceOf[Point])
+
+        //update the priority queue for this query point
+        if(f1(datapoint.geom.asInstanceOf[K])&&f2(datapoint.value))
+        {
+          if(pq.size>=k)
+          {
+            if (d < pq.head._1) {
+              pq += ((d, (datapoint)))
+              if (pq.size > k) {
+                pq.dequeue
+              }
+            }
+          }else
+          {
+            pq += ((d, (datapoint)))
+          }
+        }
+
+        buf.put(key,pq)
+
+        if(pq.size>=k) {
+          pq.head._1
+        }else
+        {
+          Double.MaxValue
+        }
+
+      }else
+      {
+        implicit val ord = Ordering.by[(Double, Entry[V]), Double](_._1)
+        val pq = PriorityQueue.empty[(Double, Entry[V])]
+        val distance = datapoint.geom.distance(key.asInstanceOf[Point])
+        pq += ((distance, datapoint))
+        buf.put(key,pq)
+
+        if(pq.size==k) {
+          distance
+        }else
+        {
+          Double.MaxValue
+        }
+      }
+
+    }catch
+      {
+        case e:Exception=>
+          println("update heap exception"+e)
+          0
+      }
+  }
+
+  def getboundforPoint(key:Geom):Double=
+  {
+    var maxdist= Double.MaxValue
+
+    if(buf.contains(key))
+    {
+      val pq=buf.get(key).get
+      if(pq.size>=k)
+        maxdist= pq.head._1
+    }
+
+    maxdist
+  }
+
+
+  //case 3: the data tree is leaf, but the query tree is branch
+  //the entry is data, and node is the query point
+  //if the return is the maxvalue, then, it means those query point for this branch do not find their correct knn
+  def recur(querybranch: Node[V], datapoints:Vector[Entry[V]], dataleafbox:Box): Double =
+  {
+    querybranch match {
+      case Leaf(qchildren, box) =>
+
+        if(querybranch.box.mindistance(box)<querybranch.knnboundary)
+        {
+          var knndistanceboundFromQtoD=Double.MinValue
+
+          //childern is those query point
+          qchildren.foreach {
+            qpoint =>
+              var tmpbound=Double.MaxValue
+              datapoints.foreach
+              {
+                dpoint=> tmpbound=updatePQ(qpoint.geom,dpoint)
+              }
+
+              knndistanceboundFromQtoD=Math.max(tmpbound,knndistanceboundFromQtoD)
+          }
+
+          querybranch.updatebound(knndistanceboundFromQtoD)
+        }
+
+        querybranch.knnboundary
+
+      case Branch(children, box) =>
+        //val cs = children.map(node => (node.box.distance(entry.geom.asInstanceOf[Point]), node)).sortBy(_._1)
+        var maxdistance=0.0
+        children.foreach
+        {
+          child=>
+            var tmpknnbound=0.0
+            if(child.box.mindistance(dataleafbox)<child.knnboundary)
+            {
+              tmpknnbound=recur(child,datapoints,dataleafbox)
+              child.updatebound(tmpknnbound)
+            }else
+            {
+              tmpknnbound=child.knnboundary
+            }
+            maxdistance=Math.max(maxdistance,tmpknnbound)
+        }
+        maxdistance
+    }
+  }
+
+
+  //recursive to the leaf node of data point tree, which contain the data itself
+  //case 4: the data tree is branch, but the query tree is leaf
+  def recur2(datanode: Node[V], querynode:Node[V]): Double ={
+    datanode match
+    {
+      //both the query and data are reaching the leaf node
+      case Leaf(datanode_child, box_data)=>
+      {
+        if(datanode.box.mindistance(querynode.box)<querynode.knnboundary)
+        {
+          var knndistanceboundFromQtoD=Double.MinValue
+          querynode match
+          {
+            case Leaf(qchildren, qbox)=>
+              //childern is those query point
+              qchildren.foreach {
+                qpoint =>
+                  var tmpbound=Double.MaxValue
+                  datanode_child.foreach
+                  {
+                    dpoint=>
+                      tmpbound=updatePQ(qpoint.geom,dpoint)
+                  }
+
+                  knndistanceboundFromQtoD=Math.max(tmpbound,knndistanceboundFromQtoD)
+              }
+
+              querynode.updatebound(knndistanceboundFromQtoD)
+          }
+        }
+
+        querynode.knnboundary
+      }
+
+      //continue the recursive process
+      case Branch(datanode_child, box_data)=>
+
+        var knndistanceboundary=Double.MaxValue
+
+        numberofCase4=numberofCase4+datanode_child.size
+
+        val cs = datanode_child.map(node => (node.box.mindistance(querynode.box), node)).sortBy(_._1)
+        cs.foreach {
+          case (d, node) =>
+            if (d >= knndistanceboundary)
+            {
+              numberofPrune+=1
+              querynode.updatebound(knndistanceboundary)
+              return knndistanceboundary
+            }
+            knndistanceboundary = recur2(node,querynode)
+        }
+
+        knndistanceboundary
+    }
+
+  }
+
+
+
+
+  /**
+   * for one query box w.r.t array of data nodes
+   */
+  def knnForQueryBranch(datanode:Vector[Node[V]],querynode:Node[V]):Double=
+  {
+    val cs = datanode.map(node => (node.box.mindistance(querynode.box), node)).sortBy(_._1)
+
+    var knndistanceboundary=Double.MaxValue
+    cs.foreach {
+      case (d, datanode) =>
+        if (d >= knndistanceboundary)
+        {
+          numberofPrune+=1
+          querynode.updatebound(knndistanceboundary)
+          return knndistanceboundary//scalastyle:ignore
+        }
+        knndistanceboundary = knnjoin(datanode,querynode)
+    }
+
+    querynode.updatebound(knndistanceboundary)
+    knndistanceboundary
+  }
+
+  //this is used for spatial knn join
+  //return the knn distance bound from snode to rnode
+  //rnode is the data node, snode is the query knn point node
+  def knnjoin(rnode:Node[V],snode:Node[V]):Double={
+
+    if(snode.box.mindistance(rnode.box)>snode.knnboundary)
+    {
+      return snode.knnboundary
+    }
+
+    rnode match {
+      case Leaf(children_r, box_r) =>
+        snode match
+        {
+          case Leaf(children_s, box_s) => //case 2: both tree reach the leaf node
+
+            var knnmaxboundFromStoR=0.0
+
+            if(box_s.mindistance(box_r)<snode.knnboundary)
+            {
+              children_s.foreach
+              {
+                case schild=>
+                  var tmpbound=Double.MaxValue
+
+                  children_r.foreach
+                  {
+                    case rchild=>
+                      tmpbound=updatePQ(schild.geom,rchild)
+                  }
+
+                  knnmaxboundFromStoR=Math.max(tmpbound,knnmaxboundFromStoR)
+              }
+
+              snode.updatebound(knnmaxboundFromStoR)
+            }
+
+            snode.knnboundary
+
+          case Branch(children_s, box_s)=> //case 3: the data tree is leaf, but the query tree is branch
+          {
+            val knndistancebound=recur(snode,children_r,box_r)
+
+            snode.updatebound(knndistancebound)
+            knndistancebound
+          }
+        }
+
+      case Branch(children_r, box_r) =>
+
+        snode match
+        {
+          case Leaf(children_s, box_s) => //case 4: the data tree is branch, but the query tree is leaf
+          {
+            recur2(rnode, snode)
+          }
+          case Branch(children_s, box_s)=> //case 1: both of two tree are branch
+          {
+            var knnboundfromStoR=Double.MaxValue
+
+            numbernestloop=numbernestloop+children_s.size*children_r.size
+
+            children_s.foreach
+            {
+              querynode=>
+                //compute the distance from query node to each data node, and recursive to the shorteest one
+                val knnboundForBox=knnForQueryBranch(children_r,querynode)
+                knnboundfromStoR=math.max(knnboundfromStoR,knnboundForBox)
+            }
+            snode.updatebound(knnboundfromStoR)
+            snode.knnboundary
+          }
+        }
+    }
+  }
+
+
+  //run the knn join betwee data and query
+  knnjoin(this.root,stree.root)
+
+  println(numbernestloop)
+  println("case4 "+numberofCase4)
+  println(numberofPrune)
+
+  buf.map{
+    case(geom,pq)=>
+      val arr = new Array[(K,V)](pq.size)
+      var i = arr.length - 1
+      val maxdistance=pq.head._1
+      while (i >= 0) {
+        val (_, e) = pq.dequeue
+        arr(i) = (e.geom.asInstanceOf[K],e.value)
+        i -= 1
+      }
+      (geom.asInstanceOf[K],maxdistance,arr.toIterator)
+  }.toIterator
+
+}*/

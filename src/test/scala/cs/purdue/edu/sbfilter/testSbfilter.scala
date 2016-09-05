@@ -1,6 +1,6 @@
 package cs.purdue.edu.sbfilter
 
-import cs.purdue.edu.spatialindex.quatree.{SBQTree}
+import cs.purdue.edu.spatialindex.quatree.{QTree, SBQTree}
 import cs.purdue.edu.spatialindex.rtree._
 import cs.purdue.edu.spatialindex.spatialbloomfilter.{qtreeUtil, SBFilter}
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution
@@ -229,7 +229,6 @@ object testSbfilter {
         timeforQtree+=System.currentTimeMillis-b2
     }
     println("binnary sbfilterv2 query time: "+(timeforQtree) +" ms")
-    //println("r-tree with binnary sbfilterv2 actually run time: "+(System.currentTimeMillis-b2) +" ms")
     println("empty slot: "+count)
     println("*"*50)
 
@@ -296,7 +295,7 @@ object testSbfilter {
 
   def main(args: Array[String]): Unit = {
 
-    val numofpoints=400000
+    val numofpoints=200000
     val numofqueries=50000
 
     val mean1=Array(6.0,6.0)
@@ -317,7 +316,7 @@ object testSbfilter {
       Box(p1.x,p1.y, p1.x+p2.x,p1.y+p2.y)
     }
 
-    val b1=System.currentTimeMillis
+    var b1=System.currentTimeMillis
     var rt = build(es)
     rt=rt.insertAll(es2)
     rt=rt.insertAll(es3)
@@ -325,7 +324,14 @@ object testSbfilter {
     //rt=rt.insertAll(es6)
     println("build rtree index time: "+(System.currentTimeMillis-b1) +" ms")
 
+    b1=System.currentTimeMillis
+    val Quadtree=QTree(es: _*)
+    Quadtree.insertAll(es2)
+    Quadtree.insertAll(es3)
+    println("build quadtree index time: "+(System.currentTimeMillis-b1) +" ms")
+
     //get the rtree baseline query time
+
     val rtreequerytime=queryTimeofRtree(rt,boxes.toIterator)
     println("*"*100)
 

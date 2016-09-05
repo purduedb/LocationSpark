@@ -7,7 +7,7 @@
 		revision="1.0"
 		conf="compile-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20160607160204"/>
+		date="20160905124908"/>
 	<dependencies>
 		<module organisation="org.scalactic" name="scalactic_2.10">
 			<revision name="2.2.6" status="release" pubdate="20160105135928" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scalatest.org" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="119">

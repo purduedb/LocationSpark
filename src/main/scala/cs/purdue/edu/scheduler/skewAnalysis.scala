@@ -24,6 +24,14 @@ object skewAnalysis {
     stat.sortWith(_._3>_._3).slice(0,topk).map(elem=>(elem._1,elem._2)).toMap
   }
 
+  def findTopKSkewPartition(stat:IndexedSeq[(Int,Int,Int)], topk:Int):Map[Int,Int]=
+  {
+    /**
+     * option1: get the topk partitions based on the query size
+     */
+    stat.sortWith(_._3>_._3).slice(0,topk).map(elem=>(elem._1,elem._2)).toMap
+  }
+
   /**
    * find the skew partition, and find the partition approach for those skew partition
    * @param stat

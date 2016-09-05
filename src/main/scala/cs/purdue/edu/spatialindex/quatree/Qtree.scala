@@ -406,7 +406,15 @@ case class QTree[V] (LEAF_MAX_CAPACITY: Int,space:Box){
       implicit val ord = Ordering.by[(Double, Entry[V]), Double](_._1)
       val pq = PriorityQueue.empty[(Double, Entry[V])]
       nearestK(this.root,pt, k, Double.PositiveInfinity, pq)
-      pq.toIndexedSeq
+
+      val arr = new Array[(Double, Entry[V])](pq.size)
+      var i = arr.length - 1
+      while (i >= 0) {
+        val (d, e) = pq.dequeue
+        arr(i) =(d,e)
+        i -= 1
+      }
+      arr
     }
   }
 

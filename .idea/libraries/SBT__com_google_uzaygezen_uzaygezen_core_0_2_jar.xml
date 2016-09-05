@@ -3,11 +3,7 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.ivy2/cache/com.google.uzaygezen/uzaygezen-core/jars/uzaygezen-core-0.2.jar!/" />
     </CLASSES>
-    <JAVADOC>
-      <root url="jar://$USER_HOME$/.ivy2/cache/com.google.uzaygezen/uzaygezen-core/docs/uzaygezen-core-0.2-javadoc.jar!/" />
-    </JAVADOC>
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/com.google.uzaygezen/uzaygezen-core/srcs/uzaygezen-core-0.2-sources.jar!/" />
-    </SOURCES>
+    <JAVADOC />
+    <SOURCES />
   </library>
 </component>

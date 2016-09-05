@@ -13,7 +13,7 @@
 package cs.purdue.edu.spatialrdd
 
 import scala.reflect.ClassTag
-import cs.purdue.edu.spatialindex.rtree.Entry
+import cs.purdue.edu.spatialindex.rtree.{Box, Entry}
 
 abstract class SpatialRDDPartition [K, V] extends Serializable {
 
@@ -129,8 +129,8 @@ abstract class SpatialRDDPartition [K, V] extends Serializable {
    * @param other
    * @return
    */
-  def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
-             f2:(V)=>Boolean): Iterator[(K, Iterable[(K,V)])]
+  def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)],Box))],f1:(K)=>Boolean,
+             f2:(V)=>Boolean, k:Int): Iterator[(K, Iterable[(K,V)])]
 
   /**
    * Creates a new partition with values from `elems` that may share an index with `this`,

@@ -35,7 +35,7 @@ object ToWKT {
             case e:Exception=>
             //println("input format error")
           }
-    }.filter(_!=null)
+    }.filter(s=>s.toString.contains("POINT"))
 
     data.saveAsTextFile(outputfile)
 

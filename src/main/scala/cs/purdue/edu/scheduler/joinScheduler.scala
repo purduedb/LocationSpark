@@ -138,8 +138,8 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
         }
     }
 
-    //the simplist way to implement here
     val nonskew_datardd =this.datardd
+
     /***************************************************************/
     /***********************execute join****************************/
     /**
@@ -157,7 +157,9 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
     val part1=skewindexrdd.sjoins[U](skew_queryrdd)((k, id) => id)
 
     /*************************************************************/
+
     val part2=nonskew_datardd.sjoins(nonskew_queryrdd)((k, id) => id)
+
     /***************************************************************/
     // part2
      part1.union(part2)
@@ -234,7 +236,6 @@ class joinScheduler[K:ClassTag,V:ClassTag,U:ClassTag,T:ClassTag](datardd:Spatial
   private def getPartitionerbasedQuery(topKpartitions:Map[Int,Int], skewQuery:RDD[(K,U)]): QtreePartitionerBasedQueries[Int,QtreeForPartion] =
   {
     //default nubmer of queries
-    //al samplequeries=this.queryrdd.sample(false,0.05f).collect()
     val samplequeries=skewQuery.sample(false,0.02f).map{case(point, box)=>box}.distinct().collect()
 
     //get the quadtree partionner from this data rdd, and colone that quadtree

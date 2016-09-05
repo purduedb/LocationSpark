@@ -4,7 +4,7 @@
 		module="spatialspark-build"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20150917145418"
+		publication="20160905124819"
 		e:scalaVersion="2.10" e:sbtVersion="0.13"
 	>
 		<description>

@@ -277,12 +277,12 @@ class SMapPartition[K, V]
    * @param other
    * @return
    */
-  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
-                      f2:(V)=>Boolean): Iterator[(K, Iterable[(K,V)])]=
+  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)],Box))],f1:(K)=>Boolean,
+                      f2:(V)=>Boolean, k:Int): Iterator[(K, Iterable[(K,V)])]=
   {
 
     other.map{
-      case(locationpoint,(querypoint,itr))
+      case(locationpoint,(querypoint,itr,box))
       =>
         (querypoint,itr.toIterable)
     }

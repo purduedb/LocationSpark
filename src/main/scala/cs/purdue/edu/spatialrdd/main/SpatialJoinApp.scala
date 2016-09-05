@@ -27,6 +27,7 @@ object SpatialJoinApp {
 
     val arglist = args.toList
     type OptionMap = Map[Symbol, Any]
+
     def nextOption(map: OptionMap, list: List[String]): OptionMap = {
       list match {
         case Nil => map
@@ -38,7 +39,7 @@ object SpatialJoinApp {
         case "--right" :: value :: tail =>
           nextOption(map ++ Map('right -> value), tail)
         case "--index" :: value :: tail =>
-          nextOption(map = map ++ Map('index -> value.toBoolean), list = tail)
+          nextOption(map = map ++ Map('index -> value), list = tail)
         case option :: tail => println("Unknown option " + option)
           sys.exit(1)
       }
@@ -46,12 +47,15 @@ object SpatialJoinApp {
 
     val options = nextOption(Map(), arglist)
 
-    val conf = new SparkConf().setAppName("Test for Spatial JOIN SpatialRDD")
-    val spark = new SparkContext(conf)
-
     val leftFile = options.getOrElse('left, Nil).asInstanceOf[String]
     val rightFile = options.getOrElse('right, Nil).asInstanceOf[String]
     Util.localIndex = options.getOrElse('index, Nil).asInstanceOf[String]
+
+    //val conf = new SparkConf().setAppName("Test for Spatial JOIN SpatialRDD")
+
+    val conf = new SparkConf().setAppName("Test for Spatial JOIN SpatialRDD")
+
+    val spark = new SparkContext(conf)
 
     /** **********************************************************************************/
     //this is for WKT format for the left data points
@@ -85,9 +89,17 @@ object SpatialJoinApp {
     }
 
     /** **********************************************************************************/
+    var b1 = System.currentTimeMillis
+
     val joinresultRdd = leftLocationRDD.rjoin(rightBoxes)(aggfunction1, aggfunction2)
 
-    println("join result size " + joinresultRdd.count())
+    println("the outer table size: " + rightBoxes.count())
+    println("the inner table size: " + leftpoints.count())
+    val tuples=joinresultRdd.map{case(b,v)=>(1,v)}.reduceByKey{case(a,b)=>{a+b}}.map{case(a,b)=>b}.collect()
+
+    println("global index: "+ Util.localIndex+" ; local index: "+ Util.localIndex)
+    println("query results size: "+tuples(0))
+    println("spatial range join time: "+(System.currentTimeMillis - b1) +" (ms)")
 
     spark.stop()
 
@@ -96,8 +108,7 @@ object SpatialJoinApp {
 }
 
 
-//val scheduler=new joinScheduler(indexed,queryboxes)
-//val joinresultRdd=scheduler.scheduleRJoin(aggfunction1, aggfunction2)
+
 
 //joinresultRdd.sortBy(x=>x._2).take(200).foreach(println)
 //joinresultRdd.take(10).foreach(println)

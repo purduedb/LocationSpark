@@ -153,7 +153,6 @@ class QtreePartition [K, V]
     other.foreach{
       case(point,b:Box)=>
         val ret = newMap.search(b, _ => true)
-        //val ret = newMap.search(b, textfunction)
         ret.foreach {
           case (e: Entry[V]) =>
             if(!retmap.contains(e.geom.asInstanceOf[K]))
@@ -236,20 +235,41 @@ class QtreePartition [K, V]
   }
 
   /**
-   * @todo add this function for the quadtree next
    * @param other
    * @tparam U
    * @return
    */
-  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],f1:(K)=>Boolean,
-                      f2:(V)=>Boolean): Iterator[(K, Iterable[(K,V)])]=
+  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)],Box))],f1:(K)=>Boolean,
+                      f2:(V)=>Boolean, k:Int): Iterator[(K, Iterable[(K,V)])]=
   {
 
-    other.map{
-      case(locationpoint,(querypoint,itr))
-        =>
-        (querypoint,itr.toIterable)
+    def filterfunction(tuple:Entry[V]):Boolean=
+    {
+      f1(tuple.geom.asInstanceOf[K])&&f2(tuple.value)
     }
+
+    val tree=this.tree
+    //this is the nest loop approach for the range search
+    other.map{
+      case(locationpoint,(querypoint,itr,box))
+      =>
+        val rangeQueryResult=
+          tree.search(box,filterfunction).
+          map(e=>(e.geom,e.value,e.geom.distance(querypoint.asInstanceOf[Point])))
+
+        val firstround=itr.map{
+          case(tuple,value)=>
+            (tuple,value,tuple.asInstanceOf[Point].distance(querypoint.asInstanceOf[Point]))
+        }
+
+        val finalresult=(rangeQueryResult++firstround).sortBy(_._3).distinct.slice(0,k)
+        val ret=finalresult.map{
+          case(location:Point,value,distance) =>(location.asInstanceOf[K],value)
+        }
+
+        (querypoint,ret.toIterable)
+    }
+
   }
 
 }

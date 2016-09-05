@@ -170,12 +170,8 @@ class RtreePartition[K, V]
 
     val boxtree=RTree(boxes)
 
-    //Todo: return the output as the (box,entry) type, then do the reduce to merge the result
-    //newMap.joins(boxtree)
-
     newMap.join(boxtree).map(
-      e=>
-      retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
+      e=> retmap = retmap + (e.geom.asInstanceOf[K] -> e.value)
     )
 
     boxtree.cleanTree()
@@ -201,13 +197,14 @@ class RtreePartition[K, V]
    f2:(U2,U2)=>U2):  Iterator[(U, U2)]=
   {
 
-    val newMap = this.tree
-    /**
+
+    /*
+     /**
      * below is dual tree based sjoin
      */
+     *
+     val newMap = this.tree
     var retmap=new HashMap[K,V]
-
-    //option2: build the tree for the query box approach
     val value=1
     val boxes=other.map
     {
@@ -221,6 +218,30 @@ class RtreePartition[K, V]
     boxtree.cleanTree()
 
     ret
+
+    */
+
+
+    /**
+     * below is the nested-loop joins
+     */
+    val buf = mutable.HashMap.empty[U,U2]
+    val newMap = this.tree
+
+    other.foreach{
+      case(point,b:Box)=>
+        val ret = newMap.search(b)
+
+        val tmparr=ret.map{case e=>
+          (e.geom.asInstanceOf[K],e.value)
+        }.toIterator
+
+        val aggresult=f(tmparr)
+
+        buf.+=(b.asInstanceOf[U]->aggresult)
+    }
+
+    buf.toIterator
 
   }
 
@@ -241,7 +262,6 @@ class RtreePartition[K, V]
     val ret=ArrayBuffer.empty[(K, Double, Iterator[(K,V)])]
     other.foreach{
       case(p:Point,k)=>
-
         var max=0.0
         val tmp=newMap.nearestK(p,knn,id=>true).map{
           case(distance,entry)=>
@@ -271,18 +291,34 @@ class RtreePartition[K, V]
 
   }
 
-  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)]))],
+  override def rkjoin(other: Iterator[(K, (K,Iterator[(K,V)],Box))],
     f1:(K)=>Boolean,
-  f2:(V)=>Boolean): Iterator[(K, Iterable[(K,V)])]=
+  f2:(V)=>Boolean, k:Int): Iterator[(K, Iterable[(K,V)])]=
   {
-      //get box point hashmap
 
-    val hashMap=mutable.HashMap.empty[Geom,(K,Double,mutable.PriorityQueue[(Double, (K,V))])]
+    def filterfunction(tuple:Entry[V]):Boolean=
+    {
+      f1(tuple.geom.asInstanceOf[K])&&f2(tuple.value)
+    }
 
+    val tree=this.tree
+    //this is the nest loop approach for the range search
     other.map{
-      case(locationpoint,(querypoint,itr))
+      case(locationpoint,(querypoint,itr,box))
       =>
-        (querypoint,itr.toIterable)
+        val rangeQueryResult=tree.search(box,filterfunction).map(e=>(e.geom,e.value,e.geom.distance(querypoint.asInstanceOf[Point])))
+        val firstround=itr.map{
+          case(tuple,value)=>
+            (tuple,value,tuple.asInstanceOf[Point].distance(querypoint.asInstanceOf[Point]))
+        }
+
+        val finalresult=(rangeQueryResult++firstround).sortBy(_._3).distinct.slice(0,k)
+
+        val ret=finalresult.map{
+          case(location:Point,value,distance) =>(location.asInstanceOf[K],value)
+        }
+
+        (querypoint,ret.toIterable)
     }
 
   }
