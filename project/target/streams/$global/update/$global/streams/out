@@ -1,4 +1,4 @@
-[0m[[0minfo[0m] [0mUpdating {file:/Users/mtang/Dev/spark/locationspark/SpatialSpark/project/}spatialspark-build...[0m
+[0m[[0minfo[0m] [0mUpdating {file:/u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/}spatialspark-build...[0m
 [0m[[0mdebug[0m] [0m:: resolving dependencies :: default#spatialspark-build;0.1-SNAPSHOT[0m
 [0m[[0mdebug[0m] [0m	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool][0m
 [0m[[0mdebug[0m] [0m	validate = true[0m
@@ -8,20 +8,8 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies default#spatialspark-build;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.11.2 [compile->default(compile)][0m
 [0m[[0minfo[0m] [0mResolving com.eed3si9n#sbt-assembly;0.11.2 ...[0m
 [0m[[0mdebug[0m] [0msbt-chain: Checking cache for: dependency: com.eed3si9n#sbt-assembly;0.11.2 {compile=[default(compile)]}[0m
-[0m[[0minfo[0m] [0mResolving com.eed3si9n#sbt-assembly;0.11.2 ...[0m
-[0m[[0mdebug[0m] [0msbt-chain-delegate: Checking cache for: dependency: com.eed3si9n#sbt-assembly;0.11.2 {compile=[default(compile)]}[0m
-[0m[[0mdebug[0m] [0m		tried https://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0mCLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	typesafe-ivy-releases: no ivy file found for com.eed3si9n#sbt-assembly;0.11.2[0m
-[0m[[0mdebug[0m] [0m		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: found md file for com.eed3si9n#sbt-assembly;0.11.2[0m
-[0m[[0mdebug[0m] [0m		=> https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml (0.11.2)[0m
-[0m[[0mdebug[0m] [0mdownloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml ...[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml.sha1[0m
-[0m[[0mdebug[0m] [0msha1 OK for https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/ivys/ivy.xml[0m
-[0m[[0mdebug[0m] [0m	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.11.2!ivy.xml(ivy.original) (1269ms)[0m
-[0m[[0mdebug[0m] [0m	found com.eed3si9n#sbt-assembly;0.11.2 in sbt-plugin-releases[0m
+[0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: com.eed3si9n#sbt-assembly;0.11.2[0m
+[0m[[0mdebug[0m] [0m	found com.eed3si9n#sbt-assembly;0.11.2 in sbt-chain[0m
 [0m[[0mdebug[0m] [0mdependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.10.2 {provided=[default(compile)]} => dependency: org.scala-lang#scala-library;2.10.4 {provided=[default(compile)]}[0m
 [0m[[0mdebug[0m] [0mresolving dependencies for configuration 'runtime'[0m
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialspark-build;0.1-SNAPSHOT [runtime][0m
@@ -38,7 +26,7 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies for default#spatialspark-build;0.1-SNAPSHOT [provided][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies default#spatialspark-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)][0m
 [0m[[0minfo[0m] [0mResolving org.scala-lang#scala-library;2.10.4 ...[0m
-[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@78a39e69[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@47b1dd2d[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-lang#scala-library;2.10.4[0m
 [0m[[0mdebug[0m] [0m	found org.scala-lang#scala-library;2.10.4 in sbt-chain[0m
 [0m[[0mdebug[0m] [0m	[2.10.4] org.scala-lang#scala-library;2.10.4[0m
@@ -1738,12 +1726,7 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies default#spatialspark-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->optional(default)][0m
 [0m[[0mdebug[0m] [0m	resolved ivy file produced in cache[0m
 [0m[[0mdebug[0m] [0m:: downloading artifacts ::[0m
-[0m[[0mdebug[0m] [0m		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/jars/sbt-assembly.jar[0m
-[0m[[0minfo[0m] [0mdownloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/jars/sbt-assembly.jar ...[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/jars/sbt-assembly.jar[0m
-[0m[[0mdebug[0m] [0m	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/jars/sbt-assembly.jar.sha1[0m
-[0m[[0mdebug[0m] [0msha1 OK for https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.11.2/jars/sbt-assembly.jar[0m
-[0m[[0minfo[0m] [0m	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.11.2!sbt-assembly.jar (1630ms)[0m
+[0m[[0mdebug[0m] [0m	[NOT REQUIRED] com.eed3si9n#sbt-assembly;0.11.2!sbt-assembly.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#scala-library;2.10.4!scala-library.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#sbt;0.13.8!sbt.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#main;0.13.8!main.jar[0m
@@ -1800,19 +1783,19 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#jline;2.10.4!jline.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 3643ms :: artifacts dl 1650ms[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT compile produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-compile.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT runtime produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-runtime.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT test produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-test.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT provided produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-provided.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT optional produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-optional.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT compile-internal produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-compile-internal.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT runtime-internal produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-runtime-internal.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT test-internal produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-test-internal.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT plugin produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-plugin.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT sources produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-sources.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT docs produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-docs.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT pom produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-pom.xml[0m
-[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT scala-tool produced in /Users/mtang/Dev/spark/locationspark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-scala-tool.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (3643ms resolve - 1650ms download)[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 1894ms :: artifacts dl 88ms[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT compile produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-compile.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT runtime produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-runtime.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT test produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-test.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT provided produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-provided.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT optional produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-optional.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT compile-internal produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-compile-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT runtime-internal produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-runtime-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT test-internal produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-test-internal.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT plugin produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-plugin.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT sources produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-sources.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT docs produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-docs.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT pom produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-pom.xml[0m
+[0m[[0mdebug[0m] [0m	report for default#spatialspark-build;0.1-SNAPSHOT scala-tool produced in /u/antor/u6/tang49/spark/locationSpark/SpatialSpark/project/target/resolution-cache/reports/default-spatialspark-build-scala-tool.xml[0m
+[0m[[0mdebug[0m] [0m	resolve done (1894ms resolve - 88ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m
