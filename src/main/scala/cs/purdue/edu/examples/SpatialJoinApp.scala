@@ -1,10 +1,10 @@
-package cs.purdue.edu.spatialrdd.main
+package cs.purdue.edu.examples
 
 import com.vividsolutions.jts.io.WKTReader
 import cs.purdue.edu.spatialindex.rtree.{Box, Point}
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialrdd.impl.Util
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.util.Try
 
@@ -50,8 +50,6 @@ object SpatialJoinApp {
     val leftFile = options.getOrElse('left, Nil).asInstanceOf[String]
     val rightFile = options.getOrElse('right, Nil).asInstanceOf[String]
     Util.localIndex = options.getOrElse('index, Nil).asInstanceOf[String]
-
-    //val conf = new SparkConf().setAppName("Test for Spatial JOIN SpatialRDD")
 
     val conf = new SparkConf().setAppName("Test for Spatial JOIN SpatialRDD")
 
@@ -106,9 +104,3 @@ object SpatialJoinApp {
   }
 
 }
-
-
-
-
-//joinresultRdd.sortBy(x=>x._2).take(200).foreach(println)
-//joinresultRdd.take(10).foreach(println)

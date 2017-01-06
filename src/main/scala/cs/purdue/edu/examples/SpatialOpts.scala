@@ -1,7 +1,7 @@
-package cs.purdue.edu.spatialrdd.main
+package cs.purdue.edu.examples
 
 import com.vividsolutions.jts.io.WKTReader
-import cs.purdue.edu.spatialindex.rtree.{Entry, Box, Point}
+import cs.purdue.edu.spatialindex.rtree.{Box, Entry, Point}
 import cs.purdue.edu.spatialrdd.SpatialRDD
 import cs.purdue.edu.spatialrdd.impl.Util
 import org.apache.spark.{SparkConf, SparkContext}
@@ -11,7 +11,7 @@ import scala.util.Try
 /**
  * Created by merlin on 11/16/15.
  */
-object SpatialRDDMain {
+object SpatialOpts {
 
   val usage = """
     Implementation of Spatial Operators on Spark
@@ -134,8 +134,6 @@ object SpatialRDDMain {
     var knnsearchtime=System.currentTimeMillis - b1
     println("*"*100)
     println("knn search time for k=10 "+knnsearchtime)
-
-
 
 
     /***************************************************************************************/

@@ -1,8 +1,6 @@
-package cs.purdue.edu.spatialrdd.main
+package cs.purdue.edu.examples
 
 import org.apache.spark.{SparkConf, SparkContext}
-
-import scala.collection.mutable.ArrayBuffer
 
 /**
  * Created by merlin on 11/16/15.
@@ -47,14 +45,8 @@ object SpatialSampleRDD {
     }.filter(_!=null)
 
 
-    //locationRDD.foreach(println)
-    //println("data size")
-    //println(locationRDD.count())
-
     val samplerdd=locationRDD.sample(false,fraction.toDouble).repartition(350)
 
-    //println("sample data size")
-    //println(samplerdd.count())
 
     samplerdd.saveAsTextFile(outputfile)
 
