@@ -1,15 +1,10 @@
 package cs.purdue.edu.spatialrdd
 
 import cs.purdue.edu.scheduler.joinScheduler
-import cs.purdue.edu.spatialbloomfilter.qtreeUtil
-import cs.purdue.edu.spatialindex.rtree.{Entry, Box, Point}
-import cs.purdue.edu.spatialrdd.impl.{Grid2DPartitioner, QtreePartitioner, Grid2DPartitionerForBox}
-import org.apache.spark.rdd.RDD
-import org.apache.spark.util.random.SamplingUtils
-import org.apache.spark.{SparkContext, SparkConf}
+import cs.purdue.edu.spatialindex.rtree.{Box, Entry, Point}
+import cs.purdue.edu.spatialindex.spatialbloomfilter.qtreeUtil
+import org.apache.spark.{SparkConf, SparkContext}
 
-import scala.reflect.ClassTag
-import scala.util.hashing._
 
 /**
  * Created by merlin on 11/16/15.
